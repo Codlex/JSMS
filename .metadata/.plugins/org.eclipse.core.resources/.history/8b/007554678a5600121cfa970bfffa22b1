@@ -1,7 +1,0 @@
-package com.codlex.jsms.networking.messages;
-
-import message;
-
-public class AuthMessageUserExists extends message {
-
-}

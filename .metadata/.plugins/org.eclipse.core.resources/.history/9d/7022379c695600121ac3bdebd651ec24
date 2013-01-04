@@ -1,7 +1,0 @@
-package com.codlex.JSMS.dclient;
-
-import javax.swing.JFrame;
-
-public class LoginScreen extends JFrame {
-
-}

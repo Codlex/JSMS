@@ -1,5 +1,0 @@
-package com.codlex.jsms.networking;
-
-public interface NIC {
-
-}

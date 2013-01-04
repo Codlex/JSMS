@@ -1,6 +1,0 @@
-package com.codlex.jsms.networking;
-
-public interface AuthMessage extends Message {
-	public String getUsername();
-	public String getPassword();
-}

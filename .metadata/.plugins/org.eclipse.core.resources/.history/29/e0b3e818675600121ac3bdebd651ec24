@@ -1,6 +1,0 @@
-package com.codlex.jsms.networking;
-
-public interface NIC {
-	
-	public Message sendMessage(Message message);
-}

@@ -1,8 +1,0 @@
-package com.codlex.JSMS.model;
-
-public interface Friend {
-	public String getUsername();
-	public boolean isOnline();
-	public Image getScreen();
-
-}
