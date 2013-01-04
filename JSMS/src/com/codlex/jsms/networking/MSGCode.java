@@ -1,0 +1,12 @@
+package com.codlex.jsms.networking;
+
+public enum MSGCode {
+	SUCCESS,
+	UNKNOWN_ERROR,
+	AUTHERIFICATION_ERROR,
+	UNKNOWN_USER,
+	WRONG_TOKEN,
+	AUTH,
+	REGISTER,
+	USERNAME_EXISTS
+}
