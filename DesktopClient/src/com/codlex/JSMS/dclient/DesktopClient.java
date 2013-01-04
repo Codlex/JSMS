@@ -9,5 +9,5 @@ public class DesktopClient {
 		 * while (!login(
 		 */
 	}
-
+ /* while */
 }
