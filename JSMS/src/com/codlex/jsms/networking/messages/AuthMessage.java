@@ -5,6 +5,8 @@ import com.codlex.jsms.networking.Message;
 import com.codlex.jsms.networking.User;
 
 public class AuthMessage implements Message{
+    private static final long serialVersionUID = 1L;
+
 	User user;
 	MSGCode code;
 	public AuthMessage(User existingUser) {

@@ -8,24 +8,25 @@ import java.net.UnknownHostException;
 
 import com.codlex.jsms.networking.Message;
 import com.codlex.jsms.networking.StringMessage;
+import com.codlex.jsms.networking.User;
+import com.codlex.jsms.networking.messages.AuthMessage;
+import com.codlex.jsms.networking.users.BaseUser;
 
-public class TestClient {
+public class TestAuth {
 	public static void main(String[] args) {
 		try {
 			Socket socket = new Socket("localhost", 1337);
 			System.out.println("Connected!");
 			ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
-			StringMessage m = new StringMessage("Da Vidimo ladi ri?");
-			output.writeObject((Message) m);
-			if(socket.isClosed()) System.out.println("Sranje");
-			System.out.println("Object sent!");
+			User user = new BaseUser("deximat", "metallica");
+			Message m = new AuthMessage(user);
+			output.writeObject(m);
 			
+			ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
+			Message response = (Message) input.readObject();
 			
-			ObjectInputStream a = new ObjectInputStream(socket.getInputStream());
-			Message message = (Message) a.readObject();
-			System.out.println("Message I got is:");
-			System.out.println(message.getMsgCode());
-			System.out.println(message.getMsgObject());
+			System.out.println(response.getMsgCode());
+			System.out.println("Token:" + response.getMsgObject());
 			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block

@@ -37,6 +37,7 @@ public class ServerMain {
 				b.writeObject(message);
 				System.out.println("Message sent");
 				socketa = socket;
+				
 			}
 		} catch (IOException e) {
 			System.out.println("Port you are trying to open is busy!");

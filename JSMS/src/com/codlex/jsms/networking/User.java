@@ -1,6 +1,8 @@
 package com.codlex.jsms.networking;
 
-public interface User {
+import java.io.Serializable;
+
+public interface User extends Serializable{
 	public String getUsername();
 	public String getPassword();
 	public String getEmail();
