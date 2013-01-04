@@ -1,0 +1,5 @@
+package com.codlex.JSMS.dclient;
+
+public class DesktopClient {
+
+}

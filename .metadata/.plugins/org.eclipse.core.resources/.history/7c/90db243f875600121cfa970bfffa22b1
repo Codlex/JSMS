@@ -1,0 +1,17 @@
+package com.codlex.jsms.networking;
+
+public class AuthMessage implements Message{
+	public AuthMessage(User autherificate) {
+	}
+	@Override
+	public MSGCode getMsgCode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Object getMsgObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

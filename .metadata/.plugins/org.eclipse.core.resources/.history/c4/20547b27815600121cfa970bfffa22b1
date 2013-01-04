@@ -1,0 +1,11 @@
+package com.codlex.jsms.csrv;
+
+import java.net.ServerSocket;
+
+public class AuthServer {
+	private static final int port = 1337;
+	
+	public static void main(String[] args) {
+		ServerSocket server = new ServerSocket(port);
+	}
+}

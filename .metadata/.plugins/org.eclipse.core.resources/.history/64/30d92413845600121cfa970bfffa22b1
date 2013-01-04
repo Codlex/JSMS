@@ -1,0 +1,14 @@
+package com.codlex.jsms.server.users;
+
+public class UserService {
+	private UserService instanca;
+	public static synchronized UserService getUserService()  {
+		if(instanca != null) {
+			return instanca;
+		}
+	}
+	private UserService() {
+		
+	}
+
+}

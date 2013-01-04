@@ -1,0 +1,18 @@
+package com.codlex.jsms.networking;
+
+public class AuthMessage implements Message{
+	public AuthMessage(User existingUser) {
+		this.user = existingUser;
+	}
+	@Override
+	public MSGCode getMsgCode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Object getMsgObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

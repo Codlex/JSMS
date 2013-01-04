@@ -1,0 +1,22 @@
+package com.codlex.JSMS.dclient;
+
+import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class LoginScreen extends JFrame {
+	
+	public LoginScreen() {
+		
+	}
+	
+	private class LoginPanel extends JPanel {
+		public LoginPanel() {
+			setLayout(new BorderLayout());
+			add(new JLabel("Dobrodosli u CodlexOKO"), BorderLayout.NORTH);
+		}
+		
+	}
+
+}

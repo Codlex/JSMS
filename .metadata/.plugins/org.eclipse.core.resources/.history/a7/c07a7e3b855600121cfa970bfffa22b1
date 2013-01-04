@@ -1,0 +1,29 @@
+package com.codlex.jsms.server.users;
+
+import java.util.ArrayList;
+
+import com.codlex.jsms.networking.User;
+
+public class UserService {
+	private static UserService instanca;
+	private ArrayList<User> registredUsers;
+	public static synchronized UserService getUserService()  {
+		if(instanca == null) {
+			instanca = new UserService();
+		}
+		return instanca;
+	}
+	private UserService() {
+		
+	}
+	
+	public boolean login(User user) {
+		
+	}
+	
+	public boolean createUser(User user) {
+		
+	}
+	
+
+}

@@ -1,0 +1,15 @@
+package com.codlex.jsms.networking;
+
+/**
+ * NIC predstavlja izlaznu tacku na mrezu i podrzava vrlo genericnu funkciju 
+ * slanja poruke od strane korisnika koji je potpisan tokenom, do korisnika 
+ * po korisnickom imenu. Osim toga ovaj interfejs omogucava logovanje korisnika
+ * koji ne poseduje token.
+ * 
+ * @author deximat
+ *
+ */
+public interface NIC {
+	public Message sendMessage(Message message);
+	public Message logIn(AuthMessage authInfo);
+}

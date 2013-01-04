@@ -1,0 +1,8 @@
+package com.codlex.jsms.networking.messages;
+
+import com.codlex.jsms.networking.Message;
+
+public class AuthMessageUserExists implements Message {
+	public AuthMessageUserExists() {
+	}
+}

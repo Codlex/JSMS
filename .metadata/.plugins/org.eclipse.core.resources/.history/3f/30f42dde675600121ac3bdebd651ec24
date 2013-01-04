@@ -1,0 +1,7 @@
+package com.codlex.jsms.networking;
+
+public interface User extends Message {
+	public String getUsername();
+	public String getPassword();
+	public String getEmail();
+}

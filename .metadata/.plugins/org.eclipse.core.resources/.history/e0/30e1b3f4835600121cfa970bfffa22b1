@@ -1,0 +1,9 @@
+package com.codlex.jsms.server.users;
+
+private class UserService {
+	
+	public UserService() {
+		
+	}
+
+}

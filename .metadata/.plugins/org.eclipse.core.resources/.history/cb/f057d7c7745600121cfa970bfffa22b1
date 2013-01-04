@@ -1,0 +1,25 @@
+package com.codlex.JSMS.dclient;
+
+import java.io.Serializable;
+
+import com.codlex.jsms.networking.MSGCodes;
+import com.codlex.jsms.networking.Message;
+
+public class StringMessage implements Message, Serializable {
+	String s;
+	public StringMessage(String ss) {
+		this.s = ss;
+	}
+	@Override
+	public MSGCodes getMsgCode() {
+		// TODO Auto-generated method stub
+		return MSGCodes.SUCCESS;
+	}
+
+	@Override
+	public Object getMsgObject() {
+		// TODO Auto-generated method stub
+		return s;
+	}
+
+}

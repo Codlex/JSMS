@@ -1,0 +1,9 @@
+package com.codlex.jsms.csrv;
+
+public class AuthServer {
+	public static final int port = 1337;
+	
+	public static void main(String[] args) {
+		
+	}
+}
