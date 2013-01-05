@@ -6,7 +6,7 @@ import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.Message;
 import com.codlex.jsms.networking.User;
 import com.codlex.jsms.networking.users.BaseUser;
-import com.example.androidclient.R;
+import com.codlex.*;
 
 import android.app.Activity;
 import android.content.Intent;

@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.example.androidclient;
+package com.codlex;
 
 public final class R {
     public static final class array {
