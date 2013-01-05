@@ -1,0 +1,25 @@
+package com.codlex.jsms.networking.messages;
+
+import com.codlex.jsms.networking.MSGCode;
+import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.networking.User;
+
+public class RegisterMessage implements Message{
+    private static final long serialVersionUID = 1L;
+
+	User user;
+	MSGCode code;
+	public RegisterMessage(User newUser) {
+		this.user = newUser;
+		this.code = MSGCode.REGISTER;
+	}
+	@Override
+	public MSGCode getMsgCode() {
+		return code;
+	}
+	@Override
+	public Object getMsgObject() {
+		return user;
+	}
+
+}
