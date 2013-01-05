@@ -1,0 +1,5 @@
+package com.codlex.androidclient.testing;
+
+public class TestLoginAndRegister {
+
+}

@@ -1,0 +1,28 @@
+package com.codlex.androidclient;
+
+import com.example.androidclient.R;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+
+public class RegisterActivty extends Activity{
+
+	
+	EditText username,password,email;
+	Button registerb,backb;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.register_layout);
+		
+		username = (EditText) findViewById(R.id.username2);
+		password = (EditText) findViewById(R.id.password2);
+		
+		
+	}
+	
+}

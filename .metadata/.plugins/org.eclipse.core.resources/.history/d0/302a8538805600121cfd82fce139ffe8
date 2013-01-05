@@ -1,0 +1,5 @@
+package com.codlex.androidclient;
+
+public class RegisterActivty extends Activtiy{
+
+}

@@ -27,10 +27,11 @@ import static com.codlex.jsms.networking.MSGCode.*;
  * @author Dejan Pekter <deximat@gmail.com>
  *
  */
-public class AuthServer {
+public class AuthServer implements Server{
 	private static final int port = 1337;
 	
-	public static void main(String[] args) {
+	@Override
+	public void run() {
 		
 		//tesing purposes
 		User user = new BaseUser("deximat", "metallica");

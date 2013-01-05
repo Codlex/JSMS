@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/testing"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="" />
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="97dp"
+        android:layout_height="wrap_content" >
+    </ListView>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/testing"
+        android:layout_marginRight="33dp"
+        android:layout_marginTop="17dp"
+        android:contentDescription=""
+        android:src="@android:drawable/btn_default_small" />
+		
+</RelativeLayout>
