@@ -4,6 +4,8 @@ import com.codlex.jsms.networking.User;
 
 public class BaseUser implements User {
 
+	private static final long serialVersionUID = 1L;
+
 	private String username;
 	private String email;
 	private String token;
