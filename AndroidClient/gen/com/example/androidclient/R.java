@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.codlex;
+package com.example.androidclient;
 
 public final class R {
     public static final class array {
@@ -20,11 +20,13 @@ public final class R {
         public static final int RelativeLayout1=0x7f080007;
         public static final int backb=0x7f08000d;
         public static final int email=0x7f08000b;
-        public static final int image=0x7f080011;
+        public static final int hello=0x7f080013;
+        public static final int image=0x7f080012;
         public static final int listView1=0x7f080010;
         public static final int log=0x7f08000e;
         public static final int loginb=0x7f080004;
-        public static final int menu_settings=0x7f080012;
+        public static final int logoutb=0x7f080011;
+        public static final int menu_settings=0x7f080014;
         public static final int password=0x7f080003;
         public static final int password2=0x7f080009;
         public static final int registerb=0x7f080005;
@@ -54,6 +56,7 @@ public final class R {
         public static final int error_message=0x7f04000c;
         public static final int friend_image=0x7f04000b;
         public static final int hello_world=0x7f040001;
+        public static final int log_out=0x7f04000d;
         public static final int login=0x7f040006;
         public static final int menu_settings=0x7f040002;
         public static final int password=0x7f040004;

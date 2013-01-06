@@ -1,14 +1,16 @@
 package com.codlex.androidclient;
 
-import com.codlex.*;
 
+import com.example.androidclient.R;
 import java.util.ArrayList;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,6 +22,7 @@ public class UserActivity extends Activity{
 	String token;
 	TextView tview;
 	ImageView image;
+	Button logoutb;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,18 @@ public class UserActivity extends Activity{
 		// testiranje prosledjenog tokena
 		tview = (TextView) findViewById(R.id.testing);
 		tview.setText(token);
+		
+		
+		logoutb = (Button) findViewById(R.id.logoutb);
+		
+		logoutb.setOnClickListener(new OnClickListener() {	
+			@Override
+			public void onClick(View v) {
+				finish();
+				// TODO Auto-generated method stub
+			}
+		});
+		
 		
 		image = (ImageView) findViewById(R.id.image);
 		listview = (ListView) findViewById(R.id.listView1);

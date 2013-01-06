@@ -15,5 +15,6 @@
 	<string-array name="friends_list"></string-array>
 	<string name="friend_image">Image of a friend</string>
 	<string name="error_message">Ooops , something went wrong!</string>
+	<string name="log_out">Logout</string>
 	
 </resources>

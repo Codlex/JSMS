@@ -1,13 +1,11 @@
 package com.codlex.androidclient;
 
-import static com.codlex.jsms.networking.NICS.CentralizedServerNIC.getNICService;
 
+import java.util.concurrent.ExecutionException;
+import com.codlex.androidclient.networking.LoginTask;
 import com.codlex.jsms.networking.MSGCode;
-import com.codlex.jsms.networking.User;
-import com.codlex.jsms.networking.users.BaseUser;
-
-import com.codlex.*;
-
+import com.codlex.jsms.networking.Message;
+import com.example.androidclient.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -51,8 +49,27 @@ public class MainActivity extends Activity {
 				
 				usernameS = username.getText().toString();
 				passwordS = password.getText().toString();
-				User tmpUser = new BaseUser(usernameS,passwordS);
-				/*Message response = getNICService().logIn(tmpUser);
+				
+				// napravimo task i response
+				LoginTask loginTask = new LoginTask();
+				Message response = null;
+				
+				while(true){
+					loginTask.execute(usernameS,passwordS);
+				
+				// pokupimo odgovor
+					try {
+						response = loginTask.get();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				 if(response != null) break;
+				}
+			
 				if(response.getMsgCode().equals(MSGCode.SUCCESS)){
 					String token = (String) response.getMsgObject();
 					Intent newActivity = new Intent("android.intent.action.USER");
@@ -62,7 +79,8 @@ public class MainActivity extends Activity {
 				else{
 					wrong_username_password.setText("Wrong username or password.");
 				}
-				// TODO Auto-generated method stub*/
+				
+				// TODO Auto-generated method stub
 			}
 		});
         

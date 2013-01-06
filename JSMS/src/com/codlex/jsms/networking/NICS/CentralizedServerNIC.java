@@ -16,7 +16,7 @@ public class CentralizedServerNIC implements NIC {
 	private static final String server = "localhost";
 	private static final int port = 3663;
 	
-	private static final String authServer = "localhost";
+	private static final String authServer = "178.148.231.123";
 	private static final int authPort = 1337;
 	
 	private static NIC instance;
