@@ -17,37 +17,44 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int RelativeLayout1=0x7f080007;
-        public static final int backb=0x7f08000d;
-        public static final int button1=0x7f080012;
-        public static final int email=0x7f08000b;
-        public static final int hello=0x7f08000f;
-        public static final int listView1=0x7f080010;
-        public static final int log=0x7f08000e;
+        public static final int RelativeLayout1=0x7f08000c;
+        public static final int add=0x7f080008;
+        public static final int addfriendb=0x7f080017;
+        public static final int backb=0x7f080012;
+        public static final int backb2=0x7f080007;
+        public static final int email=0x7f080010;
+        public static final int findUsername=0x7f08000a;
+        public static final int hello=0x7f080014;
+        public static final int listView1=0x7f080015;
+        public static final int log=0x7f080013;
         public static final int loginb=0x7f080004;
-        public static final int logoutb=0x7f080011;
-        public static final int menu_settings=0x7f080013;
+        public static final int logoutb=0x7f080016;
+        public static final int menu_settings=0x7f080018;
         public static final int password=0x7f080003;
-        public static final int password2=0x7f080009;
+        public static final int password2=0x7f08000e;
         public static final int registerb=0x7f080005;
-        public static final int registerb2=0x7f08000c;
+        public static final int registerb2=0x7f080011;
         public static final int text1=0x7f080000;
         public static final int text2=0x7f080002;
-        public static final int text3=0x7f08000a;
+        public static final int text3=0x7f08000f;
+        public static final int textView1=0x7f08000b;
         public static final int username=0x7f080001;
-        public static final int username2=0x7f080008;
+        public static final int username2=0x7f08000d;
         public static final int wa=0x7f080006;
+        public static final int wa2=0x7f080009;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int item=0x7f030001;
-        public static final int register_layout=0x7f030002;
-        public static final int user_layout=0x7f030003;
+        public static final int add_friend_dialog_layout=0x7f030001;
+        public static final int item=0x7f030002;
+        public static final int register_layout=0x7f030003;
+        public static final int user_layout=0x7f030004;
     }
     public static final class menu {
         public static final int activity_main=0x7f070000;
     }
     public static final class string {
+        public static final int add=0x7f04000f;
         public static final int add_friend=0x7f04000e;
         public static final int app_name=0x7f040000;
         public static final int back=0x7f040009;
