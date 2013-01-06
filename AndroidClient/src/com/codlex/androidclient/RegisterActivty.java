@@ -1,14 +1,11 @@
 package com.codlex.androidclient;
 
-import static com.codlex.jsms.networking.NICS.CentralizedServerNIC.getNICService;
 
 import java.util.concurrent.ExecutionException;
 
 import com.codlex.androidclient.networking.CreateAccountTask;
 import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.Message;
-import com.codlex.jsms.networking.User;
-import com.codlex.jsms.networking.users.BaseUser;
 import com.example.androidclient.R;
 import android.app.Activity;
 import android.content.Intent;
@@ -78,6 +75,7 @@ public class RegisterActivty extends Activity{
 					if(response != null)
 						break;
 				}
+			
 				
 				if(response.getMsgCode().equals(MSGCode.SUCCESS)){
 					String token = (String) response.getMsgObject();

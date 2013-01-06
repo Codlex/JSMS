@@ -5,15 +5,20 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/testing"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/hello"
+        android:layout_width="fill_parent"
+        android:layout_height="25dp"
         android:text="" />
 
     <ListView
         android:id="@+id/listView1"
-        android:layout_width="97dp"
-        android:layout_height="wrap_content" >
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/logoutb"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/hello" >
+
     </ListView>
 
     <Button
@@ -21,27 +26,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/image"
-        android:layout_marginBottom="21dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="14dp"
         android:text="@string/log_out" />
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/testing"
-        android:layout_marginRight="28dp"
-        android:layout_marginTop="71dp"
-        android:contentDescription="@string/friend_image"
-        android:src="@android:drawable/btn_default_small" />
-
-    <TextView
-        android:id="@+id/hello"
+    <Button
+        android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/image"
-        android:layout_below="@+id/testing"
-        android:text="" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="30dp"
+        android:text="@string/add_friend" />
 		
 </RelativeLayout>

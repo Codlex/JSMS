@@ -16,5 +16,5 @@
 	<string name="friend_image">Image of a friend</string>
 	<string name="error_message">Ooops , something went wrong!</string>
 	<string name="log_out">Logout</string>
-	<string name="l">Testing</string>
+	<string name="add_friend">Add friend</string>
 </resources>

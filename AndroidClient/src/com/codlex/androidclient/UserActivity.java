@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,10 +18,9 @@ public class UserActivity extends Activity{
 
 	ListView listview;
 	ArrayList<View> listOfFriends;
-	String token;
-	TextView tview;
-	ImageView image;
-	Button logoutb;
+	String token,username;
+	TextView helloview;
+	Button logoutb,addfriendb;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +36,13 @@ public class UserActivity extends Activity{
 		// prosledjen token
 		Bundle extras = getIntent().getExtras();
 		token = extras.getString("token");
+		// prosledjen username
+		username = extras.getString("username");
 		
-		// testiranje prosledjenog tokena
-		tview = (TextView) findViewById(R.id.testing);
-		tview.setText(token);
+		helloview = (TextView) findViewById(R.id.hello);
+		
+		helloview.setText("Hello " + username + "!");
+		
 		
 		
 		logoutb = (Button) findViewById(R.id.logoutb);
@@ -54,8 +55,6 @@ public class UserActivity extends Activity{
 			}
 		});
 		
-		
-		image = (ImageView) findViewById(R.id.image);
 		listview = (ListView) findViewById(R.id.listView1);
 		listview.setAdapter(new ArrayAdapter<String>(this, R.layout.item,friends));
 		listview.setOnItemClickListener(new OnItemClickListener() {

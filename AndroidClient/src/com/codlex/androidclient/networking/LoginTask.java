@@ -1,8 +1,6 @@
 package com.codlex.androidclient.networking;
 
 import static com.codlex.jsms.networking.NICS.CentralizedServerNIC.getNICService;
-
-
 import com.codlex.jsms.networking.Message;
 import com.codlex.jsms.networking.User;
 import com.codlex.jsms.networking.users.BaseUser;

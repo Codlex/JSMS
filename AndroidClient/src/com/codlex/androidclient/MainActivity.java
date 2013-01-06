@@ -74,6 +74,7 @@ public class MainActivity extends Activity {
 					String token = (String) response.getMsgObject();
 					Intent newActivity = new Intent("android.intent.action.USER");
 					newActivity.putExtra("token", token);
+					newActivity.putExtra("username", usernameS);
 					startActivity(newActivity);
 				}
 				else{
