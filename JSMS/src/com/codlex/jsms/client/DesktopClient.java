@@ -23,7 +23,7 @@ public class DesktopClient {
 		System.out.println("Showing login screen");
 		LoginScreen login = new LoginScreen();
 		login.setVisible(true);
-		while(!login.isLoggedIn()) {
+		while(!getNICService().isLoggedIn()) {
 			//smaram se
 		}
 		//MainScreen mainScreen = new MainScreen();
