@@ -3,11 +3,14 @@ package com.codlex.jsms.server;
 import static com.codlex.jsms.server.users.UserService.getUserService;
 import static com.codlex.jsms.server.users.ImageService.getImageService;
 
+import java.awt.Image;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import javax.imageio.ImageIO;
 
 import com.codlex.jsms.networking.Message;
 import com.codlex.jsms.networking.User;
@@ -33,10 +36,12 @@ private static final int port = 6767;
 				System.out.println("Reading message");
 				Message message = (Message) input.readObject();
 				System.out.println("Message recived");
-				Message response = processMessage(message);
+				Image image = ImageIO.read(socket.getInputStream());
+				String token = (String) message.getMsgObject();
+				getImageService().setImage(token, image);
 				System.out.println("Message processed, sending response");
 				ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
-				output.writeObject(response);				
+				output.writeObject(new GenericSuccessMessage());				
 				System.out.println("Response sent");
 			}
 		} catch (IOException e) {
@@ -48,10 +53,5 @@ private static final int port = 6767;
 		}
 	}
 	
-	private static Message processMessage(Message message) {
-		IdentifiedImage idImage = (IdentifiedImage) message.getMsgObject();
-		getImageService().setImage(idImage.getToken(), idImage.getImage());
-		return new GenericSuccessMessage();
-	}
 
 }

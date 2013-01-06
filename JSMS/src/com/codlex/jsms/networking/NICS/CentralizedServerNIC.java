@@ -13,7 +13,7 @@ import com.codlex.jsms.networking.messages.RegisterMessage;
 import com.codlex.jsms.networking.users.BaseUser;
 
 public class CentralizedServerNIC implements NIC {
-	private static final String server = "localhost";
+	private static final String server = "jsms.codlex.com";
 	private static final int port = 3663;
 	
 	private static final String authServer = "jsms.codlex.com";

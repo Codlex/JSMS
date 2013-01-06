@@ -3,11 +3,16 @@ package com.codlex.jsms.server;
 import static com.codlex.jsms.server.users.ImageService.getImageService;
 import static com.codlex.jsms.server.users.UserService.getUserService;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import javax.imageio.ImageIO;
 
 import com.codlex.jsms.networking.Message;
 import com.codlex.jsms.networking.User;
@@ -32,12 +37,26 @@ private static final int port = 6768;
 				System.out.println("Reading message");
 				Message message = (Message) input.readObject();
 				System.out.println("Message recived");
-				Message response = processMessage(message);
-				System.out.println("Message processed, sending response");
 				ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
-				output.writeObject(response);				
-				System.out.println("Response sent");
-			}
+				IdentifiedRequest request = (IdentifiedRequest) message.getMsgObject();
+				// user is logged in
+				if( getUserService().getUserByToken(request.getTokenSignature()) != null ) {
+					User user = getUserService().getUserByName(request.getRequestedUsername());
+					if ( user == null ) {
+						output.writeObject( new UserDoesntExistMessage() );
+					}
+
+					output.writeObject(new GenericSuccessMessage());
+					Image image = getImageService().getImage(user.getToken());
+					RenderedImage rImage = (BufferedImage) image;
+					ImageIO.write(rImage, "PNG", socket.getOutputStream());
+					socket.close();
+					
+				}
+				else {
+					output.writeObject( new AuthMessageFailed());
+				}
+				System.out.println("Response sent");			}
 		} catch (IOException e) {
 			e.printStackTrace();
 
@@ -47,18 +66,4 @@ private static final int port = 6768;
 		}
 	}
 	
-	private static Message processMessage(Message message) {
-		IdentifiedRequest request = (IdentifiedRequest) message.getMsgObject();
-		// user is logged in
-		if( getUserService().getUserByToken(request.getTokenSignature()) != null ) {
-			User user = getUserService().getUserByName(request.getRequestedUsername());
-			if ( user == null ) {
-				return new UserDoesntExistMessage();
-			}
-			return new ImageMessage(null, getImageService().getImage(user.getToken()));
-		}
-		else {
-			return new AuthMessageFailed();
-		}
-	}
 }
