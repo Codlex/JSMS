@@ -27,6 +27,14 @@ public class MainServer {
 		getImageServerThread.start();
 		System.out.println("GetImageServer thread has been started");
 		System.out.println("***************************************");
+		
+		System.out.println("***************************************");
+		System.out.println("Initializing friendsServer");
+		Server friendsServer = new FriendsServer();
+		Thread friendsServerThread = new Thread(friendsServer);
+		friendsServerThread.start();
+		System.out.println("FriendsServer thread has been started");
+		System.out.println("***************************************");
 
 		
 		System.out.println("Server system fully initialized!");

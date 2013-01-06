@@ -20,5 +20,11 @@ public interface NIC {
 	 * 
 	 */
 	public Message logIn(User authInfo);
+	public void logOut();
 	public Message createAccount(User user);
+	public Message addFriend(String username);
+	public Message getFriends();
+	public boolean isLoggedIn();
+	public User getLoggedUser();
+
 }
