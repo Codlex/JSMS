@@ -56,6 +56,7 @@ public final class R {
         public static final int error_message=0x7f04000c;
         public static final int friend_image=0x7f04000b;
         public static final int hello_world=0x7f040001;
+        public static final int l=0x7f04000e;
         public static final int log_out=0x7f04000d;
         public static final int login=0x7f040006;
         public static final int menu_settings=0x7f040002;
