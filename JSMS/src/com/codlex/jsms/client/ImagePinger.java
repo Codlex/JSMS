@@ -36,7 +36,7 @@ public class ImagePinger implements Runnable {
         	try {
 				ImageIO.write(screen, "PNG", out);
 	        	out.close();
-	        	Thread.sleep(1000);
+	        	Thread.sleep(200);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

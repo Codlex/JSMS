@@ -25,6 +25,7 @@ import com.codlex.jsms.networking.messages.objects.IdentifiedRequest;
 import com.codlex.jsms.networking.users.BaseUser;
 
 public class CentralizedServerNIC implements NIC {
+
 	private static final String server = "178.148.231.123";
 	private static final int port = 3663;
 	
@@ -38,6 +39,7 @@ public class CentralizedServerNIC implements NIC {
 	private static final int getImagePort = 6768;
 	
 	private static final String pingImageServer = "178.148.231.123";
+
     private static final int pingImagePort = 6767;
 	
 	
