@@ -23,14 +23,22 @@ import com.codlex.jsms.networking.messages.UserDoesntExistMessage;
 import com.codlex.jsms.networking.messages.objects.IdentifiedImage;
 import com.codlex.jsms.networking.messages.objects.IdentifiedRequest;
 
-public class GetImageServer implements Server{
-private static final int port = 6768;
+public class GetImageServer implements Server {
+	private static final int port = 6768;
+
 	@Override
 	public void run() {
-		try {
-			ServerSocket server = new ServerSocket(port);
+		
+			ServerSocket server = null;
+			try {
+				server = new ServerSocket(port);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			System.out.println("Server started on port " + port);
 			while(true) {
+				try {
 				Socket socket = server.accept();
 				System.out.println("Connection accepted");
 				ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
@@ -56,7 +64,7 @@ private static final int port = 6768;
 				else {
 					output.writeObject( new AuthMessageFailed());
 				}
-				System.out.println("Response sent");			}
+				System.out.println("Response sent");			
 		} catch (IOException e) {
 			e.printStackTrace();
 
@@ -64,6 +72,7 @@ private static final int port = 6768;
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+				
+	    }
 	}
-	
 }

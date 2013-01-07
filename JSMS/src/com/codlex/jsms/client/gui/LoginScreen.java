@@ -167,6 +167,7 @@ public class LoginScreen extends JFrame {
 						JOptionPane.showInputDialog("Correct, welcome!");
 						logged = true;
 						LoginScreen.this.setVisible(false);
+						new MainWindow("Codlex oko").setVisible(true);
 					}
 					else {
 						System.out.println("Wrong username and password!");
@@ -192,6 +193,14 @@ public class LoginScreen extends JFrame {
 			button.setBackground(new Color(00,0x93,0xd6));
 			button.setPreferredSize(new Dimension(348, 79));
 			button.setFocusPainted(false);
+			button.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					LoginScreen.this.setVisible(false);
+					new CreateAccountScreen().setVisible(true);
+				}
+			});
 			add(button);
 		}
 	}

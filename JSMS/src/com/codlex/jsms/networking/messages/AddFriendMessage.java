@@ -22,5 +22,5 @@ public class AddFriendMessage implements Message{
 	public Object getMsgObject() {
 		return meAndFriend;
 	}
-
+	
 }

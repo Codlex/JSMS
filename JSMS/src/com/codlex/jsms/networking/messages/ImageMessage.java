@@ -7,12 +7,12 @@ import com.codlex.jsms.networking.Message;
 import com.codlex.jsms.networking.messages.objects.IdentifiedImage;
 
 public class ImageMessage implements Message {
-	IdentifiedImage img;
+	String token;
 	MSGCode code;
 	
-	public ImageMessage(String token, Image image) {
+	public ImageMessage(String token) {
 		this.code = MSGCode.IMAGE_PING;
-		this.img = new IdentifiedImage(token, image);		
+		this.token = token;
 	}
 	@Override
 	public MSGCode getMsgCode() {
@@ -21,7 +21,7 @@ public class ImageMessage implements Message {
 
 	@Override
 	public Object getMsgObject() {
-		return img;
+		return token;
 	}
 
 }

@@ -26,5 +26,7 @@ public interface NIC {
 	public Message getFriends();
 	public boolean isLoggedIn();
 	public User getLoggedUser();
+	public Message getScreen(String username);
+	public Message pingScreen();
 
 }

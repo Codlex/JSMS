@@ -26,10 +26,17 @@ public class PingImageServer implements Server{
 private static final int port = 6767;
 	
 	public void run() {
-		try {
-			ServerSocket server = new ServerSocket(port);
+		
+			ServerSocket server = null;
+			try {
+				server = new ServerSocket(port);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			System.out.println("Server started on port " + port);
 			while(true) {
+				try {
 				Socket socket = server.accept();
 				System.out.println("Connection accepted");
 				ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
@@ -43,14 +50,16 @@ private static final int port = 6767;
 				ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 				output.writeObject(new GenericSuccessMessage());				
 				System.out.println("Response sent");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+				
+				} catch (IOException e) {
+					e.printStackTrace();
 
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
 	}
 	
 
