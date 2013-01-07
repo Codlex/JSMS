@@ -197,6 +197,7 @@ public class UserActivity extends Activity{
 				String username = findUsername.getText().toString();
 				if(androidFriendListModel.addFriend(username) == true){
 					friends.add(username);
+				// friends = androidFriendListModel.getUsernamesOfFriends()
 					listview.invalidateViews();
 					Toast friendAdded = Toast.makeText(getApplicationContext(), "Friend succesfully added!", Toast.LENGTH_SHORT);
 					friendAdded.show();
