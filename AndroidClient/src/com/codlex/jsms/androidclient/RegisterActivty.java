@@ -82,6 +82,7 @@ public class RegisterActivty extends Activity{
 					Intent newActivity = new Intent("android.intent.action.USER");
 					newActivity.putExtra("token", token);
 					newActivity.putExtra("username",usernameS);
+					finish();
 					startActivity(newActivity);
 				}
 				else{

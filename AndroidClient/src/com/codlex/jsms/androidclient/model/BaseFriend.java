@@ -2,15 +2,19 @@ package com.codlex.jsms.androidclient.model;
 
 import java.awt.Image;
 
+import android.graphics.Bitmap;
+
 import com.codlex.jsms.client.model.Friend;
 
 public class BaseFriend implements Friend {
 	String username;
 	boolean isOnline;
+	Bitmap image;
 	
 	public BaseFriend(String username) {
 		this.username = username;
 		isOnline = false;
+		image = null;
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -27,6 +31,15 @@ public class BaseFriend implements Friend {
 	}
 
 	// ovo je drugacije
+	public Bitmap getScreenBitmap() {
+		// TODO Auto-generated method stub
+		return image;
+	}
+	
+	public void setBitmap(Bitmap image){
+		this.image = image;
+	}
+
 	@Override
 	public Image getScreen() {
 		// TODO Auto-generated method stub

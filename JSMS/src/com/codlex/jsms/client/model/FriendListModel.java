@@ -18,6 +18,6 @@ import java.util.Collection;
 public interface FriendListModel {
 	public Collection<Friend> getFriends();
 	public Friend getFriend(String userName);
-	public void addFriend(String username);
+	public boolean addFriend(String username);
 	// Konstruktor koji uzima korisnicko ime onoga ko koristi model
 }

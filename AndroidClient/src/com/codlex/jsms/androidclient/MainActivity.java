@@ -76,6 +76,7 @@ public class MainActivity extends Activity {
 					Intent newActivity = new Intent("android.intent.action.USER");
 					newActivity.putExtra("token", token);
 					newActivity.putExtra("username", usernameS);
+					makeFieldsBlank();
 					startActivity(newActivity);
 				}
 				else{
@@ -90,7 +91,7 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				
+				makeFieldsBlank();
 				startActivity(new Intent("android.intent.action.REGISTER"));
 				// TODO Auto-generated method stub
 				
@@ -103,6 +104,11 @@ public class MainActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
+    }
+    
+    void makeFieldsBlank(){
+    	username.setText("");
+    	password.setText("");
     }
     
 }

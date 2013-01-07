@@ -3,6 +3,10 @@ package com.codlex.jsms.androidclient.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.ExecutionException;
+
+import com.codlex.jsms.androidclient.networking.GetFriendsTask;
+import com.codlex.jsms.androidclient.networking.AddFriendTask;
 import com.codlex.jsms.client.model.Friend;
 import com.codlex.jsms.client.model.FriendListModel;
 import com.codlex.jsms.networking.MSGCode;
@@ -10,60 +14,80 @@ import com.codlex.jsms.networking.Message;
 import com.codlex.jsms.networking.NICS.CentralizedServerNIC;
 
 public class AndroidFriendListModel implements FriendListModel{
-	Collection<String> usernames;
 	Collection<Friend> friends;
 	String userToken;
+	// static activeUser;
 	
 	public AndroidFriendListModel(String token) {
 		this.userToken = token;
-		this.usernames = new ArrayList<String>();
 		this.friends = new ArrayList<Friend>();
+		
+		// uzima prijatelje
+		GetFriendsTask getFriendsTask = new GetFriendsTask();
+		getFriendsTask.execute();
+		try {
+			this.friends = getFriendsTask.get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// TODO Auto-generated constructor stub
 	}
 	
-	@SuppressWarnings("unchecked")
+
 	@Override
 	public Collection<Friend> getFriends() {
 		// TODO Auto-generated method stub
-		Message response = CentralizedServerNIC.getNICService().getFriends();
-		
-		
-		if(response.getMsgCode() != MSGCode.USER_DOESNT_EXIST){
-		 usernames = (Collection<String>) response.getMsgObject();
-	
-		 for(String username: usernames){
-			 friends.add(new BaseFriend(username) );
-		 }
-		 
-		 return friends;
-		}//Friend[] friends = (Friend[]) response.getMsgObject();
-		else
-		 return null;
-		
+		return friends;
 	}
 	
 	public Collection<String> getUsernamesOfFriends(){
-		return usernames;
+		Collection<String> usernamesOfFriends = new ArrayList<String>();
+		for(Friend friend:friends){
+			usernamesOfFriends.add(friend.getUsername());
+		}
+		return usernamesOfFriends;
 	}
 	
 	@Override
 	public Friend getFriend(String userName) {
 		// TODO Auto-generated method stub
 		
-	//	Message response = CentralizedServerNIC.getNICService().getFriend();
-		
-		
+		for(Friend friend: friends){
+			if(userName.equals(friend.getUsername()))
+				return friend;
+		}
+	
 		return null;
 	}
 
 	@Override
-	public void addFriend(String username) {
+	public boolean addFriend(String username) {
 		
-		Message response = CentralizedServerNIC.getNICService().addFriend(username);
+		// task za dodavanje prijatelja
+		AddFriendTask addFriendTask = new AddFriendTask();
+		addFriendTask.execute(username);
+		
+		Message response = null;
+		
+		try {
+			response = addFriendTask.get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if(response.getMsgCode().equals(MSGCode.SUCCESS)){
 			friends.add((Friend) response.getMsgObject());
+			return true;
 		}
+		return false;
 		// TODO Auto-generated method stub
 		
 	}

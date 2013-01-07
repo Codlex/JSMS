@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class UserActivity extends Activity{
 	
@@ -38,7 +39,15 @@ public class UserActivity extends Activity{
 	TextView wrong_username;
 	Button backb2,addb;
 	EditText findUsername;
-	View dialoglayout;
+	
+	// layouti za dialog boxove
+	View dialogLayoutAddFriend;
+	View dialogLayoutScreenView;
+	
+	// friends lista
+	ArrayList<String> friends;
+
+	
 	
 	// viewScreenDialog components
 	Button backb3;
@@ -62,6 +71,8 @@ public class UserActivity extends Activity{
 		setContentView(R.layout.user_layout);
 		
 		
+		// pamcenje contexta
+		context = this;
 		
 		
 		
@@ -75,8 +86,8 @@ public class UserActivity extends Activity{
 		// inzijalizacija modela
 		androidFriendListModel = new AndroidFriendListModel(token);
 		// lista frendova
-		ArrayList<String> friends;
-		androidFriendListModel.getFriends();
+		
+		friends = new ArrayList<String>();
 		friends = (ArrayList<String>) androidFriendListModel.getUsernamesOfFriends();
 		
 		// prosledjen token
@@ -111,9 +122,9 @@ public class UserActivity extends Activity{
 				
 				// dialog za dodavanje prijatelja
 				
-				dialoglayout = inflater.inflate(R.layout.add_friend_dialog_layout, (ViewGroup) getCurrentFocus(),false);
+				dialogLayoutAddFriend = inflater.inflate(R.layout.add_friend_dialog_layout, (ViewGroup) getCurrentFocus(),false);
 
-				addFriendBuilder.setView(dialoglayout);
+				addFriendBuilder.setView(dialogLayoutAddFriend);
 				addFriendBuilder.setTitle("Add a friend, why not?!");
 				alertDialogAddFriend = addFriendBuilder.create();
 				alertDialogAddFriend.show();
@@ -130,6 +141,15 @@ public class UserActivity extends Activity{
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
+				String usernameSelected = ((TextView)arg1).getText().toString();
+				
+				dialogLayoutScreenView = inflater2.inflate(R.layout.screen_vew_layout, (ViewGroup) getCurrentFocus(), false);
+				screenViewBuilder.setView(dialogLayoutScreenView);
+				screenViewBuilder.setTitle("Friend screen");
+				alertDialogViewScreen = screenViewBuilder.create();
+				alertDialogViewScreen.show();
+				initilaizeAddFriendDialog();
+				
 				// TODO Auto-generated method stub
 				
 			}
@@ -174,12 +194,26 @@ public class UserActivity extends Activity{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				
-				// unet string
-			//	String targetUsername = findUsername.getText().toString();
-				// trazi nesto negde HO
+				String username = findUsername.getText().toString();
+				if(androidFriendListModel.addFriend(username) == true){
+					friends.add(username);
+					listview.invalidateViews();
+					Toast friendAdded = Toast.makeText(getApplicationContext(), "Friend succesfully added!", Toast.LENGTH_SHORT);
+					friendAdded.show();
+					
+				}
+				else{
+					Toast friendNotAdded = Toast.makeText(getApplicationContext(), "Wrong username", Toast.LENGTH_SHORT);
+				}
 				
+				// isprazni polje za findUsername
+				findUsername.setText("");
+								
 			}
 		});
 	
 	}
+	
+
+	
 }
