@@ -1,6 +1,7 @@
 package com.codlex.jsms.client.model;
 
 import java.awt.Image;
+import java.util.Collection;
 
 /**
  * 
@@ -15,7 +16,8 @@ import java.awt.Image;
  * 
  */
 public interface FriendListModel {
-	public Friend[] getFriends();
+	public Collection<Friend> getFriends();
 	public Friend getFriend(String userName);
+	public void addFriend(String username);
 	// Konstruktor koji uzima korisnicko ime onoga ko koristi model
 }
