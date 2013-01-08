@@ -43,16 +43,16 @@ public class AuthServer implements Server{
 			System.out.println("Server started on port " + port);
 			while(true) {
 				Socket socket = server.accept();
-				System.out.println("Connection accepted");
+				System.out.println("[AUTH::SERVER] Connection accepted");
 				ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
-				System.out.println("Reading message");
+				System.out.println("[AUTH::SERVER] Reading message");
 				Message message = (Message) input.readObject();
-				System.out.println("Message recived");
+				System.out.println("[AUTH::SERVER] Message recived");
 				Message response = processMessage(message);
-				System.out.println("Message processed, sending response");
+				System.out.println("[AUTH::SERVER] Message processed, sending response");
 				ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 				output.writeObject(response);				
-				System.out.println("Response sent");
+				System.out.println("[AUTH::SERVER] Response sent");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -68,7 +68,7 @@ public class AuthServer implements Server{
 		String token = null;
 		switch (m.getMsgCode()) {
 		case AUTH: 
-			System.out.println("Detected AUTH message");
+			System.out.println("[AUTH::SERVER] Detected AUTH message");
 			user = (User) m.getMsgObject();
 			token = getUserService().login(user);
 			if(token == null) {
@@ -76,7 +76,7 @@ public class AuthServer implements Server{
 			}
 			return new AuthMessageSuccess(token);
 		case REGISTER:
-			System.out.println("Detected REGISTER message");
+			System.out.println("[AUTH::SERVER] Detected REGISTER message");
 			user = (User) m.getMsgObject();
 			token = getUserService().createUser(user);
 			if(token == null) {

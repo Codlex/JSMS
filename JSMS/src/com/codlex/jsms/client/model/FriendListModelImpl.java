@@ -22,7 +22,6 @@ public class FriendListModelImpl extends JTabbedPane{
     private static JTabbedPane tabbedPane;
 	public FriendListModelImpl(){
             super();
-    		setBackground(new Color(00,0x93,0xd6));
             this.setTabPlacement(FriendListModelImpl.LEFT);
     }       
     public static JTabbedPane getPane() {

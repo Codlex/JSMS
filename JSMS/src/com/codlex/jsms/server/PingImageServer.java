@@ -34,34 +34,34 @@ private static final int port = 6767;
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			System.out.println("Server started on port " + port);
+			System.out.println("[PING_IMAGE::SERVER] Server started on port " + port);
 			while(true) {
-				System.out.println("While started!");
+				System.out.println("[PING_IMAGE::SERVER] While started!");
 				try {
 				Socket socket = server.accept();
-				System.out.println("Connection accepted");
+				System.out.println("[PING_IMAGE::SERVER] Connection accepted");
 				if(socket.isClosed()) {
 					continue;
 				}
 				ObjectInputStream input = new ObjectInputStream(socket.getInputStream());;
-				System.out.println("Reading message");
+				System.out.println("[PING_IMAGE::SERVER] Reading message");
 				Message message = (Message) input.readObject();
-				System.out.println("Message recived");
+				System.out.println("[PING_IMAGE::SERVER] Message recived - identified");
+				System.out.println("[PING_IMAGE::SERVER] Reading image...");
 				Image image = ImageIO.read(socket.getInputStream());
+				System.out.println("[PING_IMAGE::SERVER] Finished reading...");
 				String token = (String) message.getMsgObject();
-				getImageService().setImage(token, image);
-				System.out.println("Response sent");
-				
+				getImageService().setImage(token, image);				
 				} catch (IOException e) {
 					e.printStackTrace();
-					System.out.println("Exception caucthsdjc.");
+					System.out.println("[PING_IMAGE::SERVER] Exception caucthsdjc.");
 
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
-				System.out.println("While continued");
+				System.out.println("[PING_IMAGE::SERVER] While continued");
 			}
 			
 	}

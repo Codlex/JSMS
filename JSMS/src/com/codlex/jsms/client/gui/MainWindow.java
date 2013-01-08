@@ -8,6 +8,8 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.File;
@@ -28,17 +30,19 @@ import javax.swing.JTabbedPane;
 import com.codlex.jsms.client.ImagePinger;
 import com.codlex.jsms.client.model.FriendListModelImpl;
 import com.codlex.jsms.client.model.TabbedPaneFriend;
+import com.codlex.jsms.networking.MSGCode;
+import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.networking.NICS.CentralizedServerNIC;
 
 /**
- * Ova klasa je glavni korisnicki interfejs za profesora. Iz ove klase provesor
- * moze da posmatra studentske ekrane i da izbaci bilo kog studenta sa ispita.
+ * 
  * 
  * @author Dejan Pekter RN 13/11
  * 
  */
 
 public class MainWindow extends JFrame {
-
+	JTabbedPane ekrani;
 	public MainWindow(String naslov) {
 		ImagePinger imagePinger = new ImagePinger();
 		Thread imagePingerThread = new Thread(imagePinger);
@@ -93,7 +97,7 @@ public class MainWindow extends JFrame {
 
 		// JTabbedPane modifikovan potrebama programa koji ce da sadrzi sve
 		// studente
-		JTabbedPane ekrani = FriendListModelImpl.getPane();
+		ekrani = FriendListModelImpl.getPane();
 		/*
 		 * Student.setSadrzalacStudenata(ekrani);
 		 */
@@ -103,6 +107,24 @@ public class MainWindow extends JFrame {
 
 		// ubacujemo StudenteIEkrane na glavi panel
 		glavniPanel.add(ekrani, BorderLayout.CENTER);
+		
+		// dodavanje prijatelja dugme
+		JButton dodajPrijatelja = new JButton("Dodaj prijatelja");
+		dodajPrijatelja.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String username = JOptionPane.showInputDialog("Unesite username prijatelja kojeg zelite da dodate:");
+				Message response = CentralizedServerNIC.getNICService().addFriend(username);
+				if(response.getMsgCode().equals(MSGCode.SUCCESS)) {
+					ekrani.add(username, new TabbedPaneFriend(username, ekrani));
+				} 
+				else {
+					JOptionPane.showMessageDialog(MainWindow.this, "Username koji ste uneli nije moguce dodati!");
+				}
+			}
+		});
+		add(dodajPrijatelja, BorderLayout.SOUTH);
 		// stavljam na glavni prozor ovaj panel
 		this.add(glavniPanel);
 

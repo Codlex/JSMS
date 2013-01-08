@@ -36,19 +36,19 @@ public class FriendsServer implements Server{
 		
 		try {
 			ServerSocket server = new ServerSocket(port);
-			System.out.println("Server started on port " + port);
+			System.out.println("[FRIENDS::SERVER] Server started on port " + port);
 			while(true) {
 				Socket socket = server.accept();
-				System.out.println("Connection accepted");
+				System.out.println("[FRIENDS::SERVER] Connection accepted");
 				ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
-				System.out.println("Reading message");
+				System.out.println("[FRIENDS::SERVER] Reading message");
 				Message message = (Message) input.readObject();
-				System.out.println("Message recived");
+				System.out.println("[FRIENDS::SERVER] Message recived");
 				Message response = processMessage(message);
-				System.out.println("Message processed, sending response");
+				System.out.println("[FRIENDS::SERVER] Message processed, sending response");
 				ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 				output.writeObject(response);				
-				System.out.println("Response sent");
+				System.out.println("[FRIENDS::SERVER] Response sent");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -63,7 +63,7 @@ public class FriendsServer implements Server{
 		
 		switch (m.getMsgCode()) {
 		case GET_FRIENDS: 
-			System.out.println("Detected GET_FRIENDS message");
+			System.out.println("[FRIENDS::SERVER] Detected GET_FRIENDS message");
 			String token = (String) m.getMsgObject();
 			User user = getUserService().getUserByToken(token);
 			if(user == null) {
@@ -77,7 +77,7 @@ public class FriendsServer implements Server{
 			return new FriendsMessage(friends);
 			
 		case ADD_FRIEND:
-			System.out.println("Detected ADD_FRIEND message");
+			System.out.println("[FRIENDS::SERVER] Detected ADD_FRIEND message");
 			MeAndFriend meAndFriend = (MeAndFriend) m.getMsgObject();
 			User me = getUserService().getUserByToken(meAndFriend.getToken());
 			User him = getUserService().getUserByName(meAndFriend.getFriend());
@@ -85,6 +85,7 @@ public class FriendsServer implements Server{
 				return new UserDoesntExistMessage();
 			}
 			getFriendsService().addFriend(me.getUsername(), him.getUsername());
+			System.out.println("[FRIENDS::SERVER] " + me.getUsername() + " meet " + him.getUsername());
 			return new GenericSuccessMessage();
 		
 			

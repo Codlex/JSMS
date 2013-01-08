@@ -37,47 +37,51 @@ public class GetImageServer implements Server {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			System.out.println("Server started on port " + port);
+			System.out.println("[GET_IMAGE::SERVER] Server started on port " + port);
 			while(true) {
 				try {
 					Socket socket = server.accept();
-					System.out.println("Connection accepted");
+					System.out.println("[GET_IMAGE::SERVER] Connection accepted");
 					if(socket.isClosed()) {
 						continue;
 					}
 					ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
-					System.out.println("Reading message");
+					System.out.println("[GET_IMAGE::SERVER] Reading message");
 					Message message = (Message) input.readObject();
-					System.out.println("Message recived");
+					System.out.println("[GET_IMAGE::SERVER] Message recived");
 					ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 					IdentifiedRequest request = (IdentifiedRequest) message.getMsgObject();
 					// user is logged in
 					if( getUserService().getUserByToken(request.getTokenSignature()) != null ) {
 						User user = getUserService().getUserByName(request.getRequestedUsername());
 						if ( user == null ) {
+							System.out.println("[GET_IMAGE::SERVER] User " + request.getRequestedUsername() + " is not found!");
 							output.writeObject( new UserDoesntExistMessage() );
 						}
-	
 						output.writeObject(new GenericSuccessMessage());
+						System.out.println("[GET_IMAGE::SERVER] Success message written!");
+						System.out.println("[GET_IMAGE::SERVER] Sending image!");
 						Image image = getImageService().getImage(user.getToken());
 						RenderedImage rImage = (BufferedImage) image;
 		        		CompressionImageWriter.jpgLowWrite((BufferedImage) image, socket.getOutputStream());
+		        		System.out.println("[GET_IMAGE::SERVER] Image sent!");
 						socket.close();
 						
 					}
 					else {
 						output.writeObject( new AuthMessageFailed());
+						System.out.println("[GET_IMAGE::SERVER] Fail sent");			
+
 					}
-					System.out.println("Response sent");			
 				} catch (IOException e) {
 					e.printStackTrace();
-					System.out.println("Exception cacushdhsdfkj");
+					System.out.println("[GET_IMAGE::SERVER] Exception cacushdhsdfkj");
 		
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				System.out.println("While continued!");
+				System.out.println("[GET_IMAGE::SERVER] While continued!");
 				
 	    }
 	}
