@@ -211,7 +211,7 @@ public class CreateAccountScreen extends JFrame {
 						JOptionPane.showMessageDialog(CreateAccountScreen.this, "User created, you will be logged in!");
 						logged = true;
 						CreateAccountScreen.this.setVisible(false);
-						//instantiate main window
+						new MainWindow("Codlex oko").setVisible(true);
 					}
 					else {
 						System.out.println("Username already exists");

@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 
 import com.codlex.jsms.networking.Message;
 import com.codlex.jsms.networking.NICS.CentralizedServerNIC;
+import com.codlex.jsms.utils.CompressionImageWriter;
 
 public class ImagePinger implements Runnable {
 
@@ -34,9 +35,9 @@ public class ImagePinger implements Runnable {
         	Message m = CentralizedServerNIC.getNICService().pingScreen();
         	OutputStream out = (OutputStream) m.getMsgObject();
         	try {
-				ImageIO.write(screen, "PNG", out);
+        		CompressionImageWriter.jpgLowWrite(screen, out);
 	        	out.close();
-	        	Thread.sleep(200);
+	        	Thread.sleep(250);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

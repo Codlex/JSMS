@@ -85,7 +85,7 @@ public class AndroidFriendListModel implements FriendListModel{
 			e.printStackTrace();
 		}
 		if(response.getMsgCode().equals(MSGCode.SUCCESS)){
-			friends.add((Friend) response.getMsgObject());
+			friends.add(new BaseFriend(username));
 			return true;
 		}
 		return false;

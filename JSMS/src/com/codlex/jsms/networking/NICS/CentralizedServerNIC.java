@@ -26,19 +26,19 @@ import com.codlex.jsms.networking.users.BaseUser;
 
 public class CentralizedServerNIC implements NIC {
 
-	private static final String server = "178.148.231.123";
+	private static final String server = "jsms.codlex.com";
 	private static final int port = 3663;
 	
-	private static final String authServer = "178.148.231.123";
+	private static final String authServer = "jsms.codlex.com";
 	private static final int authPort = 1337;
 	
-	private static final String friendsServer = "178.148.231.123";
+	private static final String friendsServer = "jsms.codlex.com";
 	private static final int friendsPort = 1331;
 	
-	private static final String getImageServer = "178.148.231.123";
+	private static final String getImageServer = "jsms.codlex.com";
 	private static final int getImagePort = 6768;
 	
-	private static final String pingImageServer = "178.148.231.123";
+	private static final String pingImageServer = "jsms.codlex.com";
 
     private static final int pingImagePort = 6767;
 	

@@ -9,7 +9,7 @@ import com.codlex.jsms.networking.users.BaseUser;
 public class PingerTest {
 	public static void main(String[] args) {
 		CentralizedServerNIC.getNICService().logIn(new BaseUser("deximat", "metallica"));
-		CentralizedServerNIC.getNICService().addFriend("mirjana");
+		CentralizedServerNIC.getNICService().addFriend("deximat");
 		/*Thread d = new Thread(new ImagePinger());
 		d.start();*/
 	}

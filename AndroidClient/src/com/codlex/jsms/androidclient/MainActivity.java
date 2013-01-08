@@ -6,7 +6,6 @@ import java.util.concurrent.ExecutionException;
 import com.codlex.jsms.androidclient.networking.LoginTask;
 import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.Message;
-import com.example.androidclient.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;

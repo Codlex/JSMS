@@ -164,14 +164,13 @@ public class LoginScreen extends JFrame {
 					Message response = getNICService().logIn(new BaseUser(username, password));
 					if( response.getMsgCode() == MSGCode.SUCCESS ) {
 						System.out.println("User logged in!");
-						JOptionPane.showInputDialog("Correct, welcome!");
 						logged = true;
 						LoginScreen.this.setVisible(false);
 						new MainWindow("Codlex oko").setVisible(true);
 					}
 					else {
 						System.out.println("Wrong username and password!");
-						JOptionPane.showInputDialog("Sorry try again! \n" + response.getMsgCode() );
+						JOptionPane.showMessageDialog(LoginScreen.this, "Sorry try again! \n" + response.getMsgCode() );
 						logged = false;
 					}
 				}

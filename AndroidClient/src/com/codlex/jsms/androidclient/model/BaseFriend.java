@@ -32,7 +32,6 @@ public class BaseFriend implements Friend {
 
 	// ovo je drugacije
 	public Bitmap getScreenBitmap() {
-		// TODO Auto-generated method stub
 		return image;
 	}
 	

@@ -4,13 +4,13 @@ package com.codlex.jsms.androidclient;
 import com.codlex.jsms.androidclient.model.AndroidFriendListModel;
 import com.codlex.jsms.androidclient.model.BaseFriend;
 import com.codlex.jsms.androidclient.networking.GetImageTask;
-import com.example.androidclient.R;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -156,23 +156,40 @@ public class UserActivity extends Activity{
 				alertDialogViewScreen.show();
 				initilaizeViewScreenDialog();
 				
-				final GetImageTask getImageTask = new GetImageTask();
+				
 				Thread imageRefresh = new Thread(){
 					
 					@Override
 					public void run() {
+						userImage = (ImageView)alertDialogViewScreen.findViewById(R.id.friendimage); 
+
 						
+						Thread invalidate = new Thread() {
+							public void run() {
+								  userImage.setImageBitmap(androidFriendListModel.getActiveFriend().getScreenBitmap());
+							      userImage.invalidate();
+								}
+							};
 						while(alertDialogViewScreen.isShowing() == true){
-						 getImageTask.execute(androidFriendListModel.getActiveFriend());
-						 try {
-							(androidFriendListModel.getActiveFriend()).setBitmap(getImageTask.get());
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (ExecutionException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+							GetImageTask getImageTask = new GetImageTask();
+							getImageTask.execute(androidFriendListModel.getActiveFriend());
+							 try {
+								 Bitmap oldBitmap = androidFriendListModel.getActiveFriend().getScreenBitmap();
+								 
+								(androidFriendListModel.getActiveFriend()).setBitmap(getImageTask.get());
+								if( oldBitmap != null) {
+									 oldBitmap.recycle();
+								 }
+								runOnUiThread( invalidate );
+								Thread.sleep(500);
+								
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (ExecutionException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
 					}
 					
@@ -188,8 +205,7 @@ public class UserActivity extends Activity{
 	
 	void initilaizeViewScreenDialog(){
 		backb3 = (Button) alertDialogViewScreen.findViewById(R.id.backb3);
-		userImage = (ImageView)alertDialogViewScreen.findViewById(R.id.friendimage); 
-	
+		
 		backb3.setOnClickListener(new OnClickListener() {
 			
 			@Override

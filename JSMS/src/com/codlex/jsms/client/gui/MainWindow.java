@@ -48,7 +48,6 @@ public class MainWindow extends JFrame {
 		Thread osvezivacThread = new Thread(osvezivac);
 		osvezivacThread.start();
 		
-		setBackground(new Color(00, 0x93, 0xd6));
 
 		// Uzimam dimenzije ekrana
 		Toolkit okruzenje = Toolkit.getDefaultToolkit();
@@ -101,7 +100,6 @@ public class MainWindow extends JFrame {
 		// podrazumevani tab dok se studenti ne konektuju
 
 		ekrani.setForeground(Color.BLACK);
-		ekrani.setBackground(new Color(00, 0x93, 0xd6));
 
 		// ubacujemo StudenteIEkrane na glavi panel
 		glavniPanel.add(ekrani, BorderLayout.CENTER);
@@ -117,7 +115,6 @@ public class MainWindow extends JFrame {
 
 	private class PanelSaBorderLejoutom extends JPanel {
 		public PanelSaBorderLejoutom() {
-			setBackground(new Color(00, 0x93, 0xd6));
 			this.setLayout(new BorderLayout());
 		}
 	}
@@ -127,7 +124,6 @@ public class MainWindow extends JFrame {
 
 		public PanelZaSliku(Image slika) {
 			super();
-			setBackground(new Color(00, 0x93, 0xd6));
 			this.slika = slika;
 			// podesavanje velicine panela na velicinu slike
 			this.setPreferredSize(new Dimension(slika.getWidth(this), slika

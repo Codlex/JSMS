@@ -36,30 +36,34 @@ private static final int port = 6767;
 			}
 			System.out.println("Server started on port " + port);
 			while(true) {
+				System.out.println("While started!");
 				try {
 				Socket socket = server.accept();
 				System.out.println("Connection accepted");
-				ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
+				if(socket.isClosed()) {
+					continue;
+				}
+				ObjectInputStream input = new ObjectInputStream(socket.getInputStream());;
 				System.out.println("Reading message");
 				Message message = (Message) input.readObject();
 				System.out.println("Message recived");
 				Image image = ImageIO.read(socket.getInputStream());
 				String token = (String) message.getMsgObject();
 				getImageService().setImage(token, image);
-				System.out.println("Message processed, sending response");
-				ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
-				output.writeObject(new GenericSuccessMessage());				
 				System.out.println("Response sent");
 				
 				} catch (IOException e) {
 					e.printStackTrace();
+					System.out.println("Exception caucthsdjc.");
 
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				
+				System.out.println("While continued");
 			}
-
+			
 	}
 	
 
