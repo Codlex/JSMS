@@ -2,8 +2,12 @@ package com.codlex.jsms.androidclient;
 
 
 import com.codlex.jsms.androidclient.model.AndroidFriendListModel;
+import com.codlex.jsms.androidclient.model.BaseFriend;
+import com.codlex.jsms.androidclient.networking.GetImageTask;
 import com.example.androidclient.R;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -143,12 +147,37 @@ public class UserActivity extends Activity{
 					long arg3) {
 				String usernameSelected = ((TextView)arg1).getText().toString();
 				
+				androidFriendListModel.setActiveFriend((BaseFriend) androidFriendListModel.getFriend(usernameSelected));
+				
 				dialogLayoutScreenView = inflater2.inflate(R.layout.screen_vew_layout, (ViewGroup) getCurrentFocus(), false);
 				screenViewBuilder.setView(dialogLayoutScreenView);
 				screenViewBuilder.setTitle("Friend screen");
 				alertDialogViewScreen = screenViewBuilder.create();
 				alertDialogViewScreen.show();
-				initilaizeAddFriendDialog();
+				initilaizeViewScreenDialog();
+				
+				final GetImageTask getImageTask = new GetImageTask();
+				Thread imageRefresh = new Thread(){
+					
+					@Override
+					public void run() {
+						
+						while(alertDialogViewScreen.isShowing() == true){
+						 getImageTask.execute(androidFriendListModel.getActiveFriend());
+						 try {
+							(androidFriendListModel.getActiveFriend()).setBitmap(getImageTask.get());
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ExecutionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						}
+					}
+					
+				};
+				imageRefresh.start();
 				
 				// TODO Auto-generated method stub
 				
@@ -167,6 +196,8 @@ public class UserActivity extends Activity{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				alertDialogViewScreen.cancel();
+				androidFriendListModel.setActiveFriend(null);
+				
 			}
 		});
 	}

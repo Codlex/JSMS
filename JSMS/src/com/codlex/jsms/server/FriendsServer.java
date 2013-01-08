@@ -86,10 +86,12 @@ public class FriendsServer implements Server{
 			}
 			getFriendsService().addFriend(me.getUsername(), him.getUsername());
 			return new GenericSuccessMessage();
+		
 			
 		default:
 			return null;
 		}
+		
 		
 	}
 	

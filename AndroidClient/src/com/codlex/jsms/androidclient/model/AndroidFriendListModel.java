@@ -14,14 +14,15 @@ import com.codlex.jsms.networking.Message;
 import com.codlex.jsms.networking.NICS.CentralizedServerNIC;
 
 public class AndroidFriendListModel implements FriendListModel{
-	Collection<Friend> friends;
-	String userToken;
+	private Collection<Friend> friends;
+	private String userToken;
+	private BaseFriend activeFriend;
 	// static activeUser;
 	
 	public AndroidFriendListModel(String token) {
 		this.userToken = token;
 		this.friends = new ArrayList<Friend>();
-		
+		this. activeFriend = null;
 		// uzima prijatelje
 		GetFriendsTask getFriendsTask = new GetFriendsTask();
 		getFriendsTask.execute();
@@ -90,6 +91,14 @@ public class AndroidFriendListModel implements FriendListModel{
 		return false;
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void setActiveFriend(BaseFriend friend){
+		activeFriend = friend;
+	}
+	
+	public BaseFriend getActiveFriend(){
+		return activeFriend;
 	}
 
 }
