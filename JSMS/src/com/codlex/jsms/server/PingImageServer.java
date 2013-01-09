@@ -34,11 +34,13 @@ private static final int port = 6767;
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			Socket socket = null;
 			System.out.println("[PING_IMAGE::SERVER] Server started on port " + port);
 			while(true) {
 				System.out.println("[PING_IMAGE::SERVER] While started!");
 				try {
-				Socket socket = server.accept();
+				socket = server.accept();
+				socket.setSoTimeout(500);
 				System.out.println("[PING_IMAGE::SERVER] Connection accepted");
 				if(socket.isClosed()) {
 					continue;
@@ -59,6 +61,15 @@ private static final int port = 6767;
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} finally {
+					if(socket != null) {
+						try {
+							socket.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
 				}
 				
 				System.out.println("[PING_IMAGE::SERVER] While continued");

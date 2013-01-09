@@ -38,28 +38,35 @@ public class AuthServer implements Server{
 		if(getUserService().createUser(user) != null) {
 			System.out.println("Added artificial user");
 		}
+		ServerSocket server = null;
 		try {
-			ServerSocket server = new ServerSocket(port);
-			System.out.println("Server started on port " + port);
-			while(true) {
-				Socket socket = server.accept();
-				System.out.println("[AUTH::SERVER] Connection accepted");
-				ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
-				System.out.println("[AUTH::SERVER] Reading message");
-				Message message = (Message) input.readObject();
-				System.out.println("[AUTH::SERVER] Message recived");
-				Message response = processMessage(message);
-				System.out.println("[AUTH::SERVER] Message processed, sending response");
-				ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
-				output.writeObject(response);				
-				System.out.println("[AUTH::SERVER] Response sent");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-
-		} catch (ClassNotFoundException e) {
+			server = new ServerSocket(port);
+		} catch (IOException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
+		}
+		System.out.println("Server started on port " + port);
+		while(true) {
+			try {
+					Socket socket = server.accept();
+					System.out.println("[AUTH::SERVER] Connection accepted");
+					ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
+					System.out.println("[AUTH::SERVER] Reading message");
+					Message message = (Message) input.readObject();
+					System.out.println("[AUTH::SERVER] Message recived");
+					Message response = processMessage(message);
+					System.out.println("[AUTH::SERVER] Message processed, sending response");
+					ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
+					output.writeObject(response);				
+					System.out.println("[AUTH::SERVER] Response sent");
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+	
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	

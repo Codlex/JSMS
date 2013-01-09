@@ -43,13 +43,11 @@ public class FriendListModelImpl extends JTabbedPane{
         public PodrazumevaniPanel(){
                 super();
                 //podesavanja panela
-        		setBackground(new Color(00,0x93,0xd6));
                 this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
                 
                 //animacija omotana u panelu kako se nebi razvukla
                 ImageIcon animacija = new ImageIcon( getClass().getResource("/resources/gui/animacija.gif"));
                 JPanel omotac = new JPanel();
-                omotac.setBackground(new Color(00,0x93,0xd6));
 
                 omotac.add(new PanelZaSliku(animacija.getImage()));
                 this.add(omotac);
@@ -74,7 +72,6 @@ public class FriendListModelImpl extends JTabbedPane{
              * @param height kolicina vertikalnog prostora koji zelimo da popunimo prazninom
              */
             public ZauzmiProstor(int height){
-             		setBackground(new Color(00,0x93,0xd6));
 
                     this.setSize(0, height);
                     this.setPreferredSize(new Dimension(0, height));
@@ -83,7 +80,6 @@ public class FriendListModelImpl extends JTabbedPane{
     
     private class PanelSaBorderLejoutom extends JPanel{     
         public PanelSaBorderLejoutom() {
-        		setBackground(new Color(00,0x93,0xd6));
 
                 this.setLayout(new BorderLayout());
         }
@@ -93,7 +89,6 @@ private class PanelZaSliku extends JPanel{
         
         public PanelZaSliku(Image slika){
                 super();
-        		setBackground(new Color(00,0x93,0xd6));
                 this.slika = slika;     
                 //podesavanje velicine panela na velicinu slike
                 this.setPreferredSize(new Dimension(slika.getWidth(this), slika.getHeight(this)));                      

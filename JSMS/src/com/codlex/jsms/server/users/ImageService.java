@@ -13,7 +13,11 @@ public class ImageService {
 	public static Image notAvailableImage;
 	static {
 		try {
-			ImageIO.read(ImageService.class.getResource("/resources/no-image.png"));
+			notAvailableImage = ImageIO.read(ImageService.class.getResource("/resources/no-image.png"));
+			if(notAvailableImage == null) {
+				System.exit(-1);
+				System.out.println("What the fuck!");
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

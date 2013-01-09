@@ -43,8 +43,9 @@ import com.codlex.jsms.networking.NICS.CentralizedServerNIC;
 
 public class MainWindow extends JFrame {
 	JTabbedPane ekrani;
+	ImagePinger imagePinger;
 	public MainWindow(String naslov) {
-		ImagePinger imagePinger = new ImagePinger();
+		imagePinger = new ImagePinger();
 		Thread imagePingerThread = new Thread(imagePinger);
 		imagePingerThread.start();
 		FriendListModelImpl.createModel();
@@ -108,6 +109,10 @@ public class MainWindow extends JFrame {
 		// ubacujemo StudenteIEkrane na glavi panel
 		glavniPanel.add(ekrani, BorderLayout.CENTER);
 		
+		
+		// panel za izlogovanje i dodavanje prijatelja
+		PanelSaBorderLejoutom panelSaDugmicima = new PanelSaBorderLejoutom();
+		
 		// dodavanje prijatelja dugme
 		JButton dodajPrijatelja = new JButton("Dodaj prijatelja");
 		dodajPrijatelja.addActionListener(new ActionListener() {
@@ -124,7 +129,20 @@ public class MainWindow extends JFrame {
 				}
 			}
 		});
-		add(dodajPrijatelja, BorderLayout.SOUTH);
+		panelSaDugmicima.add(dodajPrijatelja, BorderLayout.WEST);
+		
+		JButton izadji = new JButton("Izadji");
+		izadji.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				MainWindow.this.imagePinger.stop();
+				MainWindow.this.dispose();
+				new LoginScreen().setVisible(true);
+			}
+		});
+		panelSaDugmicima.add(izadji, BorderLayout.EAST);
+		add(panelSaDugmicima, BorderLayout.SOUTH);
 		// stavljam na glavni prozor ovaj panel
 		this.add(glavniPanel);
 

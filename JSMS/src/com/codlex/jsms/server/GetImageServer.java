@@ -41,6 +41,7 @@ public class GetImageServer implements Server {
 			while(true) {
 				try {
 					Socket socket = server.accept();
+					socket.setSoTimeout(500);
 					System.out.println("[GET_IMAGE::SERVER] Connection accepted");
 					if(socket.isClosed()) {
 						continue;
@@ -78,7 +79,8 @@ public class GetImageServer implements Server {
 					System.out.println("[GET_IMAGE::SERVER] Exception cacushdhsdfkj");
 		
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
 				}
 				System.out.println("[GET_IMAGE::SERVER] While continued!");
