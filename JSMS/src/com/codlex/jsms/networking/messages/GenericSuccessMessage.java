@@ -15,7 +15,7 @@ public class GenericSuccessMessage implements Poruka {
 	}
 	
 	@Override
-	public Object getMsgObject() {
+	public Object getObjekatPoruke() {
 		return o;
 	}
 	

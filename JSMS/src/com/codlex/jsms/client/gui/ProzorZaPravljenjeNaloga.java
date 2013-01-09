@@ -1,6 +1,6 @@
 package com.codlex.jsms.client.gui;
 
-import static com.codlex.jsms.networking.NICS.CentralizedServerNIC.getNICService;
+import static com.codlex.jsms.networking.NICS.CentralizovaniNIC.getNICService;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,7 +22,7 @@ import javax.swing.JTextField;
 import com.codlex.jsms.client.gui.paneli.Zaglavlje;
 import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.Poruka;
-import com.codlex.jsms.networking.users.BaseUser;
+import com.codlex.jsms.networking.users.OsnovniKorisnik;
 
 /**
  * Ova klasa predstavlja prozor za pravljenje naloga.
@@ -271,7 +271,7 @@ public class ProzorZaPravljenjeNaloga extends JFrame {
 						return;
 					}
 					// zamolimo servera da nam napravi nalog
-					Poruka odgovor = getNICService().createAccount(new BaseUser(korisnickoIme, lozinka, email));
+					Poruka odgovor = getNICService().napraviNalog(new OsnovniKorisnik(korisnickoIme, lozinka, email));
 					if( odgovor.getKodPoruke() == MSGCode.SUCCESS ) {
 						// ukoliko je uspeo, to zapisemo ulog i prikazemo obavestenje korisniku
 						System.out.println("Korisnik napravio nalog!");

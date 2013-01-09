@@ -10,7 +10,7 @@ import com.codlex.jsms.client.model.ModelListePrijateljaImplementacija;
 import com.codlex.jsms.client.model.TabbedPanePrijatelj;
 import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.Poruka;
-import com.codlex.jsms.networking.NICS.CentralizedServerNIC;
+import com.codlex.jsms.networking.NICS.CentralizovaniNIC;
 /**
  * Tred koji osvezava trenutno selektovanog korisnika u modelu prijatelja trenutno ulogovanog korisnika.
  * 
@@ -40,12 +40,12 @@ public class Osvezivac implements Runnable {
 			TabbedPanePrijatelj selektovanPrijatelj = (TabbedPanePrijatelj) ModelListePrijateljaImplementacija.getPane().getSelectedComponent();
 			String username = selektovanPrijatelj.getKorisnickoIme();
 			// od servera trazimo sliku njegovog ekrana
-			Poruka poruka = CentralizedServerNIC.getNICService().getScreen(username);
+			Poruka poruka = CentralizovaniNIC.getNICService().getEkran(username);
 			BufferedImage slika = null;
 			// ukoliko je server odlucio da nam posalje njegovu sliku, dobicemo success
 			if(poruka.getKodPoruke().equals(MSGCode.SUCCESS)) {
 				// u poruci nam je prosledjen inputstream na kome se nalazi slika
-				InputStream ulaz = (InputStream) poruka.getMsgObject();
+				InputStream ulaz = (InputStream) poruka.getObjekatPoruke();
 				try {
 					// ucitavanje slike korisnika
 					slika = ImageIO.read(ulaz);

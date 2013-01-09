@@ -1,6 +1,6 @@
 package com.codlex.jsms.client.gui;
 
-import static com.codlex.jsms.networking.NICS.CentralizedServerNIC.getNICService;
+import static com.codlex.jsms.networking.NICS.CentralizovaniNIC.getNICService;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,7 +22,7 @@ import javax.swing.JTextField;
 import com.codlex.jsms.client.gui.paneli.Zaglavlje;
 import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.Poruka;
-import com.codlex.jsms.networking.users.BaseUser;
+import com.codlex.jsms.networking.users.OsnovniKorisnik;
 
 public class ProzorZaPrijavljivanje extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -204,7 +204,7 @@ public class ProzorZaPrijavljivanje extends JFrame {
 					String korisnickoIme = panelZaPrijavljivanje.getPanelZaPrijavljivanjeSaInputElementima().getKorisnickoIme();
 					String lozinka = panelZaPrijavljivanje.getPanelZaPrijavljivanjeSaInputElementima().getLozinka();
 					// logovanje korisnika na sistem tako sto se obracamo serveru
-					Poruka odgovor = getNICService().logIn(new BaseUser(korisnickoIme, lozinka));
+					Poruka odgovor = getNICService().prijaviSe(new OsnovniKorisnik(korisnickoIme, lozinka));
 					// ukoliko je korisnik uspesno ulogovan vraca se poruka SUCCESS sa njegovim tokenom
 					if( odgovor.getKodPoruke() == MSGCode.SUCCESS ) {
 						System.out.println("Korisnik je ulogovan!");

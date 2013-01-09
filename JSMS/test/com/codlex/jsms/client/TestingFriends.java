@@ -1,31 +1,31 @@
 package com.codlex.jsms.client;
 
-import static com.codlex.jsms.networking.NICS.CentralizedServerNIC.*;
+import static com.codlex.jsms.networking.NICS.CentralizovaniNIC.*;
 
 import java.util.Collection;
 
 import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.Poruka;
-import com.codlex.jsms.networking.User;
-import com.codlex.jsms.networking.users.BaseUser;
+import com.codlex.jsms.networking.Korisnik;
+import com.codlex.jsms.networking.users.OsnovniKorisnik;
 
 public class TestingFriends {
 	public static void main(String[] args) {
-		getNICService().createAccount(new BaseUser("mojDrug", "ananas", "jojo"));
-		getNICService().createAccount(new BaseUser("mojDrug2", "ananas", "jojo"));
+		getNICService().napraviNalog(new OsnovniKorisnik("mojDrug", "ananas", "jojo"));
+		getNICService().napraviNalog(new OsnovniKorisnik("mojDrug2", "ananas", "jojo"));
 
-		User user = new BaseUser("deximat", "metallica");
-		getNICService().logIn(user);
+		Korisnik user = new OsnovniKorisnik("deximat", "metallica");
+		getNICService().prijaviSe(user);
 		
-		if(getNICService().isLoggedIn()) {
+		if(getNICService().jeUlogovan()) {
 			System.out.println("Uspelo logovanje");
-			System.out.println("Bravo " + getNICService().getLoggedUser().getUsername());
+			System.out.println("Bravo " + getNICService().getTrenutnoUlogovanKorisnik().getKorisnickoIme());
 		}
 		
-		MSGCode code = getNICService().addFriend("mojDrug2").getKodPoruke();
+		MSGCode code = getNICService().dodajPrijatelja("mojDrug2").getKodPoruke();
 		System.out.println("Friend added? code: " + code);
-		Poruka m = getNICService().getFriends();
-		Collection<String> friends = (Collection<String>) m.getMsgObject();
+		Poruka m = getNICService().getPrijatelji();
+		Collection<String> friends = (Collection<String>) m.getObjekatPoruke();
 		if (friends == null || friends.isEmpty()) {
 			System.out.println("No friends");
 			return;

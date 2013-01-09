@@ -21,7 +21,7 @@ public class FriendsMessage implements Poruka {
 	}
 
 	@Override
-	public Object getMsgObject() {
+	public Object getObjekatPoruke() {
 		return friends;
 	}
 

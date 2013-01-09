@@ -54,7 +54,7 @@ public class PingImageServer implements Server{
 					// ucitavamo sliku od korisnika koji se upravo identifikovao sa zacetnom porukom
 					Image slika = ImageIO.read(socket.getInputStream());
 					System.out.println("[PRIMAC_SLIKA::SERVER] Slika procitana...");
-					String token = (String) poruka.getMsgObject();
+					String token = (String) poruka.getObjekatPoruke();
 					// ubacujemo sliku u bazu
 					getServisSlika().setSlika(token, slika);				
 				} catch (IOException e) {

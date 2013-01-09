@@ -12,7 +12,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import com.codlex.jsms.networking.Poruka;
-import com.codlex.jsms.networking.User;
+import com.codlex.jsms.networking.Korisnik;
 import com.codlex.jsms.networking.messages.AuthMessageFailed;
 import com.codlex.jsms.networking.messages.GenericSuccessMessage;
 import com.codlex.jsms.networking.messages.UserDoesntExistMessage;
@@ -54,15 +54,15 @@ public class GetImageServer implements Server {
 					// podesavamo ulaz za ucitavanje poruke
 					ObjectInputStream ulaz = new ObjectInputStream(socket.getInputStream());
 					System.out.println("[POSILJALAC_SLIKE::SERVER] Ucitavamo poruku");
-					Poruka message = (Poruka) ulaz.readObject();
+					Poruka poruka = (Poruka) ulaz.readObject();
 					System.out.println("[POSILJALAC_SLIKE::SERVER] Poruka ucitana");
 					// pravimo izlaz za nas odgovor na zahtev
 					ObjectOutputStream izlaz = new ObjectOutputStream(socket.getOutputStream());
 					// iz poruke uzimamo zahtev
-					IdentifiedRequest zahtev = (IdentifiedRequest) message.getMsgObject();
+					IdentifiedRequest zahtev = (IdentifiedRequest) poruka.getObjekatPoruke();
 					// proveravamo da li je korisnik ulogovan
 					if( getKorisnickiServis().getKorisnikPoTokenu(zahtev.getTokenSignature()) != null ) {
-						User korisnik = getKorisnickiServis().getKorisnikPoKorisnickomImenu(zahtev.getRequestedUsername());
+						Korisnik korisnik = getKorisnickiServis().getKorisnikPoKorisnickomImenu(zahtev.getRequestedUsername());
 						if ( korisnik == null ) {
 							System.out.println("[POSILJALAC_SLIKE::SERVER] Korisnik " + zahtev.getRequestedUsername() + " nije pronadjen!");
 							izlaz.writeObject( new UserDoesntExistMessage() );

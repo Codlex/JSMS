@@ -13,7 +13,7 @@ import javax.swing.JTabbedPane;
 
 import com.codlex.jsms.client.gui.paneli.PanelZaSliku;
 import com.codlex.jsms.networking.Poruka;
-import com.codlex.jsms.networking.NICS.CentralizedServerNIC;
+import com.codlex.jsms.networking.NICS.CentralizovaniNIC;
 
 public class ModelListePrijateljaImplementacija extends JTabbedPane{
 
@@ -36,10 +36,10 @@ public class ModelListePrijateljaImplementacija extends JTabbedPane{
     @SuppressWarnings("unchecked")
 	public static void napraviModel() {
     	// trazimo od servera listu prijatelja trenutno ulogovanog korisnika
-    	Poruka odgovor = CentralizedServerNIC.getNICService().getFriends();
+    	Poruka odgovor = CentralizovaniNIC.getNICService().getPrijatelji();
     	// u odgovoru se nalazi lista prijatelja trenutnog korisnika
     	// ukoliko korisnik nema prijatelja vraca se prazna lista
-    	Collection<String> prijatelji = (Collection<String>) odgovor.getMsgObject();
+    	Collection<String> prijatelji = (Collection<String>) odgovor.getObjekatPoruke();
     	// instanciramo model
     	tabbedPane = new ModelListePrijateljaImplementacija();
     	// dodeljujemo prvu stavku kao podrazumevani pane dok nema korisnika

@@ -20,7 +20,7 @@ public class ImageMessage implements Poruka {
 	}
 
 	@Override
-	public Object getMsgObject() {
+	public Object getObjekatPoruke() {
 		return token;
 	}
 

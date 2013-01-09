@@ -14,7 +14,7 @@ public class AuthMessageFailed implements Poruka {
 	}
 	
 	@Override
-	public Object getMsgObject() {
+	public Object getObjekatPoruke() {
 		return null;
 	}
 	

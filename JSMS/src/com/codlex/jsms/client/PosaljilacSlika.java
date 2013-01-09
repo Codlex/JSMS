@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import com.codlex.jsms.networking.Poruka;
-import com.codlex.jsms.networking.NICS.CentralizedServerNIC;
+import com.codlex.jsms.networking.NICS.CentralizovaniNIC;
 import com.codlex.jsms.utils.PisacKompresovaneSlike;
 /**
  * Ova klasa predstavlja tred koji ce u realnom vremenu osvezavati sliku ulogovanog korisnika na serveru. 
@@ -47,9 +47,9 @@ public class PosaljilacSlika implements Runnable {
         	// uzimam sliku trenutnog ekrana
         	BufferedImage slikaEkrana = robot.createScreenCapture(povrsinaEkrana);
         	// obavesti server da mu saljemo sliku
-        	Poruka poruka = CentralizedServerNIC.getNICService().pingScreen();
+        	Poruka poruka = CentralizovaniNIC.getNICService().posaljiEkran();
         	// mrezni deo sistema nam daje upravljanje mrezom kroz OutputStream
-        	OutputStream izlaz = (OutputStream) poruka.getMsgObject();
+        	OutputStream izlaz = (OutputStream) poruka.getObjekatPoruke();
         	try {
         		// saljemo kompresovanu slikuEkrana na izlaz
         		PisacKompresovaneSlike.jpgIspisiUSlabomKvalitetu(slikaEkrana, izlaz);

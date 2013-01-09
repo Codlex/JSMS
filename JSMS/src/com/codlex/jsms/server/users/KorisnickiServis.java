@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.codlex.jsms.networking.User;
+import com.codlex.jsms.networking.Korisnik;
 
 /**
  * Singlton servis za rad sa korisnicima u sistemu.
@@ -16,7 +16,7 @@ import com.codlex.jsms.networking.User;
 public class KorisnickiServis {
 	
 	private static KorisnickiServis instanca;
-	private List<User> registrovaniKorisnici;
+	private List<Korisnik> registrovaniKorisnici;
 	
 	public static synchronized KorisnickiServis getKorisnickiServis()  {
 		if(instanca == null) {
@@ -26,13 +26,13 @@ public class KorisnickiServis {
 	}
 	
 	private KorisnickiServis() {
-		registrovaniKorisnici = new ArrayList<User>();
+		registrovaniKorisnici = new ArrayList<Korisnik>();
 	}
 	
-	public String ulogujSe(User korisnik) {
-		for(User registrovanKorisnik : registrovaniKorisnici) {
-			if(registrovanKorisnik.getUsername().equals(korisnik.getUsername()) &&
-			   registrovanKorisnik.getPassword().equals(korisnik.getPassword())){
+	public String ulogujSe(Korisnik korisnik) {
+		for(Korisnik registrovanKorisnik : registrovaniKorisnici) {
+			if(registrovanKorisnik.getKorisnickoIme().equals(korisnik.getKorisnickoIme()) &&
+			   registrovanKorisnik.getLozinka().equals(korisnik.getLozinka())){
 				//Postoji!
 				//Dodeli novi token
 				String token = UUID.randomUUID().toString();
@@ -44,10 +44,10 @@ public class KorisnickiServis {
 		return null;
 	}
 	
-	public String registrujKorisnika(User korisnik) {
-		for(User registrovanKorisnik : registrovaniKorisnici) {
+	public String registrujKorisnika(Korisnik korisnik) {
+		for(Korisnik registrovanKorisnik : registrovaniKorisnici) {
 			// ukoliko korisnik vec postoji vracamo null kao indikaciju da nije moguce napraviti korisnika sa tim username
-			if(registrovanKorisnik.getUsername().equals(korisnik.getUsername())){
+			if(registrovanKorisnik.getKorisnickoIme().equals(korisnik.getKorisnickoIme())){
 				return null;
 			}
 		}
@@ -60,17 +60,17 @@ public class KorisnickiServis {
 		return token;	
 	}
 	
-	public User getKorisnikPoKorisnickomImenu(String korisnickoIme) {
-		for(User registrovaniKorisnik : registrovaniKorisnici) {
-			if(registrovaniKorisnik.getUsername().equals(korisnickoIme)){
+	public Korisnik getKorisnikPoKorisnickomImenu(String korisnickoIme) {
+		for(Korisnik registrovaniKorisnik : registrovaniKorisnici) {
+			if(registrovaniKorisnik.getKorisnickoIme().equals(korisnickoIme)){
 				return registrovaniKorisnik;
 			}
 		}
 		return null;
 	}
 	
-	public User getKorisnikPoTokenu(String token) {
-		for(User registrovanKorisnik : registrovaniKorisnici) {
+	public Korisnik getKorisnikPoTokenu(String token) {
+		for(Korisnik registrovanKorisnik : registrovaniKorisnici) {
 			if(registrovanKorisnik.getToken().equals(token)){
 				return registrovanKorisnik;
 			}

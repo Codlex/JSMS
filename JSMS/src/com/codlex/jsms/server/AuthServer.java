@@ -9,11 +9,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import com.codlex.jsms.networking.Poruka;
-import com.codlex.jsms.networking.User;
+import com.codlex.jsms.networking.Korisnik;
 import com.codlex.jsms.networking.messages.AuthMessageFailed;
 import com.codlex.jsms.networking.messages.AuthMessageSuccess;
 import com.codlex.jsms.networking.messages.AuthMessageUserExists;
-import com.codlex.jsms.networking.users.BaseUser;
+import com.codlex.jsms.networking.users.OsnovniKorisnik;
 
 /**
  * AuthServer je napravljen da prima konekcije od neprijavljenih 
@@ -63,13 +63,13 @@ public class AuthServer implements Server{
 	}
 	
 	private static Poruka obradiPoruku(Poruka poruka) {
-		User korisnik = null;
+		Korisnik korisnik = null;
 		String token = null;
 		switch (poruka.getKodPoruke()) {
 		case AUTH: 
 			// primljen je zahtev za autorizaciju
 			System.out.println("[AUTORIZACIJA::SERVER] Primljena poruka sa AUTH kodom");
-			korisnik = (User) poruka.getMsgObject();
+			korisnik = (Korisnik) poruka.getObjekatPoruke();
 			// trazim od sistema da prijavi korisnika
 			token = getKorisnickiServis().ulogujSe(korisnik);
 			// saljem odgovor token ako je uspesno ili neuspesnu poruku
@@ -80,7 +80,7 @@ public class AuthServer implements Server{
 		case REGISTER:
 			// primljen je zahtev za registraciju korisnika
 			System.out.println("[AUTORIZACIJA::SERVER] Primljena poruka sa REGISTER kodom");
-			korisnik = (User) poruka.getMsgObject();
+			korisnik = (Korisnik) poruka.getObjekatPoruke();
 			// registrovanje korisnika na sistem
 			token = getKorisnickiServis().registrujKorisnika(korisnik);
 			// ukoliko je token null korisnik nije uspesno registrovan na sistem
@@ -96,7 +96,7 @@ public class AuthServer implements Server{
 	
 	private void dodajProbnogKorisnika() {
 		//u svrhu testiranja
-		User korisnik = new BaseUser("demo", "demo");
+		Korisnik korisnik = new OsnovniKorisnik("demo", "demo");
 		if(getKorisnickiServis().registrujKorisnika(korisnik) != null) {
 			System.out.println("Korisnik ubacen u sistem vestacki");
 		}

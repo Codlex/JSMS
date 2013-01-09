@@ -2,14 +2,14 @@ package com.codlex.jsms.networking.messages;
 
 import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.Poruka;
-import com.codlex.jsms.networking.User;
+import com.codlex.jsms.networking.Korisnik;
 
 public class RegisterMessage implements Poruka{
     private static final long serialVersionUID = 1L;
 
-	User user;
+	Korisnik user;
 	MSGCode code;
-	public RegisterMessage(User newUser) {
+	public RegisterMessage(Korisnik newUser) {
 		this.user = newUser;
 		this.code = MSGCode.REGISTER;
 	}
@@ -18,7 +18,7 @@ public class RegisterMessage implements Poruka{
 		return code;
 	}
 	@Override
-	public Object getMsgObject() {
+	public Object getObjekatPoruke() {
 		return user;
 	}
 

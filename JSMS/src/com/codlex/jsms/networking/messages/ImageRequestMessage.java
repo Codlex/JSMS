@@ -19,7 +19,7 @@ public class ImageRequestMessage implements Poruka {
 	}
 
 	@Override
-	public Object getMsgObject() {
+	public Object getObjekatPoruke() {
 		// TODO Auto-generated method stub
 		return request;
 	}

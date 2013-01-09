@@ -16,7 +16,7 @@ public class AuthMessageSuccess implements Poruka {
 	}
 	
 	@Override
-	public Object getMsgObject() {
+	public Object getObjekatPoruke() {
 		return token;
 	}
 

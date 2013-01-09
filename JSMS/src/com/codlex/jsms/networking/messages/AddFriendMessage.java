@@ -18,7 +18,7 @@ public class AddFriendMessage implements Poruka{
 		return code;
 	}
 	@Override
-	public Object getMsgObject() {
+	public Object getObjekatPoruke() {
 		return meAndFriend;
 	}
 	

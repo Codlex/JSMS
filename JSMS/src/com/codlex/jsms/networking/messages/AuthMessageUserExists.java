@@ -14,7 +14,7 @@ public class AuthMessageUserExists implements Poruka {
 	}
 	
 	@Override
-	public Object getMsgObject() {
+	public Object getObjekatPoruke() {
 		return null;
 	}
 }

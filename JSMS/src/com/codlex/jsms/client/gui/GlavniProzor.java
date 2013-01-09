@@ -20,7 +20,7 @@ import com.codlex.jsms.client.model.ModelListePrijateljaImplementacija;
 import com.codlex.jsms.client.model.TabbedPanePrijatelj;
 import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.Poruka;
-import com.codlex.jsms.networking.NICS.CentralizedServerNIC;
+import com.codlex.jsms.networking.NICS.CentralizovaniNIC;
 
 /**
  * Glavni prozor u kome se nalazi lista prijatelja ulogovanog korisnika kao i ekran trenutno selektovanog korisnika.
@@ -112,7 +112,7 @@ public class GlavniProzor extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String korisnickoIme = JOptionPane.showInputDialog(GlavniProzor.this, "Unesite username prijatelja kojeg zelite da dodate:");
-				Poruka odgovor = CentralizedServerNIC.getNICService().addFriend(korisnickoIme);
+				Poruka odgovor = CentralizovaniNIC.getNICService().dodajPrijatelja(korisnickoIme);
 				if(odgovor.getKodPoruke().equals(MSGCode.SUCCESS)) {
 					ekrani.add(korisnickoIme, new TabbedPanePrijatelj(korisnickoIme, ekrani));
 				} 
@@ -152,7 +152,7 @@ public class GlavniProzor extends JFrame {
 		
 		// resi se prozora
 		GlavniProzor.this.dispose();
-		CentralizedServerNIC.getNICService().logOut();
+		CentralizovaniNIC.getNICService().odjaviSe();
 		new ProzorZaPrijavljivanje().setVisible(true);
 	}
 
