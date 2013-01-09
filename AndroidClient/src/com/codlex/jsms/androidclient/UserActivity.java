@@ -1,15 +1,12 @@
 package com.codlex.jsms.androidclient;
 
 
-import com.codlex.jsms.androidclient.model.AndroidFriendListModel;
-import com.codlex.jsms.androidclient.model.BaseFriend;
-import com.codlex.jsms.androidclient.networking.GetImageTask;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,237 +23,218 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codlex.jsms.androidclient.model.AndroidModelListePrijatelja;
+import com.codlex.jsms.androidclient.model.OsnovniPrijatelj;
+import com.codlex.jsms.androidclient.networking.ZadatakPreuzmiSlikuAktivnogPrijatelja;
+
 public class UserActivity extends Activity{
 	
 	// Friend model
-	AndroidFriendListModel androidFriendListModel;
+	AndroidModelListePrijatelja androidModelListePrijatelja;
 	
-	ListView listview;
-	ArrayList<View> listOfFriends;
-	String token,username;
-	TextView helloview;
-	Button logoutb,addfriendb;
-	
-	Context context;
+	ListView lista;
+	ArrayList<View> listaPrijatelja;
+	String token,korisnickoIme;
+	TextView porukaZdravo;
+	Button dugmeIzlogujSe,dugmeDodajPrijatelja;
 	
 	// addFriendDialog components
-	TextView wrong_username;
-	Button backb2,addb;
-	EditText findUsername;
+	TextView pogresnoKorisnickoIme;
+	Button dugmeNazad2,dugmeDodajPrijatelja2;
+	EditText trazenoKorisnickoIme;
 	
 	// layouti za dialog boxove
-	View dialogLayoutAddFriend;
-	View dialogLayoutScreenView;
+	View dialogLayoutDodajPrijatelja;
+	View dialogLayoutPrikazEkrana;
 	
 	// friends lista
-	ArrayList<String> friends;
+	List<String> prijatelji;
 
 	
 	
 	// viewScreenDialog components
-	Button backb3;
-	ImageView userImage;
+	Button dugmeNazad3;
+	ImageView slikaKorisnika;
 	
 	// Dialogs
-	AlertDialog alertDialogAddFriend;
-	AlertDialog alertDialogViewScreen;
+	AlertDialog alertDialogDodajPrijatelja;
+	AlertDialog alertDialogPrikazEkrana;
 	//AlertDialog 
 	// builder za addFriendDialog
-	AlertDialog.Builder addFriendBuilder;
+	AlertDialog.Builder dodajPrijateljaBuilder;
 	// builder za view screen
-	AlertDialog.Builder screenViewBuilder;
+	AlertDialog.Builder prikazEkranaBuilder;
 	
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle zapamcenoStanjeInstance) {
 		
 		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
+		super.onCreate(zapamcenoStanjeInstance);
 		setContentView(R.layout.user_layout);
 		
 		
-		// pamcenje contexta
-		context = this;
-		
-		
-		
 		// inicijalizacija add friend builder-a
-		addFriendBuilder = new AlertDialog.Builder(this);
+		dodajPrijateljaBuilder = new AlertDialog.Builder(this);
 		final LayoutInflater inflater = getLayoutInflater();
 		// incijalizacija screen view builder-a
-		screenViewBuilder = new AlertDialog.Builder(this);
+		prikazEkranaBuilder = new AlertDialog.Builder(this);
 		final LayoutInflater inflater2 = getLayoutInflater();
 
 		// inzijalizacija modela
-		androidFriendListModel = new AndroidFriendListModel(token);
-		// lista frendova
+		androidModelListePrijatelja = new AndroidModelListePrijatelja();
 		
-		friends = new ArrayList<String>();
-		friends = (ArrayList<String>) androidFriendListModel.getUsernamesOfFriends();
+		// lista frendova
+		prijatelji = new ArrayList<String>();
+		prijatelji = (ArrayList<String>) androidModelListePrijatelja.getKorisnickaImenaPrijatelja();
 		
 		// prosledjen token
 		Bundle extras = getIntent().getExtras();
 		token = extras.getString("token");
 		// prosledjen username
-		username = extras.getString("username");
+		korisnickoIme = extras.getString("korisnickoIme");
 		
 		
 		
 		// podesimo hello :)
-		helloview = (TextView) findViewById(R.id.hello);
-		helloview.setText("Hello " + username + "!");
+		porukaZdravo = (TextView) findViewById(R.id.hello);
+		porukaZdravo.setText("Hello " + korisnickoIme + "!");
 		
 		// logout dugme
-		logoutb = (Button) findViewById(R.id.logoutb);
-		logoutb.setOnClickListener(new OnClickListener() {	
+		dugmeIzlogujSe = (Button) findViewById(R.id.logoutb);
+		dugmeIzlogujSe.setOnClickListener(new OnClickListener() {	
 			@Override
 			public void onClick(View v) {
 				finish();
-				// TODO Auto-generated method stub
 			}
 		});
 		
 		// addfriend dugme
-		addfriendb = (Button) findViewById(R.id.addfriendb);
-		addfriendb.setOnClickListener(new OnClickListener() {
+		dugmeDodajPrijatelja2 = (Button) findViewById(R.id.addfriendb);
+		dugmeDodajPrijatelja2.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				
 				// dialog za dodavanje prijatelja
-				
-				dialogLayoutAddFriend = inflater.inflate(R.layout.add_friend_dialog_layout, (ViewGroup) getCurrentFocus(),false);
+				dialogLayoutDodajPrijatelja = inflater.inflate(R.layout.add_friend_dialog_layout, (ViewGroup) getCurrentFocus(),false);
 
-				addFriendBuilder.setView(dialogLayoutAddFriend);
-				addFriendBuilder.setTitle("Add a friend, why not?!");
-				alertDialogAddFriend = addFriendBuilder.create();
-				alertDialogAddFriend.show();
-				initilaizeAddFriendDialog();
+				dodajPrijateljaBuilder.setView(dialogLayoutDodajPrijatelja);
+				dodajPrijateljaBuilder.setTitle("Dodaj prijatelja, uhuh!");
+				alertDialogDodajPrijatelja = dodajPrijateljaBuilder.create();
+				alertDialogDodajPrijatelja.show();
+				inicijalizujDodajPrijateljaDialog();
 			
 			}
 		});
 		
 		// lista prijatelja
-		listview = (ListView) findViewById(R.id.listView1);
-		listview.setAdapter(new ArrayAdapter<String>(this, R.layout.item,friends));
-		listview.setOnItemClickListener(new OnItemClickListener() {
+		lista = (ListView) findViewById(R.id.listView1);
+		lista.setAdapter(new ArrayAdapter<String>(this, R.layout.item,prijatelji));
+		lista.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				String usernameSelected = ((TextView)arg1).getText().toString();
+				String korisnickoImeSelektovano = ((TextView)arg1).getText().toString();
 				
-				androidFriendListModel.setActiveFriend((BaseFriend) androidFriendListModel.getFriend(usernameSelected));
+				androidModelListePrijatelja.setAktivnogPrijatelja((OsnovniPrijatelj) androidModelListePrijatelja.getPrijatelj(korisnickoImeSelektovano));
 				
-				dialogLayoutScreenView = inflater2.inflate(R.layout.screen_vew_layout, (ViewGroup) getCurrentFocus(), false);
-				screenViewBuilder.setView(dialogLayoutScreenView);
-				screenViewBuilder.setTitle("Friend screen");
-				alertDialogViewScreen = screenViewBuilder.create();
-				alertDialogViewScreen.show();
-				initilaizeViewScreenDialog();
+				dialogLayoutPrikazEkrana = inflater2.inflate(R.layout.screen_vew_layout, (ViewGroup) getCurrentFocus(), false);
+				prikazEkranaBuilder.setView(dialogLayoutPrikazEkrana);
+				prikazEkranaBuilder.setTitle("Friend screen");
+				alertDialogPrikazEkrana = prikazEkranaBuilder.create();
+				alertDialogPrikazEkrana.show();
+				inicijalizujPrikazEkranaDialog();
 				
 				
-				Thread imageRefresh = new Thread(){
+				Thread osvezavanjeSlike = new Thread(){
 					
 					@Override
 					public void run() {
-						userImage = (ImageView)alertDialogViewScreen.findViewById(R.id.friendimage); 
+						slikaKorisnika = (ImageView)alertDialogPrikazEkrana.findViewById(R.id.friendimage); 
 
 						
 						Thread invalidate = new Thread() {
 							public void run() {
-								  userImage.setImageBitmap(androidFriendListModel.getActiveFriend().getScreenBitmap());
-							      userImage.invalidate();
+								  slikaKorisnika.setImageBitmap(androidModelListePrijatelja.getAktivnogPrijatelja().getEkranBitmap());
+							      slikaKorisnika.invalidate();
 								}
-							};
-						while(alertDialogViewScreen.isShowing() == true){
-							GetImageTask getImageTask = new GetImageTask();
-							getImageTask.execute(androidFriendListModel.getActiveFriend());
+						};
+						while(alertDialogPrikazEkrana.isShowing() == true){
+							ZadatakPreuzmiSlikuAktivnogPrijatelja zadatakPreuzmiSlikuAKtivnogPrijatelja = new ZadatakPreuzmiSlikuAktivnogPrijatelja();
+							zadatakPreuzmiSlikuAKtivnogPrijatelja.execute(androidModelListePrijatelja.getAktivnogPrijatelja());
 							 try {
-								 Bitmap oldBitmap = androidFriendListModel.getActiveFriend().getScreenBitmap();
+								 Bitmap stariBitmap = androidModelListePrijatelja.getAktivnogPrijatelja().getEkranBitmap();
 								 
-								(androidFriendListModel.getActiveFriend()).setBitmap(getImageTask.get());
-								if( oldBitmap != null) {
-									 oldBitmap.recycle();
+								(androidModelListePrijatelja.getAktivnogPrijatelja()).setEkranBitmap(zadatakPreuzmiSlikuAKtivnogPrijatelja.get());
+								if( stariBitmap != null) {
+									 stariBitmap.recycle();
 								 }
 								runOnUiThread( invalidate );
 								Thread.sleep(500);
 								
 							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							} catch (ExecutionException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}
 					}
 					
 				};
-				imageRefresh.start();
-				
-				// TODO Auto-generated method stub
-				
+				osvezavanjeSlike.start();				
 			}
 		});
 	}
 
 	
-	void initilaizeViewScreenDialog(){
-		backb3 = (Button) alertDialogViewScreen.findViewById(R.id.backb3);
+	void inicijalizujPrikazEkranaDialog(){
+		dugmeNazad3 = (Button) alertDialogPrikazEkrana.findViewById(R.id.backb3);
 		
-		backb3.setOnClickListener(new OnClickListener() {
-			
+		dugmeNazad3.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				alertDialogViewScreen.cancel();
-				androidFriendListModel.setActiveFriend(null);
-				
+				alertDialogPrikazEkrana.cancel();
+				androidModelListePrijatelja.setAktivnogPrijatelja(null);
 			}
 		});
 	}
 	
-	void initilaizeAddFriendDialog(){
+	void inicijalizujDodajPrijateljaDialog(){
+		
 		// dugmici
-
-		backb2	= (Button) alertDialogAddFriend.findViewById(R.id.backb2);
-		addb	= (Button) alertDialogAddFriend.findViewById(R.id.add);
-		findUsername = (EditText) alertDialogAddFriend.findViewById(R.id.findUsername);
-		wrong_username = (TextView) alertDialogAddFriend.findViewById(R.id.wa2);
+		dugmeNazad2	= (Button) alertDialogDodajPrijatelja.findViewById(R.id.backb2);
+		dugmeDodajPrijatelja2	= (Button) alertDialogDodajPrijatelja.findViewById(R.id.add);
+		trazenoKorisnickoIme = (EditText) alertDialogDodajPrijatelja.findViewById(R.id.findUsername);
+		pogresnoKorisnickoIme = (TextView) alertDialogDodajPrijatelja.findViewById(R.id.wa2);
 	
 		// listeneri
-		backb2.setOnClickListener(new OnClickListener() {
+		dugmeNazad2.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				
-				alertDialogAddFriend.cancel();
-				// TODO Auto-generated method setup
+				alertDialogDodajPrijatelja.cancel();
 			}
 		});
-		addb.setOnClickListener(new OnClickListener() {
+		dugmeDodajPrijatelja2.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
-				String username = findUsername.getText().toString();
-				if(androidFriendListModel.addFriend(username) == true){
-					friends.add(username);
-				// friends = androidFriendListModel.getUsernamesOfFriends()
-					listview.invalidateViews();
-					Toast friendAdded = Toast.makeText(getApplicationContext(), "Friend succesfully added!", Toast.LENGTH_SHORT);
+				String korisnickoIme = trazenoKorisnickoIme.getText().toString();
+				if(androidModelListePrijatelja.dodajPrijatelja(korisnickoIme) == true){
+					prijatelji.add(korisnickoIme);
+					lista.invalidateViews();
+					Toast friendAdded = Toast.makeText(getApplicationContext(), "Prijatelj uspesno dodat!", Toast.LENGTH_SHORT);
 					friendAdded.show();
 					
 				}
 				else{
-					Toast friendNotAdded = Toast.makeText(getApplicationContext(), "Wrong username", Toast.LENGTH_SHORT);
+					Toast friendNotAdded = Toast.makeText(getApplicationContext(), "Pogresno uneto korisnicko ime.", Toast.LENGTH_SHORT);
+					friendNotAdded.show();
 				}
-				
 				// isprazni polje za findUsername
-				findUsername.setText("");
-								
+				trazenoKorisnickoIme.setText("");			
 			}
 		});
 	

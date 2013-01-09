@@ -8,7 +8,7 @@
         android:id="@+id/friendimage"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:contentDescription="@string/friend_image"
+        android:contentDescription="@string/slika_prijatelja"
         android:src="@drawable/ic_launcher" />
 
     <Button
@@ -17,6 +17,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:text="@string/back" />
+        android:text="@string/nazad" />
 
 </RelativeLayout>

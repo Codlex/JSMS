@@ -3,9 +3,10 @@ package com.codlex.jsms.androidclient;
 
 import java.util.concurrent.ExecutionException;
 
-import com.codlex.jsms.androidclient.networking.CreateAccountTask;
+import com.codlex.jsms.androidclient.networking.ZadatakNapraviNoviNalog;
 import com.codlex.jsms.networking.MSGCode;
-import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.networking.Poruka;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,77 +20,69 @@ import android.widget.TextView;
 public class RegisterActivty extends Activity{
 
 	
-	EditText username,password,email;
-	Button registerb,backb;
+	EditText korisnickoIme,lozinka,email;
+	Button dugmeNapraviNalog,dugmeNazad;
 	TextView log;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_layout);
 		
-		username = (EditText) findViewById(R.id.username2);
-		password = (EditText) findViewById(R.id.password2);
+		korisnickoIme = (EditText) findViewById(R.id.username2);
+		lozinka = (EditText) findViewById(R.id.password2);
 		email = (EditText) findViewById(R.id.email);
-		backb = (Button) findViewById(R.id.backb);
-		registerb = (Button) findViewById(R.id.registerb2);
+		dugmeNazad = (Button) findViewById(R.id.backb);
+		dugmeNapraviNalog = (Button) findViewById(R.id.registerb2);
 		log = (TextView) findViewById(R.id.log);
 		
-		backb.setOnClickListener(new OnClickListener() {
+		dugmeNazad.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				finish();
-				// TODO Auto-generated method stub	
 			}
 		});
 		
-		registerb.setOnClickListener(new OnClickListener() {
+		dugmeNapraviNalog.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				String usernameS,passwordS,emailS;
-				usernameS = username.getText().toString();
-				passwordS = password.getText().toString();
+				String korisnickoImee,lozinkaa,emailS;
+				korisnickoImee = korisnickoIme.getText().toString();
+				lozinkaa = lozinka.getText().toString();
 				emailS = email.getText().toString();
 				
-				CreateAccountTask createAccountTask = new CreateAccountTask();
-				Message response = null;
+				ZadatakNapraviNoviNalog zadatakNapraviNoviNalog = new ZadatakNapraviNoviNalog();
+				Poruka odgovor = null;
 				
 				while(true){
 					
-					createAccountTask.execute(usernameS,passwordS,emailS);
+					zadatakNapraviNoviNalog.execute(korisnickoImee,lozinkaa,emailS);
 					
 					try {
-						response = createAccountTask.get();
+						odgovor = zadatakNapraviNoviNalog.get();
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (ExecutionException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
-					if(response != null)
+					if(odgovor != null)
 						break;
 				}
 			
 				
-				if(response.getMsgCode().equals(MSGCode.SUCCESS)){
-					String token = (String) response.getMsgObject();
+				if(odgovor.getKodPoruke().equals(MSGCode.SUCCESS)){
+					String token = (String) odgovor.getObjekatPoruke();
 					Intent newActivity = new Intent("android.intent.action.USER");
 					newActivity.putExtra("token", token);
-					newActivity.putExtra("username",usernameS);
+					newActivity.putExtra("username",korisnickoImee);
 					finish();
 					startActivity(newActivity);
 				}
 				else{
-					log.setText("Ooops , something went wrong.");
-				}
-				
-				// TODO Auto-generated method stub
-				
+					log.setText("Uhuhuh, Jambo ovde.");
+				}				
 			}
 		});
 		
