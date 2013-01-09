@@ -1,16 +1,15 @@
 package com.codlex.jsms.networking.messages;
 
-import java.awt.Image;
-
 import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.Poruka;
-import com.codlex.jsms.networking.messages.objects.IdentifiedImage;
 
-public class ImageMessage implements Poruka {
-	String token;
-	MSGCode code;
+public class PorukaZaSlanjeSlike implements Poruka {
+
+	private static final long serialVersionUID = 1L;
+	private	String token;
+	private MSGCode code;
 	
-	public ImageMessage(String token) {
+	public PorukaZaSlanjeSlike(String token) {
 		this.code = MSGCode.IMAGE_PING;
 		this.token = token;
 	}

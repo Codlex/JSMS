@@ -1,19 +1,19 @@
 package com.codlex.jsms.networking.messages;
 
-import java.awt.Image;
 import java.util.Collection;
 
 import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.Poruka;
-import com.codlex.jsms.networking.messages.objects.IdentifiedImage;
 
-public class FriendsMessage implements Poruka {
-	Collection<String> friends;
-	MSGCode code;
+public class PorukaSaPrijateljima implements Poruka {
+
+	private static final long serialVersionUID = 1L;
+	private Collection<String> prijatelji;
+	private MSGCode code;
 	
-	public FriendsMessage( Collection<String> friends) {
+	public PorukaSaPrijateljima( Collection<String> prijatelji) {
 		this.code = MSGCode.SUCCESS;
-		this.friends = friends;		
+		this.prijatelji = prijatelji;		
 	}
 	@Override
 	public MSGCode getKodPoruke() {
@@ -22,7 +22,7 @@ public class FriendsMessage implements Poruka {
 
 	@Override
 	public Object getObjekatPoruke() {
-		return friends;
+		return prijatelji;
 	}
 
 }

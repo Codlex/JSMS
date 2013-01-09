@@ -10,9 +10,9 @@ import java.net.Socket;
 
 import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.Korisnik;
-import com.codlex.jsms.networking.messages.AuthMessageFailed;
-import com.codlex.jsms.networking.messages.AuthMessageSuccess;
-import com.codlex.jsms.networking.messages.AuthMessageUserExists;
+import com.codlex.jsms.networking.messages.PorukaAutorizacijaNeuspesna;
+import com.codlex.jsms.networking.messages.PorukaAutorizacijaUspesna;
+import com.codlex.jsms.networking.messages.PorukaOAutorizacijiKorisnikPostoji;
 import com.codlex.jsms.networking.users.OsnovniKorisnik;
 
 /**
@@ -74,9 +74,9 @@ public class AuthServer implements Server{
 			token = getKorisnickiServis().ulogujSe(korisnik);
 			// saljem odgovor token ako je uspesno ili neuspesnu poruku
 			if(token == null) {
-				return new AuthMessageFailed();				
+				return new PorukaAutorizacijaNeuspesna();				
 			}
-			return new AuthMessageSuccess(token);
+			return new PorukaAutorizacijaUspesna(token);
 		case REGISTER:
 			// primljen je zahtev za registraciju korisnika
 			System.out.println("[AUTORIZACIJA::SERVER] Primljena poruka sa REGISTER kodom");
@@ -85,9 +85,9 @@ public class AuthServer implements Server{
 			token = getKorisnickiServis().registrujKorisnika(korisnik);
 			// ukoliko je token null korisnik nije uspesno registrovan na sistem
 			if(token == null) {
-				return new AuthMessageUserExists();				
+				return new PorukaOAutorizacijiKorisnikPostoji();				
 			}
-			return new AuthMessageSuccess(token);
+			return new PorukaAutorizacijaUspesna(token);
 		default:
 			return null;
 		}

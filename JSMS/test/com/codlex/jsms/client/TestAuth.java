@@ -8,7 +8,7 @@ import java.net.UnknownHostException;
 
 import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.Korisnik;
-import com.codlex.jsms.networking.messages.AuthMessage;
+import com.codlex.jsms.networking.messages.PorukaZaAutorizaciju;
 import com.codlex.jsms.networking.users.OsnovniKorisnik;
 
 public class TestAuth {
@@ -18,7 +18,7 @@ public class TestAuth {
 			System.out.println("Connected!");
 			ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 			Korisnik user = new OsnovniKorisnik("deximat", "metallica");
-			Poruka m = new AuthMessage(user);
+			Poruka m = new PorukaZaAutorizaciju(user);
 			output.writeObject(m);
 			
 			ObjectInputStream input = new ObjectInputStream(socket.getInputStream());

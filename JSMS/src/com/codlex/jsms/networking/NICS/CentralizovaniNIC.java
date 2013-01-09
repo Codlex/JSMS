@@ -9,14 +9,14 @@ import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.NIC;
 import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.Korisnik;
-import com.codlex.jsms.networking.messages.AddFriendMessage;
-import com.codlex.jsms.networking.messages.AuthMessage;
-import com.codlex.jsms.networking.messages.GenericSuccessMessage;
-import com.codlex.jsms.networking.messages.GetFriendsMessage;
-import com.codlex.jsms.networking.messages.ImageMessage;
-import com.codlex.jsms.networking.messages.ImageRequestMessage;
-import com.codlex.jsms.networking.messages.RegisterMessage;
-import com.codlex.jsms.networking.messages.objects.IdentifiedRequest;
+import com.codlex.jsms.networking.messages.PorukaZaDodavanjePrijatelja;
+import com.codlex.jsms.networking.messages.PorukaZaAutorizaciju;
+import com.codlex.jsms.networking.messages.PorukaUspeha;
+import com.codlex.jsms.networking.messages.PorukaSaZahtevomZaPrijatelje;
+import com.codlex.jsms.networking.messages.PorukaZaSlanjeSlike;
+import com.codlex.jsms.networking.messages.PorukaZaPrimanjeSlike;
+import com.codlex.jsms.networking.messages.PorukaZaRegistracijuKorisnika;
+import com.codlex.jsms.networking.messages.objects.ZahtevZaIdentifikacijom;
 
 
 /**
@@ -71,7 +71,7 @@ public class CentralizovaniNIC implements NIC {
 		    // pravimo object output stream kako bi serveru poslali poruku
 		    ObjectOutputStream izlaz = new ObjectOutputStream(socket.getOutputStream());
 		    // pravimo novu poruku za registraciju korisnika
-		    Poruka poruka = new RegisterMessage(korisnik);
+		    Poruka poruka = new PorukaZaRegistracijuKorisnika(korisnik);
 		    // saljemo zahtev za registraciju korisnika
 		    izlaz.writeObject(poruka);
 		    // ocekujemo odgovor od servera
@@ -107,7 +107,7 @@ public class CentralizovaniNIC implements NIC {
 		    // otvaramo ObjectOutputStream da bi bili u mogucnosti da saljemo poruku serveru
 		    ObjectOutputStream izlaz = new ObjectOutputStream(socket.getOutputStream());
 		    // pravimo poruku za autorizaciju
-		    Poruka poruka = new AuthMessage(korisnik);
+		    Poruka poruka = new PorukaZaAutorizaciju(korisnik);
 		    // saljemo poruku serveru
 		    izlaz.writeObject(poruka);
 		    System.out.println("Korisnik " + korisnik.getKorisnickoIme() + " je poslao " + 
@@ -156,7 +156,7 @@ public class CentralizovaniNIC implements NIC {
 		    // pravimo object output kako bi mogli da saljemo poruke serveru
 		    ObjectOutputStream izlaz = new ObjectOutputStream(socket.getOutputStream());
 		    // pravimo poruku za dodavanje prijatelja
-		    Poruka poruka = new AddFriendMessage(this.korisnik.getToken(), korisnickoIme);
+		    Poruka poruka = new PorukaZaDodavanjePrijatelja(this.korisnik.getToken(), korisnickoIme);
 		    izlaz.writeObject(poruka);
 		    System.out.println("Poslat zahtev za dodavanje prijatelja");
 		    // pravimo object input stream kako bi ucitali odgovor servera
@@ -190,7 +190,7 @@ public class CentralizovaniNIC implements NIC {
 		    // pravimo object output stream kako bi mogli da saljemo poruke serveru
 		    ObjectOutputStream izlaz = new ObjectOutputStream(socket.getOutputStream());
 		    // pravimo poruku za dobijanje svih prijatelja prijavljenog korisnika
-		    Poruka poruka = new GetFriendsMessage(this.korisnik.getToken());
+		    Poruka poruka = new PorukaSaZahtevomZaPrijatelje(this.korisnik.getToken());
 		    izlaz.writeObject(poruka);
 		    System.out.println("Zahtev za listu prijatelja poslat!");
 		    // pravimo object input stream kako bi procitali odgovor servera na nas zahtev
@@ -225,8 +225,8 @@ public class CentralizovaniNIC implements NIC {
 		    // pravimo object output stream kako bi poslali poruku serveru
 		    ObjectOutputStream izlaz = new ObjectOutputStream(socket.getOutputStream());
 		    // pravimo poruku za uzimanje ekrana datog prijatelja
-		    IdentifiedRequest zahtev = new IdentifiedRequest(this.korisnik.getToken(), korisnickoIme);
-		    Poruka poruka = new ImageRequestMessage(zahtev);
+		    ZahtevZaIdentifikacijom zahtev = new ZahtevZaIdentifikacijom(this.korisnik.getToken(), korisnickoIme);
+		    Poruka poruka = new PorukaZaPrimanjeSlike(zahtev);
 		    izlaz.writeObject(poruka);
 		    System.out.println("Zahtev za ekran poslat");
 		    // pravimo object input stream kako bi procitali odgovor servera
@@ -238,8 +238,8 @@ public class CentralizovaniNIC implements NIC {
 			System.out.println("Token:" + odgovor.getObjekatPoruke());
 			// ako je slika uspesno procitana onda saljemo klijentu poruku sa output streamom odakle moze da ucita sliku
 			if(odgovor.getKodPoruke().equals(MSGCode.SUCCESS)) {
-				GenericSuccessMessage message = (GenericSuccessMessage)odgovor;
-				message.setMsgObject(socket.getInputStream());
+				PorukaUspeha message = (PorukaUspeha)odgovor;
+				message.setObjekatPoruke(socket.getInputStream());
 			}		      
 			return odgovor;
 		} catch (IOException e) {
@@ -261,12 +261,12 @@ public class CentralizovaniNIC implements NIC {
 		    // pravimo object output stream da bi mogli da mu posaljemo poruku
 		    ObjectOutputStream izlaz = new ObjectOutputStream(socket.getOutputStream());
 		    // pravimo poruku koja priprema server da primi sliku
-		    Poruka poruka = new ImageMessage(this.korisnik.getToken());
+		    Poruka poruka = new PorukaZaSlanjeSlike(this.korisnik.getToken());
 		    izlaz.writeObject(poruka);
 		    System.out.println("Poruka za pripremu servera da primi sliku poslata");
 		    // genericnu poruku uspeha saljemo klijentu sa output streamom-om na koji treba da drmne sliku
-		    GenericSuccessMessage odgovor = new GenericSuccessMessage();
-			odgovor.setMsgObject(socket.getOutputStream());  
+		    PorukaUspeha odgovor = new PorukaUspeha();
+			odgovor.setObjekatPoruke(socket.getOutputStream());  
 			return odgovor;
 			
 		} catch (IOException e) {

@@ -13,10 +13,10 @@ import java.util.Stack;
 
 import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.Korisnik;
-import com.codlex.jsms.networking.messages.FriendsMessage;
-import com.codlex.jsms.networking.messages.GenericSuccessMessage;
-import com.codlex.jsms.networking.messages.UserDoesntExistMessage;
-import com.codlex.jsms.networking.messages.objects.MeAndFriend;
+import com.codlex.jsms.networking.messages.PorukaSaPrijateljima;
+import com.codlex.jsms.networking.messages.PorukaUspeha;
+import com.codlex.jsms.networking.messages.PorukaKorisnikNePostoji;
+import com.codlex.jsms.networking.messages.objects.JaIPrijatelj;
 
 /**
  * Server koji prihvata slike ekrana korisnika i osvezava svoju bazu. 
@@ -66,31 +66,31 @@ public class FriendsServer implements Server{
 				Korisnik korisnik = getKorisnickiServis().getKorisnikPoTokenu(token);
 				// ukoliko nije null to znaci da je token ok
 				if(korisnik == null) {
-					return new UserDoesntExistMessage();
+					return new PorukaKorisnikNePostoji();
 				}
 				// uzimamo njegove prijatelje
 				Collection<String> prijatelji = getServisPrijateljstva().getPrijatelji(korisnik.getKorisnickoIme());
 				// ukoliko nema prijatelje saljemo mu praznu listu
 				if( prijatelji == null || prijatelji.isEmpty() ) {
-					return new FriendsMessage(new Stack<String>());
+					return new PorukaSaPrijateljima(new Stack<String>());
 				}
-				return new FriendsMessage(prijatelji);				
+				return new PorukaSaPrijateljima(prijatelji);				
 			case ADD_FRIEND:
 				// poruka koju smo primili zahteva dodavanje novog prijatelja identifikovanom korisniku
 				System.out.println("[PRIJATELJSTVO::SERVER] Dobijen ADD_FRIEND kod");
-				MeAndFriend jaIPrijatelj = (MeAndFriend) poruka.getObjekatPoruke();
+				JaIPrijatelj jaIPrijatelj = (JaIPrijatelj) poruka.getObjekatPoruke();
 				// iz poruke izvlacimo informacije potrebne za obradu poruke
 				Korisnik ja = getKorisnickiServis().getKorisnikPoTokenu(jaIPrijatelj.getToken());
-				Korisnik ono = getKorisnickiServis().getKorisnikPoKorisnickomImenu(jaIPrijatelj.getFriend());
+				Korisnik ono = getKorisnickiServis().getKorisnikPoKorisnickomImenu(jaIPrijatelj.getPrijatelj());
 				// proveravamo da li zeljeni korisnici postoje u sistemu
 				if(ja == null || ono == null ) {
-					return new UserDoesntExistMessage();
+					return new PorukaKorisnikNePostoji();
 				}
 				// ukoliko smo sve gore prosli, mozemo da dodamo vezu u graf prijateljstva
 				getServisPrijateljstva().dodajPrijatelja(ja.getKorisnickoIme(), ono.getKorisnickoIme());
 				System.out.println("[PRIJATELJSTVO::SERVER] " + ja.getKorisnickoIme() + " se upoznao sa " + ono.getKorisnickoIme());
 				// saljemo poruku o uspehu
-				return new GenericSuccessMessage();				
+				return new PorukaUspeha();				
 			default:
 				return null;
 		}

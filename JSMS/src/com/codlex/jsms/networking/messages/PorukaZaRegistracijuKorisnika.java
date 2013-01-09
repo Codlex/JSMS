@@ -4,14 +4,15 @@ import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.Korisnik;
 
-public class AuthMessage implements Poruka{
+public class PorukaZaRegistracijuKorisnika implements Poruka{
+	
     private static final long serialVersionUID = 1L;
-
-	Korisnik user;
-	MSGCode code;
-	public AuthMessage(Korisnik existingUser) {
-		this.user = existingUser;
-		this.code = MSGCode.AUTH;
+	private Korisnik korisnik;
+	private MSGCode code;
+	
+	public PorukaZaRegistracijuKorisnika(Korisnik noviKorisnik) {
+		this.korisnik = noviKorisnik;
+		this.code = MSGCode.REGISTER;
 	}
 	@Override
 	public MSGCode getKodPoruke() {
@@ -19,7 +20,7 @@ public class AuthMessage implements Poruka{
 	}
 	@Override
 	public Object getObjekatPoruke() {
-		return user;
+		return korisnik;
 	}
 
 }

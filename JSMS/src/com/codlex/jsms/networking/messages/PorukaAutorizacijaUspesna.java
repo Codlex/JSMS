@@ -3,11 +3,15 @@ package com.codlex.jsms.networking.messages;
 import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.Poruka;
 
-public class GenericSuccessMessage implements Poruka {
+public class PorukaAutorizacijaUspesna implements Poruka {
+
+	private static final long serialVersionUID = 1L;
 	private MSGCode code;
-	private Object o;
-	public GenericSuccessMessage() {
+	private String token;
+	
+	public PorukaAutorizacijaUspesna(String token) {
 		this.code = MSGCode.SUCCESS;
+		this.token = token;
 	}
 	@Override
 	public MSGCode getKodPoruke() {
@@ -16,12 +20,7 @@ public class GenericSuccessMessage implements Poruka {
 	
 	@Override
 	public Object getObjekatPoruke() {
-		return o;
+		return token;
 	}
-	
-	public void setMsgObject(Object o) {
-		this.o = o;
-	}
-
 
 }

@@ -13,10 +13,10 @@ import java.net.Socket;
 
 import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.Korisnik;
-import com.codlex.jsms.networking.messages.AuthMessageFailed;
-import com.codlex.jsms.networking.messages.GenericSuccessMessage;
-import com.codlex.jsms.networking.messages.UserDoesntExistMessage;
-import com.codlex.jsms.networking.messages.objects.IdentifiedRequest;
+import com.codlex.jsms.networking.messages.PorukaAutorizacijaNeuspesna;
+import com.codlex.jsms.networking.messages.PorukaUspeha;
+import com.codlex.jsms.networking.messages.PorukaKorisnikNePostoji;
+import com.codlex.jsms.networking.messages.objects.ZahtevZaIdentifikacijom;
 import com.codlex.jsms.utils.PisacKompresovaneSlike;
 
 /**
@@ -59,16 +59,16 @@ public class GetImageServer implements Server {
 					// pravimo izlaz za nas odgovor na zahtev
 					ObjectOutputStream izlaz = new ObjectOutputStream(socket.getOutputStream());
 					// iz poruke uzimamo zahtev
-					IdentifiedRequest zahtev = (IdentifiedRequest) poruka.getObjekatPoruke();
+					ZahtevZaIdentifikacijom zahtev = (ZahtevZaIdentifikacijom) poruka.getObjekatPoruke();
 					// proveravamo da li je korisnik ulogovan
-					if( getKorisnickiServis().getKorisnikPoTokenu(zahtev.getTokenSignature()) != null ) {
-						Korisnik korisnik = getKorisnickiServis().getKorisnikPoKorisnickomImenu(zahtev.getRequestedUsername());
+					if( getKorisnickiServis().getKorisnikPoTokenu(zahtev.getToken()) != null ) {
+						Korisnik korisnik = getKorisnickiServis().getKorisnikPoKorisnickomImenu(zahtev.getZahtevanoKorisnickoIme());
 						if ( korisnik == null ) {
-							System.out.println("[POSILJALAC_SLIKE::SERVER] Korisnik " + zahtev.getRequestedUsername() + " nije pronadjen!");
-							izlaz.writeObject( new UserDoesntExistMessage() );
+							System.out.println("[POSILJALAC_SLIKE::SERVER] Korisnik " + zahtev.getZahtevanoKorisnickoIme() + " nije pronadjen!");
+							izlaz.writeObject( new PorukaKorisnikNePostoji() );
 						}
 						// ukoliko je korisnik pronadjen saljemo korisniku odgovor da se spremi za ucitavanje slike
-						izlaz.writeObject(new GenericSuccessMessage());
+						izlaz.writeObject(new PorukaUspeha());
 						System.out.println("[POSILJALAC_SLIKE::SERVER] Poruka o uspesnom zahtevu poslata!");
 						System.out.println("[POSILJALAC_SLIKE::SERVER] Saljem sliku!");
 						// uzimam sliku trazenog korisnika
@@ -80,7 +80,7 @@ public class GetImageServer implements Server {
 						socket.close();
 					}
 					else {
-						izlaz.writeObject( new AuthMessageFailed());
+						izlaz.writeObject( new PorukaAutorizacijaNeuspesna());
 						System.out.println("[POSILJALAC_SLIKE::SERVER] Neuspelo slanje");			
 					}
 				} catch (IOException e) {

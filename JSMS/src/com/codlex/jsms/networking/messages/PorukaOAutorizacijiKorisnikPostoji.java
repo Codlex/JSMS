@@ -3,9 +3,12 @@ package com.codlex.jsms.networking.messages;
 import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.Poruka;
 
-public class AuthMessageUserExists implements Poruka {
-	MSGCode code;
-	public AuthMessageUserExists() {
+public class PorukaOAutorizacijiKorisnikPostoji implements Poruka {
+
+	private static final long serialVersionUID = 1L;
+	private MSGCode code;
+	
+	public PorukaOAutorizacijiKorisnikPostoji() {
 		this.code = MSGCode.USERNAME_EXISTS;
 	}
 	@Override
