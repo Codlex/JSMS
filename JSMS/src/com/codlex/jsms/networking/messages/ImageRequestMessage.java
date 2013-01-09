@@ -1,10 +1,10 @@
 package com.codlex.jsms.networking.messages;
 
 import com.codlex.jsms.networking.MSGCode;
-import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.messages.objects.IdentifiedRequest;
 
-public class ImageRequestMessage implements Message {
+public class ImageRequestMessage implements Poruka {
 	IdentifiedRequest request;
 	MSGCode code;
 	
@@ -14,7 +14,7 @@ public class ImageRequestMessage implements Message {
 	}
 	
 	@Override
-	public MSGCode getMsgCode() {
+	public MSGCode getKodPoruke() {
 		return code;
 	}
 

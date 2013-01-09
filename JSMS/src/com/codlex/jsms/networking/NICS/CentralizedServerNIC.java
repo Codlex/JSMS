@@ -11,7 +11,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import com.codlex.jsms.networking.MSGCode;
-import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.NIC;
 import com.codlex.jsms.networking.User;
 import com.codlex.jsms.networking.messages.AddFriendMessage;
@@ -60,21 +60,21 @@ public class CentralizedServerNIC implements NIC {
 	}
 	
 	@Override
-	public Message createAccount(User user) {
+	public Poruka createAccount(User user) {
 		try {
 		    Socket socket = new Socket(authServer, authPort);
 		    System.out.println("Connected to auth server!");
 		    ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
-		    Message m = new RegisterMessage(user);
+		    Poruka m = new RegisterMessage(user);
 		    output.writeObject(m);
 		    System.out.println("User " + user.getUsername() + " sent " + 
 		    		           "request to be authorised by password " + 
 		    		           user.getPassword());
 		    
 		    ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
-			Message response = (Message) input.readObject();
+			Poruka response = (Poruka) input.readObject();
 			System.out.println("Server responded with code");
-			System.out.println(response.getMsgCode());
+			System.out.println(response.getKodPoruke());
 			System.out.println("Token:" + response.getMsgObject());
 			
 			//Setting user context
@@ -98,21 +98,21 @@ public class CentralizedServerNIC implements NIC {
 	}
 	
 	@Override
-	public Message logIn(User user) {
+	public Poruka logIn(User user) {
 		try {
 		    Socket socket = new Socket(authServer, authPort);
 		    System.out.println("Connected to auth server!");
 		    ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
-		    Message m = new AuthMessage(user);
+		    Poruka m = new AuthMessage(user);
 		    output.writeObject(m);
 		    System.out.println("User " + user.getUsername() + " sent " + 
 		    		           "request to be authorised by password " + 
 		    		           user.getPassword());
 		    
 		    ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
-			Message response = (Message) input.readObject();
+			Poruka response = (Poruka) input.readObject();
 			System.out.println("Server responded with code");
-			System.out.println(response.getMsgCode());
+			System.out.println(response.getKodPoruke());
 			System.out.println("Token:" + response.getMsgObject());
 			
 			//Setting user context
@@ -136,25 +136,25 @@ public class CentralizedServerNIC implements NIC {
 	}
 	
 	@Override
-	public Message sendMessage(Message message)  {
+	public Poruka sendMessage(Poruka message)  {
 		System.out.println("Not implemented");
 		return null;
 	}
 	
 	@Override
-	public Message addFriend(String username) {
+	public Poruka addFriend(String username) {
 		try {
 		    Socket socket = new Socket(friendsServer, friendsPort);
 		    System.out.println("Connected to friends server!");
 		    ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
-		    Message m = new AddFriendMessage(this.user.getToken(), username);
+		    Poruka m = new AddFriendMessage(this.user.getToken(), username);
 		    output.writeObject(m);
 		    System.out.println("Add friend request sent");
 		    
 		    ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
-			Message response = (Message) input.readObject();
+			Poruka response = (Poruka) input.readObject();
 			System.out.println("Server responded with code");
-			System.out.println(response.getMsgCode());
+			System.out.println(response.getKodPoruke());
 			System.out.println("Token:" + response.getMsgObject());
 			
 			output.close();
@@ -174,19 +174,19 @@ public class CentralizedServerNIC implements NIC {
 	}
 	
 	@Override
-	public Message getFriends() {
+	public Poruka getFriends() {
 		try {
 		    Socket socket = new Socket(friendsServer, friendsPort);
 		    System.out.println("Connected to friends server!");
 		    ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
-		    Message m = new GetFriendsMessage(this.user.getToken());
+		    Poruka m = new GetFriendsMessage(this.user.getToken());
 		    output.writeObject(m);
 		    System.out.println("Get friends request sent");
 		    
 		    ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
-			Message response = (Message) input.readObject();
+			Poruka response = (Poruka) input.readObject();
 			System.out.println("Server responded with code");
-			System.out.println(response.getMsgCode());
+			System.out.println(response.getKodPoruke());
 			System.out.println("Token:" + response.getMsgObject());
 			
 			output.close();
@@ -207,22 +207,22 @@ public class CentralizedServerNIC implements NIC {
 	
 	
 	@Override
-	public Message getScreen(String username) {
+	public Poruka getScreen(String username) {
 		try {
 		    Socket socket = new Socket(getImageServer, getImagePort);
 		    System.out.println("Connected to getImage server!");
 		    ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 		    IdentifiedRequest request = new IdentifiedRequest(this.user.getToken(), username);
-		    Message m = new ImageRequestMessage(request);
+		    Poruka m = new ImageRequestMessage(request);
 		    output.writeObject(m);
 		    System.out.println("Get image request sent");
 		    
 		    ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
-			Message response = (Message) input.readObject();
+			Poruka response = (Poruka) input.readObject();
 			System.out.println("Server responded with code");
-			System.out.println(response.getMsgCode());
+			System.out.println(response.getKodPoruke());
 			System.out.println("Token:" + response.getMsgObject());
-			if(response.getMsgCode().equals(MSGCode.SUCCESS)) {
+			if(response.getKodPoruke().equals(MSGCode.SUCCESS)) {
 				GenericSuccessMessage message = (GenericSuccessMessage)response;
 				message.setMsgObject(socket.getInputStream());
 			}		      
@@ -240,12 +240,12 @@ public class CentralizedServerNIC implements NIC {
 	}
 	
 	@Override
-	public Message pingScreen() {
+	public Poruka pingScreen() {
 		try {
 		    Socket socket = new Socket(pingImageServer, pingImagePort);
 		    System.out.println("Connected to pingImage server!");
 		    ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
-		    Message m = new ImageMessage(this.user.getToken());
+		    Poruka m = new ImageMessage(this.user.getToken());
 		    output.writeObject(m);
 		    System.out.println("Ping image request sent");
 		    GenericSuccessMessage response = new GenericSuccessMessage();

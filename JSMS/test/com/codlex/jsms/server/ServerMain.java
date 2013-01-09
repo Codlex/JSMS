@@ -5,7 +5,7 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.StringMessage;
 import com.codlex.jsms.server.*;
 

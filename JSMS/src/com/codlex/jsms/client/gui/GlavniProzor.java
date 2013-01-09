@@ -27,31 +27,45 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import com.codlex.jsms.client.ImagePinger;
-import com.codlex.jsms.client.model.FriendListModelImpl;
-import com.codlex.jsms.client.model.TabbedPaneFriend;
+import com.codlex.jsms.client.PosaljilacSlika;
+import com.codlex.jsms.client.gui.paneli.PanelSaBorderLejautom;
+import com.codlex.jsms.client.gui.paneli.PanelZaSliku;
+import com.codlex.jsms.client.model.ModelListePrijateljaImplementacija;
+import com.codlex.jsms.client.model.TabbedPanePrijatelj;
 import com.codlex.jsms.networking.MSGCode;
-import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.NICS.CentralizedServerNIC;
 
 /**
+ * Glavni prozor u kome se nalazi lista prijatelja ulogovanog korisnika kao i ekran trenutno selektovanog korisnika.
+ * Korisnik je sa ovog prozora u mogucnosti da se izloguje i da doda novog prijatelja.
  * 
- * 
- * @author Dejan Pekter RN 13/11
+ * @author Dejan Pekter RN 13/11 <dpekter11@raf.edu.rs>
  * 
  */
 
-public class MainWindow extends JFrame {
+public class GlavniProzor extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	JTabbedPane ekrani;
-	ImagePinger imagePinger;
-	public MainWindow(String naslov) {
-		imagePinger = new ImagePinger();
-		Thread imagePingerThread = new Thread(imagePinger);
-		imagePingerThread.start();
-		FriendListModelImpl.createModel();
-		Osvezivac osvezivac = new Osvezivac();
-		Thread osvezivacThread = new Thread(osvezivac);
-		osvezivacThread.start();
+	PosaljilacSlika posiljalacSlika;
+	Osvezivac osvezivac;
+	
+	public GlavniProzor(String naslov) {
+		// ukljucujemo tred koji osvezava sliku ovog korisnika na serveru
+		posiljalacSlika = new PosaljilacSlika();
+		Thread tredPosiljaocaSlika = new Thread(posiljalacSlika);
+		tredPosiljaocaSlika.start();
+		// pravimo model korisnikovih prijatelja
+		// to je moguce sada uraditi posto je u mreznom sloju upisan korisnikov token 
+		ModelListePrijateljaImplementacija.napraviModel();
+		
+		// ukljucujemo tred koji osvezava sliku trenutno selektovanog prijatelja u glavnom prozoru
+		osvezivac = new Osvezivac();
+		Thread osvezivacTred = new Thread(osvezivac);
+		osvezivacTred.start();
 		
 
 		// Uzimam dimenzije ekrana
@@ -81,7 +95,7 @@ public class MainWindow extends JFrame {
 				"/resources/gui/pozadina.jpg"))).getImage());
 
 		// panel za logo fakulteta
-		PanelSaBorderLejoutom gornjiPanel = new PanelSaBorderLejoutom();
+		PanelSaBorderLejautom gornjiPanel = new PanelSaBorderLejautom();
 		gornjiPanel.setPreferredSize(new Dimension(this.getWidth(), 64));
 		gornjiPanel.setLayout(new BorderLayout());
 
@@ -93,91 +107,67 @@ public class MainWindow extends JFrame {
 			gornjiPanel.add(pozadina, BorderLayout.CENTER);
 
 		// pravim glavni panel i dodajem mu gornji panel
-		PanelSaBorderLejoutom glavniPanel = new PanelSaBorderLejoutom();
+		PanelSaBorderLejautom glavniPanel = new PanelSaBorderLejautom();
 		glavniPanel.add(gornjiPanel, BorderLayout.NORTH);
 
 		// JTabbedPane modifikovan potrebama programa koji ce da sadrzi sve
-		// studente
-		ekrani = FriendListModelImpl.getPane();
-		/*
-		 * Student.setSadrzalacStudenata(ekrani);
-		 */
-		// podrazumevani tab dok se studenti ne konektuju
-
+		// prijatelje
+		ekrani = ModelListePrijateljaImplementacija.getPane();
 		ekrani.setForeground(Color.BLACK);
-
-		// ubacujemo StudenteIEkrane na glavi panel
 		glavniPanel.add(ekrani, BorderLayout.CENTER);
 		
 		
 		// panel za izlogovanje i dodavanje prijatelja
-		PanelSaBorderLejoutom panelSaDugmicima = new PanelSaBorderLejoutom();
-		
+		PanelSaBorderLejautom panelSaDugmicima = new PanelSaBorderLejautom();
 		// dodavanje prijatelja dugme
 		JButton dodajPrijatelja = new JButton("Dodaj prijatelja");
 		dodajPrijatelja.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String username = JOptionPane.showInputDialog("Unesite username prijatelja kojeg zelite da dodate:");
-				Message response = CentralizedServerNIC.getNICService().addFriend(username);
-				if(response.getMsgCode().equals(MSGCode.SUCCESS)) {
-					ekrani.add(username, new TabbedPaneFriend(username, ekrani));
+				String korisnickoIme = JOptionPane.showInputDialog(GlavniProzor.this, "Unesite username prijatelja kojeg zelite da dodate:");
+				Poruka odgovor = CentralizedServerNIC.getNICService().addFriend(korisnickoIme);
+				if(odgovor.getKodPoruke().equals(MSGCode.SUCCESS)) {
+					ekrani.add(korisnickoIme, new TabbedPanePrijatelj(korisnickoIme, ekrani));
 				} 
 				else {
-					JOptionPane.showMessageDialog(MainWindow.this, "Username koji ste uneli nije moguce dodati!");
+					JOptionPane.showMessageDialog(GlavniProzor.this, "Username koji ste uneli nije moguce dodati!");
 				}
 			}
 		});
-		panelSaDugmicima.add(dodajPrijatelja, BorderLayout.WEST);
 		
+		panelSaDugmicima.add(dodajPrijatelja, BorderLayout.WEST);
+		// dugme za napustanje sistema
 		JButton izadji = new JButton("Izadji");
 		izadji.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				MainWindow.this.imagePinger.stop();
-				MainWindow.this.dispose();
-				new LoginScreen().setVisible(true);
+				// resava se prozora i cisti iza sebe
+				izlogujSe();
 			}
 		});
 		panelSaDugmicima.add(izadji, BorderLayout.EAST);
 		add(panelSaDugmicima, BorderLayout.SOUTH);
 		// stavljam na glavni prozor ovaj panel
 		this.add(glavniPanel);
-
-		// Osvezivac je tred koji osvezava sliku ekrana selektovanog studenta
-		/*
-		 * Thread osvezivac = new Thread(new Osvezivac(ekrani));
-		 * osvezivac.start();
-		 */
 	}
 
-	private class PanelSaBorderLejoutom extends JPanel {
-		public PanelSaBorderLejoutom() {
-			this.setLayout(new BorderLayout());
-		}
-	}
 
-	private class PanelZaSliku extends JPanel {
-		private Image slika;
 
-		public PanelZaSliku(Image slika) {
-			super();
-			this.slika = slika;
-			// podesavanje velicine panela na velicinu slike
-			this.setPreferredSize(new Dimension(slika.getWidth(this), slika
-					.getHeight(this)));
-		}
+	
 
-		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			// iscrtavanje slike
-			g.drawImage(slika, 0, 0, this.getWidth(), slika.getHeight(this),
-					this);
-
-		}
-
+	public void izlogujSe() {
+		// ugasi posiljaoca slika
+		GlavniProzor.this.posiljalacSlika.zaustavljeno();
+		GlavniProzor.this.posiljalacSlika = null;
+		// ugasi osvezivaca
+		GlavniProzor.this.osvezivac.zaustavljeno();
+		GlavniProzor.this.osvezivac = null;
+		
+		// resi se prozora
+		GlavniProzor.this.dispose();
+		CentralizedServerNIC.getNICService().logOut();
+		new ProzorZaPrijavljivanje().setVisible(true);
 	}
 
 }

@@ -10,7 +10,7 @@ package com.codlex.jsms.networking;
  *
  */
 public interface NIC {
-	public Message sendMessage(Message message);
+	public Poruka sendMessage(Poruka message);
 	/**
 	 * Metoda vraca poruku koja sadrzi kod koji govori da li je uspesno logovanje
 	 * i ukoliko jeste tada se u getMessageObject te poruke nalazi string sa 
@@ -19,14 +19,14 @@ public interface NIC {
 	 * @param authInfo - poruka koja sadrzi informacije potrebne za logovanje
 	 * 
 	 */
-	public Message logIn(User authInfo);
+	public Poruka logIn(User authInfo);
 	public void logOut();
-	public Message createAccount(User user);
-	public Message addFriend(String username);
-	public Message getFriends();
+	public Poruka createAccount(User user);
+	public Poruka addFriend(String username);
+	public Poruka getFriends();
 	public boolean isLoggedIn();
 	public User getLoggedUser();
-	public Message getScreen(String username);
-	public Message pingScreen();
+	public Poruka getScreen(String username);
+	public Poruka pingScreen();
 
 }

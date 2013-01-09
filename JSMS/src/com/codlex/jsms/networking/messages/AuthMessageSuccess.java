@@ -1,9 +1,9 @@
 package com.codlex.jsms.networking.messages;
 
 import com.codlex.jsms.networking.MSGCode;
-import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.networking.Poruka;
 
-public class AuthMessageSuccess implements Message {
+public class AuthMessageSuccess implements Poruka {
 	private MSGCode code;
 	private String token;
 	public AuthMessageSuccess(String token) {
@@ -11,7 +11,7 @@ public class AuthMessageSuccess implements Message {
 		this.token = token;
 	}
 	@Override
-	public MSGCode getMsgCode() {
+	public MSGCode getKodPoruke() {
 		return code;
 	}
 	

@@ -4,10 +4,10 @@ import java.awt.Image;
 import java.util.Collection;
 
 import com.codlex.jsms.networking.MSGCode;
-import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.messages.objects.IdentifiedImage;
 
-public class FriendsMessage implements Message {
+public class FriendsMessage implements Poruka {
 	Collection<String> friends;
 	MSGCode code;
 	
@@ -16,7 +16,7 @@ public class FriendsMessage implements Message {
 		this.friends = friends;		
 	}
 	@Override
-	public MSGCode getMsgCode() {
+	public MSGCode getKodPoruke() {
 		return code;
 	}
 

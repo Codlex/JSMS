@@ -14,7 +14,7 @@ import java.net.Socket;
 
 import javax.imageio.ImageIO;
 
-import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.User;
 import com.codlex.jsms.networking.messages.AuthMessageFailed;
 import com.codlex.jsms.networking.messages.GenericSuccessMessage;
@@ -48,7 +48,7 @@ public class GetImageServer implements Server {
 					}
 					ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
 					System.out.println("[GET_IMAGE::SERVER] Reading message");
-					Message message = (Message) input.readObject();
+					Poruka message = (Poruka) input.readObject();
 					System.out.println("[GET_IMAGE::SERVER] Message recived");
 					ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 					IdentifiedRequest request = (IdentifiedRequest) message.getMsgObject();

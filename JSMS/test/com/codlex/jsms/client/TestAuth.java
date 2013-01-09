@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.StringMessage;
 import com.codlex.jsms.networking.User;
 import com.codlex.jsms.networking.messages.AuthMessage;
@@ -19,13 +19,13 @@ public class TestAuth {
 			System.out.println("Connected!");
 			ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 			User user = new BaseUser("deximat", "metallica");
-			Message m = new AuthMessage(user);
+			Poruka m = new AuthMessage(user);
 			output.writeObject(m);
 			
 			ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
-			Message response = (Message) input.readObject();
+			Poruka response = (Poruka) input.readObject();
 			
-			System.out.println(response.getMsgCode());
+			System.out.println(response.getKodPoruke());
 			System.out.println("Token:" + response.getMsgObject());
 			
 		} catch (UnknownHostException e) {

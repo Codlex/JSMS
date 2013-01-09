@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.StringMessage;
 
 public class TestClient {
@@ -16,15 +16,15 @@ public class TestClient {
 			System.out.println("Connected!");
 			ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 			StringMessage m = new StringMessage("Da Vidimo ladi ri?");
-			output.writeObject((Message) m);
+			output.writeObject((Poruka) m);
 			if(socket.isClosed()) System.out.println("Sranje");
 			System.out.println("Object sent!");
 			
 			
 			ObjectInputStream a = new ObjectInputStream(socket.getInputStream());
-			Message message = (Message) a.readObject();
+			Poruka message = (Poruka) a.readObject();
 			System.out.println("Message I got is:");
-			System.out.println(message.getMsgCode());
+			System.out.println(message.getKodPoruke());
 			System.out.println(message.getMsgObject());
 			
 		} catch (UnknownHostException e) {

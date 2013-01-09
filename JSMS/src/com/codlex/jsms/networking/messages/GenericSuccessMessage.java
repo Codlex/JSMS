@@ -1,16 +1,16 @@
 package com.codlex.jsms.networking.messages;
 
 import com.codlex.jsms.networking.MSGCode;
-import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.networking.Poruka;
 
-public class GenericSuccessMessage implements Message {
+public class GenericSuccessMessage implements Poruka {
 	private MSGCode code;
 	private Object o;
 	public GenericSuccessMessage() {
 		this.code = MSGCode.SUCCESS;
 	}
 	@Override
-	public MSGCode getMsgCode() {
+	public MSGCode getKodPoruke() {
 		return code;
 	}
 	

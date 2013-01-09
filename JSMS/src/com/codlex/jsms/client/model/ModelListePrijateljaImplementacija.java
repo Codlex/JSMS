@@ -14,33 +14,50 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-
-import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.client.gui.paneli.PanelZaSliku;
+import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.NICS.CentralizedServerNIC;
 
-public class FriendListModelImpl extends JTabbedPane{
-    private static JTabbedPane tabbedPane;
-	public FriendListModelImpl(){
+public class ModelListePrijateljaImplementacija extends JTabbedPane{
+
+	private static final long serialVersionUID = 1L;
+	private static JTabbedPane tabbedPane;
+	
+	public ModelListePrijateljaImplementacija(){
             super();
-            this.setTabPlacement(FriendListModelImpl.LEFT);
+            this.setTabPlacement(ModelListePrijateljaImplementacija.LEFT);
     }       
+	
     public static JTabbedPane getPane() {
     	return tabbedPane;
     }
     
-    public static void createModel() {
-    	Message m = CentralizedServerNIC.getNICService().getFriends();
-    	Collection<String> friends = (Collection<String>) m.getMsgObject();
+    /**
+     * Pravi model za trenutno ulogovanog korisnika.
+     * Podatke o korisniku uzima iz sistema.
+     */
+    @SuppressWarnings("unchecked")
+	public static void napraviModel() {
+    	// trazimo od servera listu prijatelja trenutno ulogovanog korisnika
+    	Poruka odgovor = CentralizedServerNIC.getNICService().getFriends();
+    	// u odgovoru se nalazi lista prijatelja trenutnog korisnika
+    	// ukoliko korisnik nema prijatelja vraca se prazna lista
+    	Collection<String> prijatelji = (Collection<String>) odgovor.getMsgObject();
+    	// instanciramo model
+    	tabbedPane = new ModelListePrijateljaImplementacija();
+    	// dodeljujemo prvu stavku kao podrazumevani pane dok nema korisnika
+    	tabbedPane.add("P r i j a t e lj i", ((ModelListePrijateljaImplementacija)tabbedPane).new PodrazumevaniPanel());
     	
-    	tabbedPane = new FriendListModelImpl();
-    	tabbedPane.add("F r i e n d s", ((FriendListModelImpl)tabbedPane).new PodrazumevaniPanel());
-    	for(String friend : friends) {
-    		tabbedPane.add(friend, new TabbedPaneFriend(friend, tabbedPane));    		
+    	for(String prijatelj : prijatelji) {
+    		tabbedPane.add(prijatelj, new TabbedPanePrijatelj(prijatelj, tabbedPane));    		
     	}
     }
     
+    
     public class PodrazumevaniPanel extends JPanel {
-        public PodrazumevaniPanel(){
+		private static final long serialVersionUID = 1L;
+
+		public PodrazumevaniPanel(){
                 super();
                 //podesavanja panela
                 this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -53,22 +70,23 @@ public class FriendListModelImpl extends JTabbedPane{
                 this.add(omotac);
                 
                 //Poruka dobrodoslice - stil i dodavanje na panel
-                JLabel dobrodoslica = new JLabel("Dobrodosli u profesorsko oko!");
+                JLabel dobrodoslica = new JLabel("Dobrodosli u Codlex oko!");
                 dobrodoslica.setAlignmentX(CENTER_ALIGNMENT);
                 dobrodoslica.setFont(new Font(Font.SERIF, Font.BOLD, 30) );
                 dobrodoslica.setForeground(Color.WHITE);
                 this.add(dobrodoslica);
-                
                 
                 //odvajanje od dna prozora
                 this.add(new ZauzmiProstor(50));
         }               
     }
     
- // Graficki elemenat koji resava zauzima odredjeni prazan vertikalni prostor
+    // Graficki elemenat koji resava zauzima odredjeni prazan vertikalni prostor
     private class ZauzmiProstor extends JPanel{
-            /**
-             * 
+
+		private static final long serialVersionUID = 1L;
+
+			/**
              * @param height kolicina vertikalnog prostora koji zelimo da popunimo prazninom
              */
             public ZauzmiProstor(int height){
@@ -77,31 +95,5 @@ public class FriendListModelImpl extends JTabbedPane{
                     this.setPreferredSize(new Dimension(0, height));
             }
     }
-    
-    private class PanelSaBorderLejoutom extends JPanel{     
-        public PanelSaBorderLejoutom() {
-
-                this.setLayout(new BorderLayout());
-        }
-}
-private class PanelZaSliku extends JPanel{
-        private Image slika;
-        
-        public PanelZaSliku(Image slika){
-                super();
-                this.slika = slika;     
-                //podesavanje velicine panela na velicinu slike
-                this.setPreferredSize(new Dimension(slika.getWidth(this), slika.getHeight(this)));                      
-        }
-        
-        public void paintComponent(Graphics g){
-                super.paintComponent(g);
-                //iscrtavanje slike 
-                g.drawImage(slika, 0, 0, this.getWidth(), slika.getHeight(this), this);
-                
-        }
-
-}
-    
-    
+     
 }

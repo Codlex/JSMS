@@ -3,10 +3,10 @@ package com.codlex.jsms.networking.messages;
 import java.awt.Image;
 
 import com.codlex.jsms.networking.MSGCode;
-import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.messages.objects.IdentifiedImage;
 
-public class ImageMessage implements Message {
+public class ImageMessage implements Poruka {
 	String token;
 	MSGCode code;
 	
@@ -15,7 +15,7 @@ public class ImageMessage implements Message {
 		this.token = token;
 	}
 	@Override
-	public MSGCode getMsgCode() {
+	public MSGCode getKodPoruke() {
 		return code;
 	}
 

@@ -1,10 +1,10 @@
 package com.codlex.jsms.networking.messages;
 
 import com.codlex.jsms.networking.MSGCode;
-import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.User;
 
-public class AuthMessage implements Message{
+public class AuthMessage implements Poruka{
     private static final long serialVersionUID = 1L;
 
 	User user;
@@ -14,7 +14,7 @@ public class AuthMessage implements Message{
 		this.code = MSGCode.AUTH;
 	}
 	@Override
-	public MSGCode getMsgCode() {
+	public MSGCode getKodPoruke() {
 		return code;
 	}
 	@Override

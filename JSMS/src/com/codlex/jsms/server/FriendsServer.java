@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Stack;
 
 import com.codlex.jsms.networking.MSGCode;
-import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.User;
 import com.codlex.jsms.networking.messages.AuthMessage;
 import com.codlex.jsms.networking.messages.AuthMessageFailed;
@@ -42,9 +42,9 @@ public class FriendsServer implements Server{
 				System.out.println("[FRIENDS::SERVER] Connection accepted");
 				ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
 				System.out.println("[FRIENDS::SERVER] Reading message");
-				Message message = (Message) input.readObject();
+				Poruka message = (Poruka) input.readObject();
 				System.out.println("[FRIENDS::SERVER] Message recived");
-				Message response = processMessage(message);
+				Poruka response = processMessage(message);
 				System.out.println("[FRIENDS::SERVER] Message processed, sending response");
 				ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 				output.writeObject(response);				
@@ -59,9 +59,9 @@ public class FriendsServer implements Server{
 		}
 	}
 	
-	private static Message processMessage(Message m) {
+	private static Poruka processMessage(Poruka m) {
 		
-		switch (m.getMsgCode()) {
+		switch (m.getKodPoruke()) {
 		case GET_FRIENDS: 
 			System.out.println("[FRIENDS::SERVER] Detected GET_FRIENDS message");
 			String token = (String) m.getMsgObject();

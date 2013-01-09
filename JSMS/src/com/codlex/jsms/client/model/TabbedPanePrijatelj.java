@@ -1,91 +1,63 @@
 package com.codlex.jsms.client.model;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import org.imgscalr.Scalr;
-import org.imgscalr.Scalr.Method;
 
 /**
  * 
- * Ova klasa reprezentuje jednog od studenata koji se posmatraju i sve metode za rad 
- * sa studentom su sadrzane u ovoj klasi.
+ * Ova klasa reprezentuje jednog od prijatelja koji se posmatraju i sve metode za rad 
+ * sa prijateljem su sadrzane u ovoj klasi.
  * 
- * @author Dejan Pekter RN 13/11
+ * @author Dejan Pekter RN 13/11 <dpekter11@raf.edu.rs>
  *
  */
-public class TabbedPaneFriend extends JPanel  {
-        //slika ekrana konkretnog studenta
+public class TabbedPanePrijatelj extends JPanel  {
+		private static final long serialVersionUID = 1L;
+		//slika ekrana konkretnog prijatelja
         private BufferedImage ekran;
         // ova polja su samoobjasnjiva
-        private String username;
+        private String korisnickoIme;
         // referenca na tabbedpane u kome drzim sve studente
-        private static JTabbedPane sadrzalacStudenata;
+        private static JTabbedPane sadrzalacPrijatelja;
         
-        public String getUsername() {
-        	return username;
+        public String getKorisnickoIme() {
+        	return korisnickoIme;
         }
         
-        public void setEkran(BufferedImage img) {
-        	this.ekran = img;
+        public void setEkran(BufferedImage slikaEkrana) {
+        	this.ekran = slikaEkrana;
         }
         
         static public void setSadrzalacStudenata(JTabbedPane sadrzalacStudenata) {
-                TabbedPaneFriend.sadrzalacStudenata = sadrzalacStudenata;
+                TabbedPanePrijatelj.sadrzalacPrijatelja = sadrzalacStudenata;
         }
         
-        
-        public TabbedPaneFriend( String username, JTabbedPane s){
+        public TabbedPanePrijatelj( String korisnickoIme, JTabbedPane sadrzalacStudenata){
                 super();
                 
-                //raspakovani podaci
-                this.username = username;
-                this.setSadrzalacStudenata(s);
-                
-                //uzimam jednu sliku ekrana
-                this.osvezi();
+                this.korisnickoIme = korisnickoIme;
+                setSadrzalacStudenata(sadrzalacStudenata);                
                 //dodajem studenta na jtabbedpane
-                sadrzalacStudenata.add(username, this);
-                
-                
+                sadrzalacPrijatelja.add(korisnickoIme, this);       
                 //novo konektovanog studenta stavljam kao selektovanog 
                 //kako bih profesoru naglasio da se novi student konektovao
-                sadrzalacStudenata.setSelectedComponent(this);
-                
+                sadrzalacPrijatelja.setSelectedComponent(this);
         }
         
         
         /**
-         * Metoda osvezava sliku racunara studenta
+         * 	Metoda osvezava sliku racunara studenta
          * 
          * */
         public void osvezi(){         
-                
                 this.repaint();
         };      
         
@@ -96,6 +68,7 @@ public class TabbedPaneFriend extends JPanel  {
          * kvalitet slike i laksu promenu velicine slike.
          * 
          */
+        
         public void paintComponent(Graphics g){
                 
                 super.paintComponent(g);
@@ -140,8 +113,7 @@ public class TabbedPaneFriend extends JPanel  {
         
         //skidam studenta sa sadrzaoca studenata
         public void unisti(){
-                sadrzalacStudenata.remove(this);
-                
+                sadrzalacPrijatelja.remove(this);
         }
 
 }

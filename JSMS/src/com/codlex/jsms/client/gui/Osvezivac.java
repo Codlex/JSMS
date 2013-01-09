@@ -6,48 +6,68 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
-import com.codlex.jsms.client.model.FriendListModelImpl;
-import com.codlex.jsms.client.model.TabbedPaneFriend;
-import com.codlex.jsms.client.model.FriendListModelImpl.PodrazumevaniPanel;
+import com.codlex.jsms.client.model.ModelListePrijateljaImplementacija;
+import com.codlex.jsms.client.model.TabbedPanePrijatelj;
+import com.codlex.jsms.client.model.ModelListePrijateljaImplementacija.PodrazumevaniPanel;
 import com.codlex.jsms.networking.MSGCode;
-import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.NICS.CentralizedServerNIC;
-
+/**
+ * Tred koji osvezava trenutno selektovanog korisnika u modelu prijatelja trenutno ulogovanog korisnika.
+ * 
+ * @author Dejan Pekter RN 13/11 <dpekter11@raf.edu.rs>
+ *
+ */
 public class Osvezivac implements Runnable {
-
+	private boolean zaustavljeno;
+	/**
+	 * Ova metoda zaustavlja slanje ekrana trenutnog klijenta.
+	 */
+	public void zaustavljeno() {
+		zaustavljeno = true;
+	}
+	
 	@Override
 	public void run() {
-		while(true) {
-			if( !(FriendListModelImpl.getPane().getSelectedComponent() instanceof TabbedPaneFriend) ) {
-				System.out.println("Panel without picture");
+		// dokle god nije zaustavljno osvezavamo ekran trenutno selektovanog korisnika
+		while(!zaustavljeno) {
+			// proveravamo da li je selektovan korisnicki pane ili podrazumevani
+			if( !(ModelListePrijateljaImplementacija.getPane().getSelectedComponent() instanceof TabbedPanePrijatelj) ) {
+				// ukoliko nije selektovan korisnicki pane ne radimo nista
+				System.out.println("Panel bez slike");
 				continue;
 			}
-			TabbedPaneFriend friend = (TabbedPaneFriend) FriendListModelImpl.getPane().getSelectedComponent();
-			String username = friend.getUsername();
-			Message m = CentralizedServerNIC.getNICService().getScreen(username);
-			BufferedImage img = null;
-			if(m.getMsgCode().equals(MSGCode.SUCCESS)) {
-				InputStream input = (InputStream) m.getMsgObject();
+			// uzimamo selektovanog prijatelja
+			TabbedPanePrijatelj selektovanPrijatelj = (TabbedPanePrijatelj) ModelListePrijateljaImplementacija.getPane().getSelectedComponent();
+			String username = selektovanPrijatelj.getKorisnickoIme();
+			// od servera trazimo sliku njegovog ekrana
+			Poruka poruka = CentralizedServerNIC.getNICService().getScreen(username);
+			BufferedImage slika = null;
+			// ukoliko je server odlucio da nam posalje njegovu sliku, dobicemo success
+			if(poruka.getKodPoruke().equals(MSGCode.SUCCESS)) {
+				// u poruci nam je prosledjen inputstream na kome se nalazi slika
+				InputStream ulaz = (InputStream) poruka.getMsgObject();
 				try {
-					img = ImageIO.read(input);
+					// ucitavanje slike korisnika
+					slika = ImageIO.read(ulaz);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-			if(img != null) {
-				System.out.println("Image updated");
-				friend.setEkran(img);	
-				friend.osvezi();
+			if(slika != null) {
+				System.out.println("Slika se osvezava");
+				// podesavamo prijatelju novu sliku koju smo dobili sa servera
+				selektovanPrijatelj.setEkran(slika);	
+				// osvezavamo prikaz prijatelja
+				selektovanPrijatelj.osvezi();
 			}
 			else {
-				System.out.println("Image is null");
+				System.out.println("Slika je null - boom");
 			}
-			
+			// cekamo odredjeno vreme, nakon cega ponovo zahtevamo sliku 
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

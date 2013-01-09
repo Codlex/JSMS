@@ -1,11 +1,11 @@
 package com.codlex.jsms.networking.messages;
 
 import com.codlex.jsms.networking.MSGCode;
-import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.User;
 import com.codlex.jsms.networking.messages.objects.MeAndFriend;
 
-public class GetFriendsMessage implements Message{
+public class GetFriendsMessage implements Poruka{
     private static final long serialVersionUID = 1L;
 
 	String token;
@@ -15,7 +15,7 @@ public class GetFriendsMessage implements Message{
 		this.token = token;
 	}
 	@Override
-	public MSGCode getMsgCode() {
+	public MSGCode getKodPoruke() {
 		return code;
 	}
 	@Override

@@ -3,7 +3,7 @@ package com.codlex.jsms.networking;
 import java.io.Serializable;
 
 
-public class StringMessage implements Message, Serializable {
+public class StringMessage implements Poruka, Serializable {
     private static final long serialVersionUID = 1L;
 
 	String s;
@@ -11,7 +11,7 @@ public class StringMessage implements Message, Serializable {
 		this.s = ss;
 	}
 	@Override
-	public MSGCode getMsgCode() {
+	public MSGCode getKodPoruke() {
 		// TODO Auto-generated method stub
 		return MSGCode.SUCCESS;
 	}

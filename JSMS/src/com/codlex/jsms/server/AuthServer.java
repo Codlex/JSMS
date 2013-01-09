@@ -8,7 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import com.codlex.jsms.networking.MSGCode;
-import com.codlex.jsms.networking.Message;
+import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.User;
 import com.codlex.jsms.networking.messages.AuthMessage;
 import com.codlex.jsms.networking.messages.AuthMessageFailed;
@@ -52,9 +52,9 @@ public class AuthServer implements Server{
 					System.out.println("[AUTH::SERVER] Connection accepted");
 					ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
 					System.out.println("[AUTH::SERVER] Reading message");
-					Message message = (Message) input.readObject();
+					Poruka message = (Poruka) input.readObject();
 					System.out.println("[AUTH::SERVER] Message recived");
-					Message response = processMessage(message);
+					Poruka response = processMessage(message);
 					System.out.println("[AUTH::SERVER] Message processed, sending response");
 					ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 					output.writeObject(response);				
@@ -70,10 +70,10 @@ public class AuthServer implements Server{
 		}
 	}
 	
-	private static Message processMessage(Message m) {
+	private static Poruka processMessage(Poruka m) {
 		User user = null;
 		String token = null;
-		switch (m.getMsgCode()) {
+		switch (m.getKodPoruke()) {
 		case AUTH: 
 			System.out.println("[AUTH::SERVER] Detected AUTH message");
 			user = (User) m.getMsgObject();
