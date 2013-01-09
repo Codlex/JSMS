@@ -2,7 +2,6 @@ package com.codlex.jsms.networking.messages;
 
 import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.Poruka;
-import com.codlex.jsms.networking.User;
 import com.codlex.jsms.networking.messages.objects.MeAndFriend;
 
 public class AddFriendMessage implements Poruka{

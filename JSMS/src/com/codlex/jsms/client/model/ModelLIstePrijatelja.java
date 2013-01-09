@@ -1,6 +1,5 @@
 package com.codlex.jsms.client.model;
 
-import java.awt.Image;
 import java.util.Collection;
 
 /**

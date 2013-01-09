@@ -1,11 +1,8 @@
 package com.codlex.jsms.client.model;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.util.Collection;
 
 import javax.swing.BoxLayout;

@@ -1,18 +1,13 @@
 package com.codlex.jsms.networking.NICS;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import com.codlex.jsms.networking.MSGCode;
-import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.NIC;
+import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.User;
 import com.codlex.jsms.networking.messages.AddFriendMessage;
 import com.codlex.jsms.networking.messages.AuthMessage;
@@ -22,13 +17,9 @@ import com.codlex.jsms.networking.messages.ImageMessage;
 import com.codlex.jsms.networking.messages.ImageRequestMessage;
 import com.codlex.jsms.networking.messages.RegisterMessage;
 import com.codlex.jsms.networking.messages.objects.IdentifiedRequest;
-import com.codlex.jsms.networking.users.BaseUser;
 
 public class CentralizedServerNIC implements NIC {
 
-	private static final String server = "jsms.codlex.com";
-	private static final int port = 3663;
-	
 	private static final String authServer = "jsms.codlex.com";
 	private static final int authPort = 1337;
 	
@@ -59,6 +50,7 @@ public class CentralizedServerNIC implements NIC {
 		
 	}
 	
+	@SuppressWarnings("resource")
 	@Override
 	public Poruka createAccount(User user) {
 		try {
@@ -97,6 +89,7 @@ public class CentralizedServerNIC implements NIC {
 		return null;
 	}
 	
+	@SuppressWarnings("resource")
 	@Override
 	public Poruka logIn(User user) {
 		try {
@@ -141,6 +134,7 @@ public class CentralizedServerNIC implements NIC {
 		return null;
 	}
 	
+	@SuppressWarnings("resource")
 	@Override
 	public Poruka addFriend(String username) {
 		try {
@@ -173,6 +167,7 @@ public class CentralizedServerNIC implements NIC {
 		return null;
 	}
 	
+	@SuppressWarnings("resource")
 	@Override
 	public Poruka getFriends() {
 		try {
@@ -206,6 +201,7 @@ public class CentralizedServerNIC implements NIC {
 	}
 	
 	
+	@SuppressWarnings("resource")
 	@Override
 	public Poruka getScreen(String username) {
 		try {
@@ -239,6 +235,7 @@ public class CentralizedServerNIC implements NIC {
 		return null;
 	}
 	
+	@SuppressWarnings("resource")
 	@Override
 	public Poruka pingScreen() {
 		try {

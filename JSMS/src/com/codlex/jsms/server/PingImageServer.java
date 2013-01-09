@@ -1,67 +1,69 @@
 package com.codlex.jsms.server;
 
-import static com.codlex.jsms.server.users.UserService.getUserService;
-import static com.codlex.jsms.server.users.ImageService.getImageService;
+import static com.codlex.jsms.server.users.ServisSlika.getServisSlika;
 
 import java.awt.Image;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import javax.imageio.ImageIO;
 
 import com.codlex.jsms.networking.Poruka;
-import com.codlex.jsms.networking.User;
-import com.codlex.jsms.networking.messages.GenericSuccessMessage;
-import com.codlex.jsms.networking.messages.objects.IdentifiedImage;
-import com.codlex.jsms.networking.users.BaseUser;
 
 /**
  * Server koji prihvata slike ekrana korisnika i osvezava svoju bazu. 
+ * 
+ * @author Dejan Pekter RN 13/11 <dpekter11@raf.edu.rs>
  */
 public class PingImageServer implements Server{
 	
-private static final int port = 6767;
+	private static final int port = 6767;
 	
+	@SuppressWarnings("resource")
 	public void run() {
-		
+			// otvaramo server socket
 			ServerSocket server = null;
 			try {
 				server = new ServerSocket(port);
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			
 			Socket socket = null;
-			System.out.println("[PING_IMAGE::SERVER] Server started on port " + port);
+			System.out.println("[PRIMAC_SLIKA::SERVER] Server startovan na portu " + port);
+			// server osluskuje na korisnicke zahteve za slanje slika
 			while(true) {
-				System.out.println("[PING_IMAGE::SERVER] While started!");
 				try {
-				socket = server.accept();
-				socket.setSoTimeout(500);
-				System.out.println("[PING_IMAGE::SERVER] Connection accepted");
-				if(socket.isClosed()) {
-					continue;
-				}
-				ObjectInputStream input = new ObjectInputStream(socket.getInputStream());;
-				System.out.println("[PING_IMAGE::SERVER] Reading message");
-				Poruka message = (Poruka) input.readObject();
-				System.out.println("[PING_IMAGE::SERVER] Message recived - identified");
-				System.out.println("[PING_IMAGE::SERVER] Reading image...");
-				Image image = ImageIO.read(socket.getInputStream());
-				System.out.println("[PING_IMAGE::SERVER] Finished reading...");
-				String token = (String) message.getMsgObject();
-				getImageService().setImage(token, image);				
+					// cekamo konekciju
+					socket = server.accept();
+					// podesavamo timeout ukoliko korisnik pukne
+					socket.setSoTimeout(500);
+					System.out.println("[PRIMAC_SLIKA::SERVER] Konekcija uspostavljena");
+					if(socket.isClosed()) {
+						// korisnik puko
+						continue;
+					}
+					// pravimo input object stream kako bi mogli ucitati poruku
+					ObjectInputStream ulaz = new ObjectInputStream(socket.getInputStream());;
+					System.out.println("[PRIMAC_SLIKA::SERVER] Ucitavamo poruku");
+					Poruka poruka = (Poruka) ulaz.readObject();
+					System.out.println("[PRIMAC_SLIKA::SERVER] Poruka primljena - identifikacija");
+					System.out.println("[PRIMAC_SLIKA::SERVER] Ucitavam sliku...");
+					// ucitavamo sliku od korisnika koji se upravo identifikovao sa zacetnom porukom
+					Image slika = ImageIO.read(socket.getInputStream());
+					System.out.println("[PRIMAC_SLIKA::SERVER] Slika procitana...");
+					String token = (String) poruka.getMsgObject();
+					// ubacujemo sliku u bazu
+					getServisSlika().setSlika(token, slika);				
 				} catch (IOException e) {
 					e.printStackTrace();
-					System.out.println("[PING_IMAGE::SERVER] Exception caucthsdjc.");
-
+					System.out.println("[PRIMAC_SLIKA::SERVER] Izuzetak uhvlajskjdfc.");
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} finally {
+					// na kraju zatvarmo socket
 					if(socket != null) {
 						try {
 							socket.close();
@@ -70,12 +72,7 @@ private static final int port = 6767;
 							e.printStackTrace();
 						}
 					}
-				}
-				
-				System.out.println("[PING_IMAGE::SERVER] While continued");
+				}				
 			}
-			
 	}
-	
-
 }

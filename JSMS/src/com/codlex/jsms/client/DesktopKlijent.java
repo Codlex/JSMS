@@ -1,17 +1,6 @@
 package com.codlex.jsms.client;
 
-import java.io.ObjectInputStream.GetField;
-import java.util.Scanner;
-
-import javax.swing.SwingUtilities;
-
 import com.codlex.jsms.client.gui.ProzorZaPrijavljivanje;
-import com.codlex.jsms.networking.MSGCode;
-import com.codlex.jsms.networking.Poruka;
-import com.codlex.jsms.networking.User;
-import com.codlex.jsms.networking.users.BaseUser;
-
-import static com.codlex.jsms.networking.NICS.CentralizedServerNIC.*;
 
 /**
  * Glavna klasa koja pokrece prozor za prijavljivanje na sistem za desktop klijent-a.

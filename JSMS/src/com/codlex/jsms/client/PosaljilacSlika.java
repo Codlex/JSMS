@@ -9,12 +9,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
-
 import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.NICS.CentralizedServerNIC;
-import com.codlex.jsms.utils.CompressionImageWriter;
+import com.codlex.jsms.utils.PisacKompresovaneSlike;
 /**
  * Ova klasa predstavlja tred koji ce u realnom vremenu osvezavati sliku ulogovanog korisnika na serveru. 
  * 
@@ -55,7 +52,7 @@ public class PosaljilacSlika implements Runnable {
         	OutputStream izlaz = (OutputStream) poruka.getMsgObject();
         	try {
         		// saljemo kompresovanu slikuEkrana na izlaz
-        		CompressionImageWriter.jpgLowWrite(slikaEkrana, izlaz);
+        		PisacKompresovaneSlike.jpgIspisiUSlabomKvalitetu(slikaEkrana, izlaz);
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {

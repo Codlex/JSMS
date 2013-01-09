@@ -8,7 +8,6 @@ import javax.imageio.ImageIO;
 
 import com.codlex.jsms.client.model.ModelListePrijateljaImplementacija;
 import com.codlex.jsms.client.model.TabbedPanePrijatelj;
-import com.codlex.jsms.client.model.ModelListePrijateljaImplementacija.PodrazumevaniPanel;
 import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.NICS.CentralizedServerNIC;
