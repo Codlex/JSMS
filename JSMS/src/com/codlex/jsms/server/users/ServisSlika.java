@@ -23,7 +23,7 @@ public class ServisSlika {
 	static {
 		try {
 			// ucitavam sliku koja ce biti prikazana kada prava slika nije dostupna
-			nedostupnaSlika = ImageIO.read(ServisSlika.class.getResource("/resources/no-image.png"));
+			nedostupnaSlika = ImageIO.read(ServisSlika.class.getResource("/resources/no-image.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

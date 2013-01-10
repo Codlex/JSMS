@@ -53,8 +53,7 @@ public class PosaljilacSlika implements Runnable {
         	try {
         		// saljemo kompresovanu slikuEkrana na izlaz
         		PisacKompresovaneSlike.jpgIspisiUSlabomKvalitetu(slikaEkrana, izlaz);
-			} catch (IOException e) {
-				e.printStackTrace();
+            	System.out.println("Ekran poslat!");
 			} finally {
 				try {
 					// zatvaramo konekciju
@@ -63,12 +62,11 @@ public class PosaljilacSlika implements Runnable {
 					e.printStackTrace();
 				}
 			}
-        	
+
         	// cekamo odredjen broj milisekundi i nakon toga ponovo saljemo svoj ekran
         	try {
-				Thread.sleep(250);
+				Thread.sleep(800);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         	

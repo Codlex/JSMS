@@ -33,31 +33,39 @@ public class GetImageServer implements Server {
 	public void run() {
 			// pravimo server socket
 			ServerSocket server = null;
+			ObjectInputStream ulaz = null;
+			ObjectOutputStream izlaz = null;
 			try {
 				server = new ServerSocket(port);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			
+			int socketNum = 0;
+			Socket socket = null;
 			System.out.println("[POSILJALAC_SLIKE::SERVER] Server je startovan na portu " + port);
 			while(true) {
 				try {
+					System.out.println("[POSILJALAC_SLIKE::SERVER] Konekcija br: " + socketNum++);
 					// cekamo konekciju
-					Socket socket = server.accept();
+					socket = server.accept();
+					System.out.println("[POSILJALAC_SLIKE::SERVER] Socket adresa: " + socket.getLocalAddress());
+
 					// podesavamo timeout ako klijent pukne
 					socket.setSoTimeout(500);
+					System.out.println("[POSILJALAC_SLIKE::SERVER] Socket timeout: " + socket.getSoTimeout());
+					
 					System.out.println("[POSILJALAC_SLIKE::SERVER] Konekcija uspostavljena");
 					if(socket.isClosed()) {
 						// proveravamo da klijent nije pukao
 						continue;
 					}
 					// podesavamo ulaz za ucitavanje poruke
-					ObjectInputStream ulaz = new ObjectInputStream(socket.getInputStream());
+					ulaz = new ObjectInputStream(socket.getInputStream());
 					System.out.println("[POSILJALAC_SLIKE::SERVER] Ucitavamo poruku");
 					Poruka poruka = (Poruka) ulaz.readObject();
 					System.out.println("[POSILJALAC_SLIKE::SERVER] Poruka ucitana");
 					// pravimo izlaz za nas odgovor na zahtev
-					ObjectOutputStream izlaz = new ObjectOutputStream(socket.getOutputStream());
+					izlaz = new ObjectOutputStream(socket.getOutputStream());
 					// iz poruke uzimamo zahtev
 					ZahtevZaIdentifikacijom zahtev = (ZahtevZaIdentifikacijom) poruka.getObjekatPoruke();
 					// proveravamo da li je korisnik ulogovan
@@ -77,7 +85,7 @@ public class GetImageServer implements Server {
 		        		PisacKompresovaneSlike.jpgIspisiUSlabomKvalitetu((BufferedImage) slika, socket.getOutputStream());
 		        		System.out.println("[POSILJALAC_SLIKE::SERVER] Slika poslata!");
 		        		// saljem signal da je slika poslata tako sto zatvaram socket sa moje strane
-						socket.close();
+						
 					}
 					else {
 						izlaz.writeObject( new PorukaAutorizacijaNeuspesna());
@@ -85,12 +93,24 @@ public class GetImageServer implements Server {
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
-					System.out.println("[POSILJALAC_SLIKE::SERVER] Izuzetak uhvlajsdc");
+					System.out.println("[POSILJALAC_SLIKE::SERVER] Izuzetak 1");
 		
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
+					System.out.println("[POSILJALAC_SLIKE::SERVER] Izuzetak 2");
+
 				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
+					System.out.println("[POSILJALAC_SLIKE::SERVER] Izuzetak 3");
+
+				} finally {
+					try {
+						ulaz.close();
+						izlaz.close();
+						socket.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			
 	    }

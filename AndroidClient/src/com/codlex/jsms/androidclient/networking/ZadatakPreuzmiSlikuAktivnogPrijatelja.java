@@ -1,5 +1,6 @@
 package com.codlex.jsms.androidclient.networking;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import com.codlex.jsms.client.model.Prijatelj;
@@ -28,8 +29,16 @@ public class ZadatakPreuzmiSlikuAktivnogPrijatelja extends AsyncTask<Prijatelj, 
 		
 		// ucitavanje slike sa strima
 		Poruka odgovor = getNICService().getEkran(aktivanPrijatelj.getKorisnickoIme());
-		novaSlika = BitmapFactory.decodeStream( (InputStream) odgovor.getObjekatPoruke());
-		
+		InputStream ulaz = (InputStream) odgovor.getObjekatPoruke();
+		try {
+			novaSlika = BitmapFactory.decodeStream( ulaz );
+		} finally {	
+			try {
+				ulaz.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		return novaSlika;
 	}
 	

@@ -5,17 +5,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import com.codlex.jsms.networking.Korisnik;
 import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.NIC;
 import com.codlex.jsms.networking.Poruka;
-import com.codlex.jsms.networking.Korisnik;
-import com.codlex.jsms.networking.messages.PorukaZaDodavanjePrijatelja;
-import com.codlex.jsms.networking.messages.PorukaZaAutorizaciju;
-import com.codlex.jsms.networking.messages.PorukaUspeha;
+import com.codlex.jsms.networking.messages.PorukaNeuspeha;
 import com.codlex.jsms.networking.messages.PorukaSaZahtevomZaPrijatelje;
-import com.codlex.jsms.networking.messages.PorukaZaSlanjeSlike;
+import com.codlex.jsms.networking.messages.PorukaUspeha;
+import com.codlex.jsms.networking.messages.PorukaZaAutorizaciju;
+import com.codlex.jsms.networking.messages.PorukaZaDodavanjePrijatelja;
 import com.codlex.jsms.networking.messages.PorukaZaPrimanjeSlike;
 import com.codlex.jsms.networking.messages.PorukaZaRegistracijuKorisnika;
+import com.codlex.jsms.networking.messages.PorukaZaSlanjeSlike;
 import com.codlex.jsms.networking.messages.objects.ZahtevZaIdentifikacijom;
 
 
@@ -94,7 +95,7 @@ public class CentralizovaniNIC implements NIC {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return new PorukaNeuspeha();
 	}
 
 	@SuppressWarnings("resource")
@@ -136,14 +137,14 @@ public class CentralizovaniNIC implements NIC {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return new PorukaNeuspeha();
 	}
 	
 	@Deprecated
 	@Override
 	public Poruka posaljiPoruku(Poruka message)  {
 		System.out.println("Not implemented");
-		return null;
+		return new PorukaNeuspeha();
 	}
 	
 	@SuppressWarnings("resource")
@@ -177,7 +178,7 @@ public class CentralizovaniNIC implements NIC {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return new PorukaNeuspeha();
 	}
 	
 	@SuppressWarnings("resource")
@@ -211,16 +212,18 @@ public class CentralizovaniNIC implements NIC {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return new PorukaNeuspeha();
 	}
 	
 	
 	@SuppressWarnings("resource")
 	@Override
 	public Poruka getEkran(String korisnickoIme) {
+		Socket socket = null;
 		try {
 			// otvaramo konekciju sa serverom
-		    Socket socket = new Socket(adresaServeraPosiljaocaSlika, portServeraPosiljaocaSlika);
+		    socket = new Socket(adresaServeraPosiljaocaSlika, portServeraPosiljaocaSlika);
+		    
 		    System.out.println("Konekcija uspostavljena sa serverom posiljaoca slika!");
 		    // pravimo object output stream kako bi poslali poruku serveru
 		    ObjectOutputStream izlaz = new ObjectOutputStream(socket.getOutputStream());
@@ -246,9 +249,14 @@ public class CentralizovaniNIC implements NIC {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		}
+		} 
 		
-		return null;
+		try {
+			socket.getInputStream().close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return new PorukaNeuspeha();
 	}
 	
 	@SuppressWarnings("resource")
@@ -273,7 +281,7 @@ public class CentralizovaniNIC implements NIC {
 			e.printStackTrace();
 		} 
 		
-		return null;
+		return new PorukaNeuspeha();
 	}
 	@Override
 	public Korisnik getTrenutnoUlogovanKorisnik() {

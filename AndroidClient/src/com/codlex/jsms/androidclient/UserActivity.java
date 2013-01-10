@@ -26,6 +26,8 @@ import android.widget.Toast;
 import com.codlex.jsms.androidclient.model.AndroidModelListePrijatelja;
 import com.codlex.jsms.androidclient.model.OsnovniPrijatelj;
 import com.codlex.jsms.androidclient.networking.ZadatakPreuzmiSlikuAktivnogPrijatelja;
+import com.codlex.jsms.client.model.Prijatelj;
+import com.codlex.jsms.networking.Korisnik;
 
 public class UserActivity extends Activity{
 	
@@ -157,8 +159,11 @@ public class UserActivity extends Activity{
 						
 						Thread invalidate = new Thread() {
 							public void run() {
-								  slikaKorisnika.setImageBitmap(androidModelListePrijatelja.getAktivnogPrijatelja().getEkranBitmap());
-							      slikaKorisnika.invalidate();
+								  OsnovniPrijatelj prijatelj = androidModelListePrijatelja.getAktivnogPrijatelja(); 
+								  if(prijatelj != null) {
+									  slikaKorisnika.setImageBitmap(prijatelj.getEkranBitmap());
+									  slikaKorisnika.invalidate();
+								  }
 								}
 						};
 						while(alertDialogPrikazEkrana.isShowing() == true){
