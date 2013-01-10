@@ -121,7 +121,7 @@ public class UserActivity extends Activity{
 		
 		// podesimo hello :)
 		porukaZdravo = (TextView) findViewById(R.id.hello);
-		porukaZdravo.setText("Hello " + korisnickoIme + "!");
+		porukaZdravo.setText("Zdravo " + korisnickoIme + "!");
 		
 		// logout dugme
 		dugmeIzlogujSe = (Button) findViewById(R.id.logoutb);
