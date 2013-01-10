@@ -144,7 +144,7 @@ public class ProzorZaPravljenjeNaloga extends JFrame {
 			setLayout(new FlowLayout(FlowLayout.CENTER));
 			setBackground(new Color(00,0x93,0xd6));
 			// pravimo labelu za username
-			labela = new JLabel("username:");
+			labela = new JLabel("korisnicko ime:");
 			labela.setForeground(Color.WHITE);
 			labela.setBackground(new Color(00,0x93,0xd6));
 			// ulaz za tekst
