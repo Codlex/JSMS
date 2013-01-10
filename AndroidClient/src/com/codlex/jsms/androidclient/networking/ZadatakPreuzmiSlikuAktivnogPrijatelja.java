@@ -12,7 +12,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
 /**
- * Zadatak u pozadini komunicira sa mreznim slojem
+ * Zadatak u pozadini komunicira sa mreznim slojem uz pomoc NIC-a
  * i preuzima sliku aktivnog prijatelja
  * 
  * @author Milos Biljanovic RN 21/11 <mbiljanovic11@raf.edu.rs>
@@ -24,7 +24,11 @@ public class ZadatakPreuzmiSlikuAktivnogPrijatelja extends AsyncTask<Prijatelj, 
 
 	@Override
 	protected Bitmap doInBackground(Prijatelj... params) {
+		// kao parametar se prosledjuje aktivan prijatelj
 		Prijatelj aktivanPrijatelj = params[0];
+		// postavimo da je nova slika null na pocetku
+		// da bi zdatak preko NIC-a dobio sliku i to prosledio
+		// kao rezultat
 		Bitmap novaSlika = null;
 		
 		// ucitavanje slike sa strima
