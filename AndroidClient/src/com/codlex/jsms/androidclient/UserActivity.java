@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -307,6 +310,19 @@ public class UserActivity extends Activity{
 	
 	}
 	
+	/**
+	 * 
+	 * Metoda koja proverava da li je mreza tj internet dostupan ili ne
+	 * 
+	 */
+	
+    @SuppressWarnings("unused")
+	private boolean jeMrezaDostupna() {
+        ConnectivityManager menadzerKonekcije 
+              = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo infoOMrezi = menadzerKonekcije.getActiveNetworkInfo();
+        return infoOMrezi != null;
+    }
 
 	
 }

@@ -6,7 +6,10 @@ import com.codlex.jsms.androidclient.networking.ZadatakNapraviNoviNalog;
 import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.Poruka;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -85,5 +88,20 @@ public class RegisterActivty extends Activity{
 		});
 		
 	}
+	
+	/**
+	 * 
+	 * Metoda koja proverava da li je mreza tj internet dostupan ili ne
+	 * 
+	 */
+	
+    @SuppressWarnings("unused")
+	private boolean jeMrezaDostupna() {
+        ConnectivityManager menadzerKonekcije 
+              = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo infoOMrezi = menadzerKonekcije.getActiveNetworkInfo();
+        return infoOMrezi != null;
+    }
+	
 	
 }
