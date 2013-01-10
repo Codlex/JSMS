@@ -4,12 +4,10 @@ package com.codlex.jsms.androidclient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.codlex.jsms.androidclient.model.AndroidModelListePrijatelja;
 import com.codlex.jsms.androidclient.model.OsnovniPrijatelj;
 import com.codlex.jsms.androidclient.networking.ZadatakPreuzmiSlikuAktivnogPrijatelja;
@@ -144,7 +143,7 @@ public class UserActivity extends Activity{
 				dialogLayoutDodajPrijatelja = inflater.inflate(R.layout.add_friend_dialog_layout, (ViewGroup) getCurrentFocus(),false);
 
 				dodajPrijateljaBuilder.setView(dialogLayoutDodajPrijatelja);
-				dodajPrijateljaBuilder.setTitle("Dodaj prijatelja, uhuh!");
+				dodajPrijateljaBuilder.setTitle("Dodaj prijatelja, uhuhuh!");
 				alertDialogDodajPrijatelja = dodajPrijateljaBuilder.create();
 				alertDialogDodajPrijatelja.show();
 				inicijalizujDodajPrijateljaDialog();
@@ -209,8 +208,9 @@ public class UserActivity extends Activity{
 						// sve dok korisnik ne ugasi dialog
 						while(alertDialogPrikazEkrana.isShowing() == true){
 							ZadatakPreuzmiSlikuAktivnogPrijatelja zadatakPreuzmiSlikuAKtivnogPrijatelja = new ZadatakPreuzmiSlikuAktivnogPrijatelja();
-							zadatakPreuzmiSlikuAKtivnogPrijatelja.execute(androidModelListePrijatelja.getAktivnogPrijatelja());
-						
+							// pokusavamo da dobijemo sliku
+								zadatakPreuzmiSlikuAKtivnogPrijatelja.execute(androidModelListePrijatelja.getAktivnogPrijatelja());
+							
 							 try {
 								 // takodje vrsimo recikliranje starog bitmapa kako ne bi doslo
 								 // do nagomilavanja i overflowa u memoriji
@@ -309,20 +309,5 @@ public class UserActivity extends Activity{
 		});
 	
 	}
-	
-	/**
-	 * 
-	 * Metoda koja proverava da li je mreza tj internet dostupan ili ne
-	 * 
-	 */
-	
-    @SuppressWarnings("unused")
-	private boolean jeMrezaDostupna() {
-        ConnectivityManager menadzerKonekcije 
-              = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo infoOMrezi = menadzerKonekcije.getActiveNetworkInfo();
-        return infoOMrezi != null;
-    }
 
-	
 }

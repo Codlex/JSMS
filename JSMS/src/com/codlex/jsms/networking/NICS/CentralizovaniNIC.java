@@ -35,16 +35,16 @@ public class CentralizovaniNIC implements NIC {
 	 * Adrese su razdvojene zbog moguceg distribuiranog sistema.
 	 */
 	
-	private static final String adresaServeraZaAutorizaciju = "178.148.216.29";
+	private static final String adresaServeraZaAutorizaciju = "jsms.codlex.com";
 	private static final int portServeraZaAutorizaciju = 1337;
 	
-	private static final String adresaServeraPrijateljstva = "178.148.216.29";
+	private static final String adresaServeraPrijateljstva = "jsms.codlex.com";
 	private static final int portServeraPrijateljstva = 1331;
 	
-	private static final String adresaServeraPosiljaocaSlika = "178.148.216.29";
+	private static final String adresaServeraPosiljaocaSlika = "jsms.codlex.com";
 	private static final int portServeraPosiljaocaSlika = 6768;
 	
-	private static final String adresaServeraPrimaocaSlika = "178.148.216.29";
+	private static final String adresaServeraPrimaocaSlika = "jsms.codlex.com";
     private static final int portServeraPrimaocaSlika = 6767;
 	
 	// Prijavljen korisnikov kontekst

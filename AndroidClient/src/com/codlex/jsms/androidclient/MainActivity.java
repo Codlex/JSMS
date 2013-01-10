@@ -2,22 +2,20 @@ package com.codlex.jsms.androidclient;
 
 
 import java.util.concurrent.ExecutionException;
-import com.codlex.jsms.androidclient.networking.ZadatakPrijaviKorisnika;
-import com.codlex.jsms.networking.MSGCode;
-import com.codlex.jsms.networking.Poruka;
 
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Bundle;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.codlex.jsms.androidclient.networking.ZadatakPrijaviKorisnika;
+import com.codlex.jsms.networking.MSGCode;
+import com.codlex.jsms.networking.Poruka;
 
 /**
  * 
@@ -36,9 +34,20 @@ public class MainActivity extends Activity {
 	private EditText korisnickoIme,lozinka;
 	// poruka o ispisu o pogresnom unetom korisnickom imenu ili lozinci
 	private TextView pogresnoKorisnickoImeIliLozinka;
+
 	
+	/**
+	 * 
+	 * Metoda pri kreiranju nove aktivnosti.
+	 * Sluzi da se inicijalizuju sve promenljive koje su potrebne
+	 * za dalju funkcionalnost same aktivnosti.
+	 * 
+	 */
     @Override
     protected void onCreate(Bundle zapamcenoStanjeInstance) {
+    	// pozovemo metodu iz natklase prvo
+    	// a zatim postavimo layout koji zelimo da bude prikazan
+    	// u nasem slucaju activity_main
         super.onCreate(zapamcenoStanjeInstance);
         setContentView(R.layout.activity_main);
         
@@ -70,13 +79,12 @@ public class MainActivity extends Activity {
 				// dok zadatak ne zavrsi svoju metodu
 				while(true){
 					
-					if(jeMrezaDostupna())
-						
-						// zadatak pokusava da nas prijavi na sistem
-						zadatakPrijaviKorisnika.execute(korisnickoImee,lozinkaa);
-				
+			
+					// zadatak pokusava da nas prijavi na sistem
+					zadatakPrijaviKorisnika.execute(korisnickoImee,lozinkaa);
 				
 					try {
+						
 						odgovor = zadatakPrijaviKorisnika.get();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
@@ -85,7 +93,8 @@ public class MainActivity extends Activity {
 					}
 					
 					// provera da li je zadatak gotov
-					if(odgovor != null) break;
+					if(odgovor != null)
+						break;
 				 
 				}
 			
@@ -94,7 +103,7 @@ public class MainActivity extends Activity {
 				// pravimo novu aktivnost i zapocinjemo je
 				if(odgovor.getKodPoruke().equals(MSGCode.SUCCESS)){
 					Intent noviAktiviti = new Intent("android.intent.action.KORISNIK");
-					makeFieldsBlank();
+					isprazniSvaPolja();
 					startActivity(noviAktiviti);
 				}
 				else{
@@ -110,7 +119,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// brisemo polja ukoliko je nesto bilo u njima
-				makeFieldsBlank();
+				isprazniSvaPolja();
 				// zapocinjemo novu aktivnost za kreiranje naloga na sistemu
 				startActivity(new Intent("android.intent.action.NAPRAVI_NALOG"));				
 			}
@@ -128,25 +137,10 @@ public class MainActivity extends Activity {
      * Metoda koja cisti polja za korisnicko ime, lozinku i poruku gresci
      * 
      */
-    
-    private void makeFieldsBlank(){
+    private void isprazniSvaPolja(){
     	korisnickoIme.setText("");
     	lozinka.setText("");
     	pogresnoKorisnickoImeIliLozinka.setText("");
     }
-    
-    /**
-	 * 
-	 * Metoda koja proverava da li je mreza tj internet dostupan ili ne
-	 * 
-	 */
-    
-    private boolean jeMrezaDostupna() {
-        ConnectivityManager menadzerKonekcije 
-              = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo infoOMrezi = menadzerKonekcije.getActiveNetworkInfo();
-        return infoOMrezi != null;
-    }
-    
-    
+
 }
