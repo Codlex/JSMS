@@ -12,24 +12,28 @@ import java.io.OutputStream;
 import com.codlex.jsms.networking.Poruka;
 import com.codlex.jsms.networking.NICS.CentralizovaniNIC;
 import com.codlex.jsms.utils.PisacKompresovaneSlike;
+
 /**
- * Ova klasa predstavlja tred koji ce u realnom vremenu osvezavati sliku ulogovanog korisnika na serveru. 
+ * Ova klasa predstavlja tred koji ce u realnom vremenu osvezavati sliku
+ * ulogovanog korisnika na serveru.
  * 
  * @author Dejan Pekter <dpekter@raf.edu.rs>
- *
+ * 
  */
 public class PosaljilacSlika implements Runnable {
 	private boolean zaustavljeno;
+
 	/**
 	 * Ova metoda zaustavlja slanje ekrana trenutnog klijenta.
 	 */
 	public void zaustavljeno() {
 		zaustavljeno = true;
 	}
-	
+
 	@Override
 	public void run() {
-		// pravimo robota kako bi preko njega uzeli sliku ekrana na kome se izvrsava aplikacija
+		// pravimo robota kako bi preko njega uzeli sliku ekrana na kome se
+		// izvrsava aplikacija
 		Robot robot = null;
 		try {
 			robot = new Robot();
@@ -38,22 +42,26 @@ public class PosaljilacSlika implements Runnable {
 		}
 		// izracunavamo dimenzije ekrana na osnovu informacija iz sistema
 		Dimension dimenzijeEkrana = Toolkit.getDefaultToolkit().getScreenSize();
-        Rectangle povrsinaEkrana = new Rectangle(dimenzijeEkrana.width, dimenzijeEkrana.height);
-		
-        // dokle god nije obustavljeno slanje slika trenutnog ekrana mi to radimo
-        while(!zaustavljeno) {
-        	
-        	System.out.println("Zapoceo sam slanje ekrana!");
-        	// uzimam sliku trenutnog ekrana
-        	BufferedImage slikaEkrana = robot.createScreenCapture(povrsinaEkrana);
-        	// obavesti server da mu saljemo sliku
-        	Poruka poruka = CentralizovaniNIC.getNICService().posaljiEkran();
-        	// mrezni deo sistema nam daje upravljanje mrezom kroz OutputStream
-        	OutputStream izlaz = (OutputStream) poruka.getObjekatPoruke();
-        	try {
-        		// saljemo kompresovanu slikuEkrana na izlaz
-        		PisacKompresovaneSlike.jpgIspisiUSlabomKvalitetu(slikaEkrana, izlaz);
-            	System.out.println("Ekran poslat!");
+		Rectangle povrsinaEkrana = new Rectangle(dimenzijeEkrana.width,
+				dimenzijeEkrana.height);
+
+		// dokle god nije obustavljeno slanje slika trenutnog ekrana mi to
+		// radimo
+		while (!zaustavljeno) {
+
+			System.out.println("Zapoceo sam slanje ekrana!");
+			// uzimam sliku trenutnog ekrana
+			BufferedImage slikaEkrana = robot
+					.createScreenCapture(povrsinaEkrana);
+			// obavesti server da mu saljemo sliku
+			Poruka poruka = CentralizovaniNIC.getNICService().posaljiEkran();
+			// mrezni deo sistema nam daje upravljanje mrezom kroz OutputStream
+			OutputStream izlaz = (OutputStream) poruka.getObjekatPoruke();
+			try {
+				// saljemo kompresovanu slikuEkrana na izlaz
+				PisacKompresovaneSlike.jpgIspisiUSlabomKvalitetu(slikaEkrana,
+						izlaz);
+				System.out.println("Ekran poslat!");
 			} finally {
 				try {
 					// zatvaramo konekciju
@@ -63,14 +71,15 @@ public class PosaljilacSlika implements Runnable {
 				}
 			}
 
-        	// cekamo odredjen broj milisekundi i nakon toga ponovo saljemo svoj ekran
-        	try {
+			// cekamo odredjen broj milisekundi i nakon toga ponovo saljemo svoj
+			// ekran
+			try {
 				Thread.sleep(800);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-        	
-        }
-		
+
+		}
+
 	}
 }
