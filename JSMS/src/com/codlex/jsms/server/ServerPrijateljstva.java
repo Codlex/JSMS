@@ -11,7 +11,7 @@ import com.codlex.jsms.server.zadaci.Prijateljizuj;
  * 
  * @author Dejan Pekter RN 13/11 <dpekter11@raf.edu.rs>
  */
-public class FriendsServer implements Server {
+public class ServerPrijateljstva implements Server {
 	private static final int port = 1331;
 
 	@SuppressWarnings("resource")

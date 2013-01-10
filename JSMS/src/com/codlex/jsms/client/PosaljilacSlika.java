@@ -1,6 +1,5 @@
 package com.codlex.jsms.client;
 
-import com.codlex.jsms.client.model.OsvezivacZadatak;
 
 /**
  * Ova klasa predstavlja tred koji ce u realnom vremenu osvezavati sliku
@@ -28,9 +27,9 @@ public class PosaljilacSlika implements Runnable {
 			// algoritam za cekanje
 			System.out
 					.println("[Osvezivac] Zadatak za slanje slike startovan, trenutno je ukljuceno "
-							+ OsvezivacZadatak.getBrojAktivnihTredova()
+							+ PosaljilacSlikaZadatak.getBrojAktivnihTredova()
 							+ " zadataka");
-			if (PosaljilacSlikaZadatak.getBrojAktivnihTredova() > 2) {
+			if (PosaljilacSlikaZadatak.getBrojAktivnihTredova() > 3) {
 
 				try {
 					// Algoritam za balansiranje vremena cekanja

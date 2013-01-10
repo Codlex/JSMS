@@ -18,7 +18,7 @@ import com.codlex.jsms.server.zadaci.Autorizuj;
  * @author Dejan Pekter RN 13/11 <deximat@gmail.com>
  * 
  */
-public class AuthServer implements Server {
+public class AutorizacioniServer implements Server {
 	private static final int port = 1337;
 
 	@SuppressWarnings("resource")

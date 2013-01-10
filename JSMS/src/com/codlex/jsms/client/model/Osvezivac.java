@@ -33,7 +33,7 @@ public class Osvezivac implements Runnable {
 			
 			// algoritam za cekanje
 			System.out.println("[Osvezivac] Zadatak za slanje slike startovan, trenutno je ukljuceno " + OsvezivacZadatak.getBrojAktivnihTredova() + " zadataka");
-			if(OsvezivacZadatak.getBrojAktivnihTredova() > 5) {
+			if(OsvezivacZadatak.getBrojAktivnihTredova() > 3) {
 				
 				try {
 					// Algoritam za balansiranje vremena cekanja
