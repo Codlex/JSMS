@@ -2,11 +2,9 @@ package com.codlex.jsms.androidclient;
 
 
 import java.util.concurrent.ExecutionException;
-
 import com.codlex.jsms.androidclient.networking.ZadatakNapraviNoviNalog;
 import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.Poruka;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,9 +18,9 @@ import android.widget.TextView;
 public class RegisterActivty extends Activity{
 
 	
-	EditText korisnickoIme,lozinka,email;
-	Button dugmeNapraviNalog,dugmeNazad;
-	TextView log;
+	private EditText korisnickoIme,lozinka,email;
+	private Button dugmeNapraviNalog,dugmeNazad;
+	private TextView log;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

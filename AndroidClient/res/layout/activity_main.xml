@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/text1"
         android:layout_alignLeft="@+id/text1"
-        android:layout_alignRight="@+id/text1"
+        android:layout_alignRight="@+id/username"
         android:layout_marginBottom="14dp"
         android:text="" />
 

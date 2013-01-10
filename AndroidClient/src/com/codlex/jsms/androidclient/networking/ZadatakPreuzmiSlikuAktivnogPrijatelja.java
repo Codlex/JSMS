@@ -38,6 +38,7 @@ public class ZadatakPreuzmiSlikuAktivnogPrijatelja extends AsyncTask<Prijatelj, 
 			novaSlika = BitmapFactory.decodeStream( ulaz );
 		} finally {	
 			try {
+			  if(ulaz != null)
 				ulaz.close();
 			} catch (IOException e) {
 				e.printStackTrace();

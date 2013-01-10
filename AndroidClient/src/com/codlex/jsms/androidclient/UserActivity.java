@@ -4,7 +4,6 @@ package com.codlex.jsms.androidclient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
@@ -22,64 +21,83 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.codlex.jsms.androidclient.model.AndroidModelListePrijatelja;
 import com.codlex.jsms.androidclient.model.OsnovniPrijatelj;
 import com.codlex.jsms.androidclient.networking.ZadatakPreuzmiSlikuAktivnogPrijatelja;
-import com.codlex.jsms.client.model.Prijatelj;
-import com.codlex.jsms.networking.Korisnik;
+import com.codlex.jsms.networking.NICS.CentralizovaniNIC;
+
+/**
+ * Aktivnost koja predstavlja korisnikov prostor kada se uloguje na sistem
+ * Ima pregled svojih prijatelja kao i opciju da doda nove.
+ * Takodje ima opciju da se izloguje.
+ * 
+ * @author Milos Biljanovic RN 21/11 <mbiljanovic11@raf.edu.rs>
+ *
+ */
 
 public class UserActivity extends Activity{
 	
-	// Friend model
-	AndroidModelListePrijatelja androidModelListePrijatelja;
+	// model prijatelja
+	private AndroidModelListePrijatelja androidModelListePrijatelja;
 	
-	ListView lista;
-	ArrayList<View> listaPrijatelja;
-	String token,korisnickoIme;
-	TextView porukaZdravo;
+	// komponente za aktivnost
+	private ListView lista;
+	private String korisnickoIme;
+	private TextView porukaZdravo;
 	Button dugmeIzlogujSe,dugmeDodajPrijatelja;
 	
-	// addFriendDialog components
-	TextView pogresnoKorisnickoIme;
-	Button dugmeNazad2,dugmeDodajPrijatelja2;
-	EditText trazenoKorisnickoIme;
+	// komponente za dodajPrijateljaDialog
+	@SuppressWarnings("unused")
+	private TextView pogresnoKorisnickoIme;
+	private Button dugmeNazad2,dugmeDodajPrijatelja2;
+	private EditText trazenoKorisnickoIme;
 	
-	// layouti za dialog boxove
-	View dialogLayoutDodajPrijatelja;
-	View dialogLayoutPrikazEkrana;
+	// komponente za prikazEkranaDialog
+	private Button dugmeNazad3;
+	private ImageView slikaKorisnika;
 	
-	// friends lista
-	List<String> prijatelji;
-
+	// layout za dialoge DodajPrijatelja i PrikazEkrana
+	private View dialogLayoutDodajPrijatelja;
+	private View dialogLayoutPrikazEkrana;
 	
+	// lista prijatelja
+	private List<String> prijatelji;
 	
-	// viewScreenDialog components
-	Button dugmeNazad3;
-	ImageView slikaKorisnika;
+	// Dialozi
+	private AlertDialog alertDialogDodajPrijatelja;
+	private AlertDialog alertDialogPrikazEkrana;
 	
-	// Dialogs
-	AlertDialog alertDialogDodajPrijatelja;
-	AlertDialog alertDialogPrikazEkrana;
-	//AlertDialog 
+	// Builderi za dialoge
 	// builder za addFriendDialog
-	AlertDialog.Builder dodajPrijateljaBuilder;
+	private AlertDialog.Builder dodajPrijateljaBuilder;
 	// builder za view screen
-	AlertDialog.Builder prikazEkranaBuilder;
+	private AlertDialog.Builder prikazEkranaBuilder;
 	
+	
+	/**
+	 * 
+	 * Metoda pri kreiranju nove aktivnosti.
+	 * Sluzi da se inicijalizuju sve promenljive koje su potrebne
+	 * za dalju funkcionalnost same aktivnosti.
+	 * 
+	 */
 	
 	@Override
 	protected void onCreate(Bundle zapamcenoStanjeInstance) {
 		
-		// TODO Auto-generated method stub
+		// pozovemo metodu iz natklase prvo
+		// a zatim postavimo layout koji zelimo da bude prikazan
+		// u nasem slucaju user_layout
 		super.onCreate(zapamcenoStanjeInstance);
 		setContentView(R.layout.user_layout);
 		
 		
-		// inicijalizacija add friend builder-a
+		// inicijalizacija dodajPrijatelja builder-a
+		// i pravljenje layoutInflater-a
 		dodajPrijateljaBuilder = new AlertDialog.Builder(this);
 		final LayoutInflater inflater = getLayoutInflater();
-		// incijalizacija screen view builder-a
+		// incijalizacija  prikazEkrana builder-a
+		// i pravljenje layoutInflater-a
 		prikazEkranaBuilder = new AlertDialog.Builder(this);
 		final LayoutInflater inflater2 = getLayoutInflater();
 
@@ -88,13 +106,16 @@ public class UserActivity extends Activity{
 		
 		// lista frendova
 		prijatelji = new ArrayList<String>();
-		prijatelji = (ArrayList<String>) androidModelListePrijatelja.getKorisnickaImenaPrijatelja();
 		
-		// prosledjen token
-		Bundle extras = getIntent().getExtras();
-		token = extras.getString("token");
-		// prosledjen username
-		korisnickoIme = extras.getString("korisnickoIme");
+		prijatelji = (ArrayList<String>) androidModelListePrijatelja.getKorisnickaImenaPrijatelja();
+		prijatelji.add(0, "LISTA PRIJATELJA");
+		// dodavanje podrazumevanog prijatelja
+		
+		
+		
+		// zapamtimo u korisnicko ime, ime trenutnog ulogovanog korisnika
+		// kako bi ga ispisali na ekranu
+		korisnickoIme = CentralizovaniNIC.getNICService().getTrenutnoUlogovanKorisnik().getKorisnickoIme();
 		
 		
 		
@@ -139,17 +160,27 @@ public class UserActivity extends Activity{
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				String korisnickoImeSelektovano = ((TextView)arg1).getText().toString();
+				// nepostojeci podrazumevani prijatelj
+				if(korisnickoImeSelektovano.equals("LISTA PRIJATELJA"))
+					return;
+				
+				// u suprotnom zeli da prikaze ekran nekog svog prijatelja
+				// postavljamo aktivnog prijatelja na osnovu korisnickog imena
+				// koje je selektovano
 				
 				androidModelListePrijatelja.setAktivnogPrijatelja((OsnovniPrijatelj) androidModelListePrijatelja.getPrijatelj(korisnickoImeSelektovano));
 				
+				// postavljamo osnovna podeshavanja za alertDialog
 				dialogLayoutPrikazEkrana = inflater2.inflate(R.layout.screen_vew_layout, (ViewGroup) getCurrentFocus(), false);
 				prikazEkranaBuilder.setView(dialogLayoutPrikazEkrana);
 				prikazEkranaBuilder.setTitle("Friend screen");
+				// pravimo alertDialogPrikazEkrana pomocu buildera
 				alertDialogPrikazEkrana = prikazEkranaBuilder.create();
+				// prikazujemo dialogPrikazEkrana;
 				alertDialogPrikazEkrana.show();
 				inicijalizujPrikazEkranaDialog();
 				
-				
+				// pravimo tred za osvezavanje slike na svakih 500ms
 				Thread osvezavanjeSlike = new Thread(){
 					
 					@Override
@@ -167,8 +198,9 @@ public class UserActivity extends Activity{
 								}
 						};
 						while(alertDialogPrikazEkrana.isShowing() == true){
-							ZadatakPreuzmiSlikuAktivnogPrijatelja zadatakPreuzmiSlikuAKtivnogPrijatelja = new ZadatakPreuzmiSlikuAktivnogPrijatelja();
-							zadatakPreuzmiSlikuAKtivnogPrijatelja.execute(androidModelListePrijatelja.getAktivnogPrijatelja());
+						ZadatakPreuzmiSlikuAktivnogPrijatelja zadatakPreuzmiSlikuAKtivnogPrijatelja = new ZadatakPreuzmiSlikuAktivnogPrijatelja();
+						zadatakPreuzmiSlikuAKtivnogPrijatelja.execute(androidModelListePrijatelja.getAktivnogPrijatelja());
+						
 							 try {
 								 Bitmap stariBitmap = androidModelListePrijatelja.getAktivnogPrijatelja().getEkranBitmap();
 								 
@@ -194,7 +226,7 @@ public class UserActivity extends Activity{
 	}
 
 	
-	void inicijalizujPrikazEkranaDialog(){
+	private void inicijalizujPrikazEkranaDialog(){
 		dugmeNazad3 = (Button) alertDialogPrikazEkrana.findViewById(R.id.backb3);
 		
 		dugmeNazad3.setOnClickListener(new OnClickListener() {
@@ -206,7 +238,7 @@ public class UserActivity extends Activity{
 		});
 	}
 	
-	void inicijalizujDodajPrijateljaDialog(){
+	private void inicijalizujDodajPrijateljaDialog(){
 		
 		// dugmici
 		dugmeNazad2	= (Button) alertDialogDodajPrijatelja.findViewById(R.id.backb2);

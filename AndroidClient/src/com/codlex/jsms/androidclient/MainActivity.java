@@ -2,11 +2,9 @@ package com.codlex.jsms.androidclient;
 
 
 import java.util.concurrent.ExecutionException;
-
 import com.codlex.jsms.androidclient.networking.ZadatakPrijaviKorisnika;
 import com.codlex.jsms.networking.MSGCode;
 import com.codlex.jsms.networking.Poruka;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -28,9 +26,9 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	Button dugmePrijaviSe,dugmeNapraviNalog;
-	EditText korisnickoIme,lozinka;
-	TextView pogresnoKorisnickoImeIliLozinka;
+	private Button dugmePrijaviSe,dugmeNapraviNalog;
+	private EditText korisnickoIme,lozinka;
+	private TextView pogresnoKorisnickoImeIliLozinka;
 	
     @Override
     protected void onCreate(Bundle zapamcenoStanjeInstance) {
@@ -102,7 +100,7 @@ public class MainActivity extends Activity {
         return true;
     }
     
-    void makeFieldsBlank(){
+    private void makeFieldsBlank(){
     	korisnickoIme.setText("");
     	lozinka.setText("");
     }
