@@ -74,9 +74,9 @@ public class RegisterActivty extends Activity{
 				
 				if(odgovor.getKodPoruke().equals(MSGCode.SUCCESS)){
 					String token = (String) odgovor.getObjekatPoruke();
-					Intent newActivity = new Intent("android.intent.action.USER");
+					Intent newActivity = new Intent("android.intent.action.KORISNIK");
 					newActivity.putExtra("token", token);
-					newActivity.putExtra("username",korisnickoImee);
+					newActivity.putExtra("korisnickoIme",korisnickoImee);
 					finish();
 					startActivity(newActivity);
 				}

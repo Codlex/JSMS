@@ -25,28 +25,31 @@ public class PingImageServer implements Server{
 	public void run() {
 			// otvaramo server socket
 			ServerSocket server = null;
+			ObjectInputStream ulaz = null;
+			Socket socket = null;
 			try {
 				server = new ServerSocket(port);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			
-			Socket socket = null;
+			int socketNum = 0;
+
 			System.out.println("[PRIMAC_SLIKA::SERVER] Server startovan na portu " + port);
 			// server osluskuje na korisnicke zahteve za slanje slika
 			while(true) {
 				try {
+					System.out.println("[PRIMAC_SLIKA::SERVER] Konekcija br: " + socketNum++);
 					// cekamo konekciju
 					socket = server.accept();
 					// podesavamo timeout ukoliko korisnik pukne
-					socket.setSoTimeout(500);
+					socket.setSoTimeout(2000);
 					System.out.println("[PRIMAC_SLIKA::SERVER] Konekcija uspostavljena");
 					if(socket.isClosed()) {
 						// korisnik puko
 						continue;
 					}
 					// pravimo input object stream kako bi mogli ucitati poruku
-					ObjectInputStream ulaz = new ObjectInputStream(socket.getInputStream());;
+					ulaz = new ObjectInputStream(socket.getInputStream());;
 					System.out.println("[PRIMAC_SLIKA::SERVER] Ucitavamo poruku");
 					Poruka poruka = (Poruka) ulaz.readObject();
 					System.out.println("[PRIMAC_SLIKA::SERVER] Poruka primljena - identifikacija");
@@ -66,9 +69,9 @@ public class PingImageServer implements Server{
 					// na kraju zatvarmo socket
 					if(socket != null) {
 						try {
+							ulaz.close();
 							socket.close();
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}

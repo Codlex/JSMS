@@ -65,7 +65,7 @@ public class Osvezivac implements Runnable {
 			}
 			// cekamo odredjeno vreme, nakon cega ponovo zahtevamo sliku 
 			try {
-				Thread.sleep(500);
+				Thread.sleep(800);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

@@ -29,29 +29,50 @@ public class FriendsServer implements Server{
 	@SuppressWarnings("resource")
 	@Override
 	public void run() {
+		ServerSocket server = null;
+		ObjectInputStream ulaz = null;
+		ObjectOutputStream izlaz = null;
+		Socket socket = null;
+		// pravimo novi server socket
 		try {
-			// pravimo novi server socket
-			ServerSocket server = new ServerSocket(port);
-			System.out.println("[PRIJATELJSTVO::SERVER] Server je startovan na portu " + port);
-			while(true) {
-				// cekam na konekcije
-				Socket socket = server.accept();
-				System.out.println("[PRIJATELJSTVO::SERVER] Konekcija uspostavljena");
-				// pravim object input stream da primim poruku
-				ObjectInputStream ulaz = new ObjectInputStream(socket.getInputStream());
-				System.out.println("[PRIJATELJSTVO::SERVER] Ucitavam poruku");
-				Poruka poruka = (Poruka) ulaz.readObject();
-				System.out.println("[PRIJATELJSTVO::SERVER] Poruka primljena");
-				Poruka odgovor = obradiPoruku(poruka);
-				System.out.println("[PRIJATELJSTVO::SERVER] Poruka obradjena, saljem odgovor");
-				ObjectOutputStream izlaz = new ObjectOutputStream(socket.getOutputStream());
-				izlaz.writeObject(odgovor);				
-				System.out.println("[PRIJATELJSTVO::SERVER] Odgovor poslat");
+			server = new ServerSocket(port);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		int socketNum = 0;
+
+		System.out.println("[PRIJATELJSTVO::SERVER] Server je startovan na portu " + port);
+		while(true) {
+			System.out.println("[PRIJATELJSTVO::SERVER] Konekcija br: " + socketNum++);
+			try {
+	
+					// cekam na konekcije
+					socket = server.accept();
+					System.out.println("[PRIJATELJSTVO::SERVER] Konekcija uspostavljena");
+					// pravim object input stream da primim poruku
+					ulaz = new ObjectInputStream(socket.getInputStream());
+					System.out.println("[PRIJATELJSTVO::SERVER] Ucitavam poruku");
+					Poruka poruka = (Poruka) ulaz.readObject();
+					System.out.println("[PRIJATELJSTVO::SERVER] Poruka primljena");
+					Poruka odgovor = obradiPoruku(poruka);
+					System.out.println("[PRIJATELJSTVO::SERVER] Poruka obradjena, saljem odgovor");
+					izlaz = new ObjectOutputStream(socket.getOutputStream());
+					izlaz.writeObject(odgovor);				
+					System.out.println("[PRIJATELJSTVO::SERVER] Odgovor poslat");
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					ulaz.close();
+					izlaz.close();
+					socket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		}
 	}
 	

@@ -32,32 +32,46 @@ public class AuthServer implements Server{
 		dodajProbnogKorisnika();
 		// pravimo server socket
 		ServerSocket server = null;
+		ObjectInputStream ulaz = null;
+		ObjectOutputStream izlaz = null;
+		Socket socket = null;
+		// pravimo server socket
 		try {
 			server = new ServerSocket(port);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
+		int socketNum = 0;
+
 		System.out.println("[AUTORIZACIJA::SERVER] Server startovan na portu " + port);
 		while(true) {
+			System.out.println("[AUTORIZACIJA::SERVER] Konekcija br: " + socketNum++);
 			try {
 					// primamo konekciju
-					Socket socket = server.accept();
+					socket = server.accept();
 					System.out.println("[AUTORIZACIJA::SERVER] Konekcija uspostavljena");
 					// pravimo object input stream kako bi procitali poruku od korisnika
-					ObjectInputStream ulaz = new ObjectInputStream(socket.getInputStream());
+					ulaz = new ObjectInputStream(socket.getInputStream());
 					System.out.println("[AUTORIZACIJA::SERVER] Ucitavanje poruke");
 					Poruka poruka = (Poruka) ulaz.readObject();
 					System.out.println("[AUTORIZACIJA::SERVER] Poruka primljena");
 					Poruka odgovor = obradiPoruku(poruka);
 					System.out.println("[AUTORIZACIJA::SERVER] Poruka obradjena, saljem odgovor");
-					ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
-					output.writeObject(odgovor);				
+					izlaz = new ObjectOutputStream(socket.getOutputStream());
+					izlaz.writeObject(odgovor);				
 					System.out.println("[AUTORIZACIJA::SERVER] Odgovor poslat");
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
+			} finally {
+				try {
+					ulaz.close();
+					izlaz.close();
+					socket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
