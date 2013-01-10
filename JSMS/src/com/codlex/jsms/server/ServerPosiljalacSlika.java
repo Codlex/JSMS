@@ -12,7 +12,7 @@ import com.codlex.jsms.server.zadaci.PosaljiSliku;
  * @author Dejan Pekter RN 13/11 <dpekter11@raf.edu.rs>
  */
 
-public class GetImageServer implements Server {
+public class ServerPosiljalacSlika implements Server {
 	private static final int port = 6768;
 
 	@SuppressWarnings("resource")

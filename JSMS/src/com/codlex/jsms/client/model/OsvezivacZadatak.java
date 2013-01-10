@@ -56,7 +56,7 @@ public class OsvezivacZadatak implements Runnable {
 			// podesavamo prijatelju novu sliku koju smo dobili sa servera
 			selektovanPrijatelj.setEkran(slika);	
 			// osvezavamo prikaz prijatelja
-			selektovanPrijatelj.osvezi();
+			//selektovanPrijatelj.osvezi();
 		}
 		else {
 			System.out.println("Slika je null - boom");

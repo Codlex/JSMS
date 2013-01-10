@@ -11,7 +11,7 @@ import com.codlex.jsms.server.zadaci.PrimiSliku;
  * 
  * @author Dejan Pekter RN 13/11 <dpekter11@raf.edu.rs>
  */
-public class PingImageServer implements Server{
+public class ServerPrimalacSlika implements Server{
 	
 	private static final int port = 6767;
 	
