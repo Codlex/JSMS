@@ -41,12 +41,12 @@ public class ServisSlika {
 		return instanca;
 	}
 	
-	public void setSlika(String token, Image slika) {
+	public synchronized void  setSlika(String token, Image slika) {
 		// podesavamo sliku za usera sa datim tokenom
 		skrinsot.put(token, slika);
 	}
 	
-	public Image getSlika(String token) {
+	public synchronized Image getSlika(String token) {
 		// proveravamo da li postoji slika za dati token
 		if(skrinsot.containsKey(token)) {
 			// uzimamo sliku za dati token

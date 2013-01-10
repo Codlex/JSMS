@@ -10,6 +10,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.codlex.jsms.client.gui.paneli.PanelZaSliku;
 import com.codlex.jsms.networking.Poruka;
@@ -19,6 +21,8 @@ public class ModelListePrijateljaImplementacija extends JTabbedPane{
 
 	private static final long serialVersionUID = 1L;
 	private static JTabbedPane tabbedPane;
+	private static Osvezivac osvezivac;
+	private static Thread osvezivacTred;
 	
 	public ModelListePrijateljaImplementacija(){
             super();
@@ -29,12 +33,17 @@ public class ModelListePrijateljaImplementacija extends JTabbedPane{
     	return tabbedPane;
     }
     
+    public synchronized static Osvezivac getOsvezivac() {
+    	return osvezivac;
+    }
+    
     /**
      * Pravi model za trenutno ulogovanog korisnika.
      * Podatke o korisniku uzima iz sistema.
      */
     @SuppressWarnings("unchecked")
 	public static void napraviModel() {
+    	
     	// trazimo od servera listu prijatelja trenutno ulogovanog korisnika
     	Poruka odgovor = CentralizovaniNIC.getNICService().getPrijatelji();
     	// u odgovoru se nalazi lista prijatelja trenutnog korisnika
@@ -48,9 +57,24 @@ public class ModelListePrijateljaImplementacija extends JTabbedPane{
     	for(String prijatelj : prijatelji) {
     		tabbedPane.add(prijatelj, new TabbedPanePrijatelj(prijatelj, tabbedPane));    		
     	}
+    	
+    	// ukljucujemo tred koji osvezava sliku trenutno selektovanog prijatelja u glavnom prozoru
+		osvezivac = new Osvezivac();
+		osvezivacTred = new Thread(osvezivac);
+		osvezivacTred.start();
+		
+		// budimo osvezivaca na dogadjaj promene taba
+		ChangeListener changeListener = new ChangeListener() {
+		      public void stateChanged(ChangeEvent changeEvent) {
+		        osvezivacTred.notify();
+		      }
+		    };
+		tabbedPane.addChangeListener(changeListener);
+    	
+		
     }
     
-    
+
     public class PodrazumevaniPanel extends JPanel {
 		private static final long serialVersionUID = 1L;
 

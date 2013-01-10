@@ -64,7 +64,7 @@ public class CentralizovaniNIC implements NIC {
 	
 	@SuppressWarnings("resource")
 	@Override
-	public Poruka napraviNalog(Korisnik korisnik) {
+	public synchronized Poruka napraviNalog(Korisnik korisnik) {
 		try {
 			// otvaramo socket ka serveru
 		    Socket socket = new Socket(adresaServeraZaAutorizaciju, portServeraZaAutorizaciju);
@@ -100,7 +100,7 @@ public class CentralizovaniNIC implements NIC {
 
 	@SuppressWarnings("resource")
 	@Override
-	public Poruka prijaviSe(Korisnik korisnik) {
+	public synchronized Poruka prijaviSe(Korisnik korisnik) {
 		try {
 			// otvaramo konekciju ka serveru
 		    Socket socket = new Socket(adresaServeraZaAutorizaciju, portServeraZaAutorizaciju);
@@ -149,7 +149,7 @@ public class CentralizovaniNIC implements NIC {
 	
 	@SuppressWarnings("resource")
 	@Override
-	public Poruka dodajPrijatelja(String korisnickoIme) {
+	public synchronized Poruka dodajPrijatelja(String korisnickoIme) {
 		try {
 			// otvaramo konekciju sa serverom
 		    Socket socket = new Socket(adresaServeraPrijateljstva, portServeraPrijateljstva);
@@ -183,7 +183,7 @@ public class CentralizovaniNIC implements NIC {
 	
 	@SuppressWarnings("resource")
 	@Override
-	public Poruka getPrijatelji() {
+	public synchronized Poruka getPrijatelji() {
 		try {
 			// otvaramo konekciju sa serverom
 		    Socket socket = new Socket(adresaServeraPrijateljstva, portServeraPrijateljstva);
@@ -218,7 +218,7 @@ public class CentralizovaniNIC implements NIC {
 	
 	@SuppressWarnings("resource")
 	@Override
-	public Poruka getEkran(String korisnickoIme) {
+	public synchronized Poruka getEkran(String korisnickoIme) {
 		Socket socket = null;
 		try {
 			// otvaramo konekciju sa serverom
@@ -261,7 +261,7 @@ public class CentralizovaniNIC implements NIC {
 	
 	@SuppressWarnings("resource")
 	@Override
-	public Poruka posaljiEkran() {
+	public synchronized Poruka posaljiEkran() {
 		try {
 			// otvaramo konekciju sa serverom
 		    Socket socket = new Socket(adresaServeraPrimaocaSlika, portServeraPrimaocaSlika);
@@ -284,17 +284,17 @@ public class CentralizovaniNIC implements NIC {
 		return new PorukaNeuspeha();
 	}
 	@Override
-	public Korisnik getTrenutnoUlogovanKorisnik() {
+	public synchronized Korisnik getTrenutnoUlogovanKorisnik() {
 		return korisnik;
 	}
 	
 	@Override
-	public boolean jeUlogovan() {
+	public synchronized boolean jeUlogovan() {
 		return korisnik != null;
 	}
 	
 	@Override
-	public void odjaviSe() {
+	public synchronized void odjaviSe() {
 		korisnik = null;
 	}
 	

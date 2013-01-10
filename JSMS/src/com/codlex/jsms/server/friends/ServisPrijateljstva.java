@@ -46,7 +46,7 @@ public class ServisPrijateljstva {
 		korisnikoviPrijatelji.add(noviPrijatelj);
 	}
 	
-	public Collection<String> getPrijatelji(String korisnickoIme) {
+	public synchronized Collection<String> getPrijatelji(String korisnickoIme) {
 		return prijatelji.get(korisnickoIme);
 	}
 	
