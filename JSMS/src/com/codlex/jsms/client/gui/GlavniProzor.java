@@ -37,7 +37,6 @@ public class GlavniProzor extends JFrame {
 	private static final long serialVersionUID = 1L;
 	JTabbedPane ekrani;
 	PosaljilacSlika posiljalacSlika;
-	Osvezivac osvezivac;
 	
 	public GlavniProzor(String naslov) {
 		// ukljucujemo tred koji osvezava sliku ovog korisnika na serveru
@@ -47,12 +46,7 @@ public class GlavniProzor extends JFrame {
 		// pravimo model korisnikovih prijatelja
 		// to je moguce sada uraditi posto je u mreznom sloju upisan korisnikov token 
 		ModelListePrijateljaImplementacija.napraviModel();
-		
-		// ukljucujemo tred koji osvezava sliku trenutno selektovanog prijatelja u glavnom prozoru
-		osvezivac = new Osvezivac();
-		Thread osvezivacTred = new Thread(osvezivac);
-		osvezivacTred.start();
-		
+				
 
 		// Uzimam dimenzije ekrana
 		Toolkit okruzenje = Toolkit.getDefaultToolkit();
@@ -147,8 +141,7 @@ public class GlavniProzor extends JFrame {
 		GlavniProzor.this.posiljalacSlika.zaustavljeno();
 		GlavniProzor.this.posiljalacSlika = null;
 		// ugasi osvezivaca
-		GlavniProzor.this.osvezivac.zaustavljeno();
-		GlavniProzor.this.osvezivac = null;
+		ModelListePrijateljaImplementacija.getOsvezivac().zaustavljeno();
 		
 		// resi se prozora
 		GlavniProzor.this.dispose();

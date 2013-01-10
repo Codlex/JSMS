@@ -13,7 +13,7 @@ import javax.imageio.stream.ImageOutputStream;
 
 public class PisacKompresovaneSlike {
 	
-	public static void jpgIspisiUSlabomKvalitetu(BufferedImage slika, OutputStream izlaz)  {
+	public static synchronized void jpgIspisiUSlabomKvalitetu(BufferedImage slika, OutputStream izlaz)  {
 		// Uzimanje javinog podrazumevanog imagewriter-a
 		ImageOutputStream imageOutputStream = null;
 		ImageWriter pisac = null;

@@ -1,11 +1,13 @@
 package com.codlex.jsms.client.model;
 
+import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -32,7 +34,7 @@ public class TabbedPanePrijatelj extends JPanel  {
         	return korisnickoIme;
         }
         
-        public void setEkran(BufferedImage slikaEkrana) {
+        public synchronized void setEkran(BufferedImage slikaEkrana) {
         	this.ekran = slikaEkrana;
         }
         
@@ -57,8 +59,13 @@ public class TabbedPanePrijatelj extends JPanel  {
          * 	Metoda osvezava sliku racunara studenta
          * 
          * */
-        public void osvezi(){         
-                this.repaint();
+        public synchronized void osvezi(){         
+        	EventQueue.invokeLater( new Runnable() {
+        		@Override
+        		public void run() {
+        			sadrzalacPrijatelja.repaint();
+        		}
+        	});
         };      
         
         

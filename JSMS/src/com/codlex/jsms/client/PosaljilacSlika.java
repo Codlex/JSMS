@@ -1,17 +1,6 @@
 package com.codlex.jsms.client;
 
-import java.awt.AWTException;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.OutputStream;
-
-import com.codlex.jsms.networking.Poruka;
-import com.codlex.jsms.networking.NICS.CentralizovaniNIC;
-import com.codlex.jsms.utils.PisacKompresovaneSlike;
+import com.codlex.jsms.client.model.OsvezivacZadatak;
 
 /**
  * Ova klasa predstavlja tred koji ce u realnom vremenu osvezavati sliku
@@ -30,55 +19,35 @@ public class PosaljilacSlika implements Runnable {
 		zaustavljeno = true;
 	}
 
+	private int vremeCekanja = 400;
+
 	@Override
 	public void run() {
-		// pravimo robota kako bi preko njega uzeli sliku ekrana na kome se
-		// izvrsava aplikacija
-		Robot robot = null;
-		try {
-			robot = new Robot();
-		} catch (AWTException e) {
-			e.printStackTrace();
-		}
-		// izracunavamo dimenzije ekrana na osnovu informacija iz sistema
-		Dimension dimenzijeEkrana = Toolkit.getDefaultToolkit().getScreenSize();
-		Rectangle povrsinaEkrana = new Rectangle(dimenzijeEkrana.width,
-				dimenzijeEkrana.height);
-
-		// dokle god nije obustavljeno slanje slika trenutnog ekrana mi to
-		// radimo
 		while (!zaustavljeno) {
 
-			System.out.println("Zapoceo sam slanje ekrana!");
-			// uzimam sliku trenutnog ekrana
-			BufferedImage slikaEkrana = robot
-					.createScreenCapture(povrsinaEkrana);
-			// obavesti server da mu saljemo sliku
-			Poruka poruka = CentralizovaniNIC.getNICService().posaljiEkran();
-			// mrezni deo sistema nam daje upravljanje mrezom kroz OutputStream
-			OutputStream izlaz = (OutputStream) poruka.getObjekatPoruke();
-			try {
-				// saljemo kompresovanu slikuEkrana na izlaz
-				PisacKompresovaneSlike.jpgIspisiUSlabomKvalitetu(slikaEkrana,
-						izlaz);
-				System.out.println("Ekran poslat!");
-			} finally {
+			// algoritam za cekanje
+			System.out
+					.println("[Osvezivac] Zadatak za slanje slike startovan, trenutno je ukljuceno "
+							+ OsvezivacZadatak.getBrojAktivnihTredova()
+							+ " zadataka");
+			if (PosaljilacSlikaZadatak.getBrojAktivnihTredova() > 2) {
+
 				try {
-					// zatvaramo konekciju
-					izlaz.close();
-				} catch (IOException e) {
+					// Algoritam za balansiranje vremena cekanja
+					Thread.sleep(vremeCekanja);
+					continue;
+				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
-
-			// cekamo odredjen broj milisekundi i nakon toga ponovo saljemo svoj
-			// ekran
+			Thread zadatak = new Thread(new PosaljilacSlikaZadatak());
+			zadatak.start();
 			try {
-				Thread.sleep(800);
+				// Algoritam za balansiranje vremena cekanja
+				Thread.sleep(vremeCekanja);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-
 		}
 
 	}

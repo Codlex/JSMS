@@ -29,7 +29,7 @@ public class KorisnickiServis {
 		registrovaniKorisnici = new ArrayList<Korisnik>();
 	}
 	
-	public String ulogujSe(Korisnik korisnik) {
+	public synchronized String ulogujSe(Korisnik korisnik) {
 		for(Korisnik registrovanKorisnik : registrovaniKorisnici) {
 			if(registrovanKorisnik.getKorisnickoIme().equals(korisnik.getKorisnickoIme()) &&
 			   registrovanKorisnik.getLozinka().equals(korisnik.getLozinka())){
@@ -44,7 +44,7 @@ public class KorisnickiServis {
 		return null;
 	}
 	
-	public String registrujKorisnika(Korisnik korisnik) {
+	public synchronized String registrujKorisnika(Korisnik korisnik) {
 		for(Korisnik registrovanKorisnik : registrovaniKorisnici) {
 			// ukoliko korisnik vec postoji vracamo null kao indikaciju da nije moguce napraviti korisnika sa tim username
 			if(registrovanKorisnik.getKorisnickoIme().equals(korisnik.getKorisnickoIme())){
@@ -60,7 +60,7 @@ public class KorisnickiServis {
 		return token;	
 	}
 	
-	public Korisnik getKorisnikPoKorisnickomImenu(String korisnickoIme) {
+	public synchronized Korisnik getKorisnikPoKorisnickomImenu(String korisnickoIme) {
 		for(Korisnik registrovaniKorisnik : registrovaniKorisnici) {
 			if(registrovaniKorisnik.getKorisnickoIme().equals(korisnickoIme)){
 				return registrovaniKorisnik;
@@ -69,7 +69,7 @@ public class KorisnickiServis {
 		return null;
 	}
 	
-	public Korisnik getKorisnikPoTokenu(String token) {
+	public synchronized Korisnik getKorisnikPoTokenu(String token) {
 		for(Korisnik registrovanKorisnik : registrovaniKorisnici) {
 			if(registrovanKorisnik.getToken().equals(token)){
 				return registrovanKorisnik;
