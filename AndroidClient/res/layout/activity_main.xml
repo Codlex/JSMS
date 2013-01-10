@@ -5,17 +5,6 @@
     tools:context=".MainActivity" >
 
     <TextView
-        android:id="@+id/text1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/username"
-        android:layout_above = "@+id/username"
-        android:layout_alignLeft="@+id/username"
-        android:layout_alignRight="@+id/username"
-   		android:text="@string/korisnicko_ime"
-        android:layout_marginBottom="44dp" />
-
-    <TextView
         android:id="@+id/text2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -76,5 +65,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="31dp"
         android:text="@string/prijavi_se" />
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/username"
+        android:layout_alignLeft="@+id/username"
+        android:layout_marginBottom="53dp"
+        android:text="@string/korisnicko_ime" />
 
 </RelativeLayout>

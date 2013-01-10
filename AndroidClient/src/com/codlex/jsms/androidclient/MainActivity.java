@@ -19,8 +19,8 @@ import android.widget.TextView;
 
 /**
  * 
- * Glavna i pocetna aktivnost na kojoj korisnik moze da se uloguje
- * ili da napravi novi nalog.
+ * Glavna tj. pocetna aktivnost android aplikacije
+ * na kojoj korisnik moze da se uloguje ili da napravi novi nalog.
  * 
  * @author Milos Biljanovic RN 21/11 <mbiljanovic11@raf.edu.rs>  
  * 

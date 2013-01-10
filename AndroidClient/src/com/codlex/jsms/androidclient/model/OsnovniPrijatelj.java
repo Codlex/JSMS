@@ -14,13 +14,14 @@ import com.codlex.jsms.client.model.Prijatelj;
  * @author Milos Biljanovic RN 21/11 <mbiljanovic11@raf.edu.rs>
  *
  */
-
 public class OsnovniPrijatelj implements Prijatelj {
-	String korisnickoIme;
-	boolean jeOnlajn;
-	Bitmap slika;
+	private String korisnickoIme;
+	private boolean jeOnlajn;
+	private Bitmap slika;
 	
 	public OsnovniPrijatelj(String username) {
+		// postavimo korisnicko ime
+		// i postavimo jeOnlajn i sliku prijatelja na podrazumevanu vrednost
 		this.korisnickoIme = username;
 		jeOnlajn = false;
 		slika = null;
