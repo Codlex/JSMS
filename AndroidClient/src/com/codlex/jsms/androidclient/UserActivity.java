@@ -47,8 +47,6 @@ public class UserActivity extends Activity{
 	Button dugmeIzlogujSe,dugmeDodajPrijatelja;
 	
 	// komponente za dodajPrijateljaDialog
-	@SuppressWarnings("unused")
-	private TextView pogresnoKorisnickoIme;
 	private Button dugmeNazad2,dugmeDodajPrijatelja2;
 	private EditText trazenoKorisnickoIme;
 	
@@ -173,11 +171,12 @@ public class UserActivity extends Activity{
 				// postavljamo osnovna podeshavanja za alertDialog
 				dialogLayoutPrikazEkrana = inflater2.inflate(R.layout.screen_vew_layout, (ViewGroup) getCurrentFocus(), false);
 				prikazEkranaBuilder.setView(dialogLayoutPrikazEkrana);
-				prikazEkranaBuilder.setTitle("Friend screen");
+				prikazEkranaBuilder.setTitle("SLIKA PRIJATELJA");
 				// pravimo alertDialogPrikazEkrana pomocu buildera
 				alertDialogPrikazEkrana = prikazEkranaBuilder.create();
 				// prikazujemo dialogPrikazEkrana;
 				alertDialogPrikazEkrana.show();
+				// inicijalizujemo Dialog za prikaz ekrana
 				inicijalizujPrikazEkranaDialog();
 				
 				// pravimo tred za osvezavanje slike na svakih 500ms
@@ -185,29 +184,41 @@ public class UserActivity extends Activity{
 					
 					@Override
 					public void run() {
+						// povezemo sliku korisnika sa identifikatorom koji pripada prikazu ekrana
 						slikaKorisnika = (ImageView)alertDialogPrikazEkrana.findViewById(R.id.friendimage); 
 
-						
+						// potreban je josh jedan tred kako bi mogli da pristupamo
+						// UI elementima kao sto je slika prijatelja koju zelimo da izmenimo
 						Thread invalidate = new Thread() {
 							public void run() {
+								  // uzmemo aktivnog prijatelja
 								  OsnovniPrijatelj prijatelj = androidModelListePrijatelja.getAktivnogPrijatelja(); 
 								  if(prijatelj != null) {
+									  // pokupimo "novu" sliku prijatelja
+									  // i postavimo je na sliku korisnika
+									  // pomoc setImageBitmap i metode invalidate
 									  slikaKorisnika.setImageBitmap(prijatelj.getEkranBitmap());
 									  slikaKorisnika.invalidate();
 								  }
 								}
 						};
+						// pozivamo isti task da osvezava nasu sliku prijatelja
+						// sve dok korisnik ne ugasi dialog
 						while(alertDialogPrikazEkrana.isShowing() == true){
-						ZadatakPreuzmiSlikuAktivnogPrijatelja zadatakPreuzmiSlikuAKtivnogPrijatelja = new ZadatakPreuzmiSlikuAktivnogPrijatelja();
-						zadatakPreuzmiSlikuAKtivnogPrijatelja.execute(androidModelListePrijatelja.getAktivnogPrijatelja());
+							ZadatakPreuzmiSlikuAktivnogPrijatelja zadatakPreuzmiSlikuAKtivnogPrijatelja = new ZadatakPreuzmiSlikuAktivnogPrijatelja();
+							zadatakPreuzmiSlikuAKtivnogPrijatelja.execute(androidModelListePrijatelja.getAktivnogPrijatelja());
 						
 							 try {
+								 // takodje vrsimo recikliranje starog bitmapa kako ne bi doslo
+								 // do nagomilavanja i overflowa u memoriji
 								 Bitmap stariBitmap = androidModelListePrijatelja.getAktivnogPrijatelja().getEkranBitmap();
 								 
 								(androidModelListePrijatelja.getAktivnogPrijatelja()).setEkranBitmap(zadatakPreuzmiSlikuAKtivnogPrijatelja.get());
 								if( stariBitmap != null) {
 									 stariBitmap.recycle();
 								 }
+								
+								// pokrecemo tred koji ce osveziti sliku
 								runOnUiThread( invalidate );
 								Thread.sleep(500);
 								
@@ -220,15 +231,21 @@ public class UserActivity extends Activity{
 					}
 					
 				};
+				// startujemo prvi tred za osvezavanje slike
 				osvezavanjeSlike.start();				
 			}
 		});
 	}
 
-	
+	/**
+	 * 
+	 * Metoda za inicijalizaciju Dialoga za prikaz ekrana
+	 * 
+	 */
 	private void inicijalizujPrikazEkranaDialog(){
+		// dugme nazad
 		dugmeNazad3 = (Button) alertDialogPrikazEkrana.findViewById(R.id.backb3);
-		
+		// osluskivac za dugme nazad
 		dugmeNazad3.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -238,15 +255,20 @@ public class UserActivity extends Activity{
 		});
 	}
 	
+	/**
+	 * 
+	 * Metoda za inicijalizaciju Dialoga za dodavanje prijatelja
+	 * 
+	 */
 	private void inicijalizujDodajPrijateljaDialog(){
 		
 		// dugmici
 		dugmeNazad2	= (Button) alertDialogDodajPrijatelja.findViewById(R.id.backb2);
 		dugmeDodajPrijatelja2	= (Button) alertDialogDodajPrijatelja.findViewById(R.id.add);
+		// uneto korisnicko ime
 		trazenoKorisnickoIme = (EditText) alertDialogDodajPrijatelja.findViewById(R.id.findUsername);
-		pogresnoKorisnickoIme = (TextView) alertDialogDodajPrijatelja.findViewById(R.id.wa2);
-	
-		// listeneri
+
+		// listeneri za osluskivanje eventova na dugmetu nazad i dodaj prijatelja
 		dugmeNazad2.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -258,15 +280,23 @@ public class UserActivity extends Activity{
 		dugmeDodajPrijatelja2.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				// uzmemo korisnicko ime koje je korisnik uneo
 				String korisnickoIme = trazenoKorisnickoIme.getText().toString();
+				// probamo da ga dodamo
 				if(androidModelListePrijatelja.dodajPrijatelja(korisnickoIme) == true){
+					// ako je uspesno, dodamo ga i u nasu listu
+					// i takodje refreshujemo nasu listu kako bi promena
+					// bila vidljiva
 					prijatelji.add(korisnickoIme);
 					lista.invalidateViews();
+					// ispisujemo poruku o uspesnom dodavanju korisnika
 					Toast friendAdded = Toast.makeText(getApplicationContext(), "Prijatelj uspesno dodat!", Toast.LENGTH_SHORT);
 					friendAdded.show();
 					
 				}
 				else{
+					// u suprotnom ukoliko korisnik nije nadjen
+					// ispisacemo poruku da je pogresno korisnicko ime uneto
 					Toast friendNotAdded = Toast.makeText(getApplicationContext(), "Pogresno uneto korisnicko ime.", Toast.LENGTH_SHORT);
 					friendNotAdded.show();
 				}
