@@ -8,6 +8,7 @@ import com.codlex.jsms.client.gui.ProzorZaPrijavljivanje;
  * @author Dejan Pekter <dpekter@raf.edu.rs>
  *
  */
+
 public class DesktopKlijent {
 	public static void main(String[] args) {
 		// malo debug-a

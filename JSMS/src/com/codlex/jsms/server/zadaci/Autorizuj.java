@@ -16,7 +16,7 @@ import com.codlex.jsms.networking.messages.PorukaOAutorizacijiKorisnikPostoji;
 
 public class Autorizuj implements Runnable {
 	private Socket socket;
-	private static int brojTredova = 0;
+	private static volatile int brojTredova = 0;
 
 	public Autorizuj(Socket socket) {
 		uvecajBrojAktivnihTredova();
@@ -63,9 +63,12 @@ public class Autorizuj implements Runnable {
 			e.printStackTrace();
 		} finally {
 			try {
-				ulaz.close();
-				izlaz.close();
-				socket.close();
+				if(ulaz != null)
+					ulaz.close();
+				if(izlaz != null)
+					izlaz.close();
+				if(socket != null)
+					socket.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

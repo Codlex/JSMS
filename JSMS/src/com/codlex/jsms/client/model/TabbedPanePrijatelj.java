@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -62,7 +63,7 @@ public class TabbedPanePrijatelj extends JPanel  {
         	EventQueue.invokeLater( new Runnable() {
         		@Override
         		public void run() {
-        			TabbedPanePrijatelj.this.repaint();
+        			sadrzalacPrijatelja.repaint();
         		}
         	});
         };      

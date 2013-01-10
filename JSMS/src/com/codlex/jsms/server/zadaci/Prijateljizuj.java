@@ -20,7 +20,7 @@ import com.codlex.jsms.networking.messages.objects.JaIPrijatelj;
 
 public class Prijateljizuj implements Runnable {
 	private Socket socket;
-	private static int brojTredova;
+	private static volatile int brojTredova;
 
 	public Prijateljizuj(Socket socket) {
 		this.socket = socket;
@@ -68,9 +68,12 @@ public class Prijateljizuj implements Runnable {
 			e.printStackTrace();
 		} finally {
 			try {
-				ulaz.close();
-				izlaz.close();
-				socket.close();
+				if(ulaz != null)
+					ulaz.close();
+				if(izlaz != null)
+					izlaz.close();
+				if(socket != null)
+					socket.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

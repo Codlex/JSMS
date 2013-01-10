@@ -30,7 +30,7 @@ public class PosaljilacSlika implements Runnable {
 					.println("[Osvezivac] Zadatak za slanje slike startovan, trenutno je ukljuceno "
 							+ OsvezivacZadatak.getBrojAktivnihTredova()
 							+ " zadataka");
-			if (PosaljilacSlikaZadatak.getBrojAktivnihTredova() > 1) {
+			if (PosaljilacSlikaZadatak.getBrojAktivnihTredova() > 2) {
 
 				try {
 					// Algoritam za balansiranje vremena cekanja
@@ -42,6 +42,12 @@ public class PosaljilacSlika implements Runnable {
 			}
 			Thread zadatak = new Thread(new PosaljilacSlikaZadatak());
 			zadatak.start();
+			try {
+				// Algoritam za balansiranje vremena cekanja
+				Thread.sleep(vremeCekanja);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 
 	}

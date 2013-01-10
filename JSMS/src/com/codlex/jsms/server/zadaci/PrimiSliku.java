@@ -14,7 +14,7 @@ import com.codlex.jsms.networking.Poruka;
 
 public class PrimiSliku implements Runnable {
 	private Socket socket;
-	private static int brojTredova = 0;
+	private static volatile int brojTredova = 0;
 
 	public PrimiSliku(Socket socket) {
 		uvecajBrojAktivnihTredova();
@@ -66,8 +66,10 @@ public class PrimiSliku implements Runnable {
 			// na kraju zatvarmo socket
 			if (socket != null) {
 				try {
-					ulaz.close();
-					socket.close();
+					if(ulaz != null)
+						ulaz.close();;
+					if(socket != null)
+						socket.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
