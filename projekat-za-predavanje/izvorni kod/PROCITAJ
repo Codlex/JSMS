@@ -1,0 +1,5 @@
+Izvorni kod ovog projekta se sastoji iz dva zasebna Eklipsina projekta
+
+ 1. JSMS - je izvorni kod servera, alata za mrezu i desktop klijenta
+ 2. AndroidClient - klijent za android se nalazi u posebnom projektu jer smo koristili Eklipsu podesenu za razvoj android aplikacija
+    http://developer.android.com/sdk/index.html

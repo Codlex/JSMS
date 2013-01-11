@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Codlex OKO</string>
+    <string name="menu_settings">Podesavanje</string>
+    <string name="korisnicko_ime">korisnicko ime:</string>
+    <string name="lozinka">lozinka:</string>
+    <string name="email">email:</string>
+    <string name="prijavi_se">Prijavi se!</string>
+    <string name="napravi_nalog">Napravi nalog!</string>
+	<string name="nazad">Nazad</string>
+	<string name="pogresno_korisnicko_ime_lozinka">Pogresno korisnicko ime ili lozinka!</string>
+	<string-array name="lista_prijatelja"></string-array>
+	<string name="slika_prijatelja">Slika prijatelja</string>
+	<string name="poruka_greska">Uhuhuh, nesto je poslo po zlu!</string>
+	<string name="odjavi_se">Odjavi se!</string>
+	<string name="dodaj_prijatelja">Dodaj prijatelja</string>
+	<string name="dodaj">Dodaj!</string>
+</resources>
